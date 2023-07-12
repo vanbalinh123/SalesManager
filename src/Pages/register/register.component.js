@@ -1,5 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+import { useAddNewUserMutation } from '../../redux/api/api.slice';
+import { useGetUsersQuery } from '../../redux/api/api.slice';
 
 import '../basic.styles.css';
 import { 
@@ -23,9 +28,34 @@ import {
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate();
 
-    const onSubmit = (data) => {
-        console.log('Submitted data:', data);
+    const {
+        data: users = []
+    } = useGetUsersQuery();
+
+    const [ addNewUser ] = useAddNewUserMutation();
+
+
+    const onSubmit = async (data) => {
+        const username = data.username;
+        const email = data.email;
+        const password = data.password;
+        const confirm = data.confirm;
+
+        let findUser = users.find(item => item.email === email);
+
+        if(findUser === undefined) {
+            if(password === confirm) {
+                await addNewUser({ username, email, password });
+                alert('You have successfully created an account!')
+                navigate('/')
+            } else {
+                alert('Confirm password is wrong!')
+            }
+        } else {
+            alert('Your email has been registered!')
+        }    
     };
 
 

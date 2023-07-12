@@ -1,5 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
+import { useGetUsersQuery } from '../../redux/api/api.slice';
 
 import '../basic.styles.css'
 import { 
@@ -23,10 +26,28 @@ import {
 
 
 const Login = () => {
+    const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors } } = useForm();
 
+    const {
+        data: users = []
+    } = useGetUsersQuery();
+
     const onSubmit = (data) => {
-        console.log('Submitted data:', data);
+        const email = data.email;
+        const password = data.password;
+
+        let findUser = users.find(item => item.email === email);
+
+        if(findUser === undefined) {
+            alert('Email not registered!')
+        } else {
+            if(findUser.password === password) {
+                alert('Logged in successfully!')
+            } else {
+                alert('Incorrect password!')
+            }
+        }
     };
 
 
