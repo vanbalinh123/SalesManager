@@ -39,8 +39,9 @@ export const Svg = styled.svg`
     position: absolute;
     width: 20px;
     color: #000000;
-    bottom: 15%;
+    bottom: 10%;
     left: 1%;
+    z-index: 10;
 `;
 
 export const TextRegister = styled.h1`
@@ -92,16 +93,21 @@ export const Label = styled.div`
 `;
 
 export const Input = styled.input`
-    flex: 4;
-    width: 100%;
-    height: 50px;
-    //padding-left: 30px;
-    border: none;
+    padding-left: 30px;
     border-radius: 5px;
+    border: none;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+`;
 
-    &::placeholder {
-        padding-left: 30px;
-    }
+export const InputAndErrors = styled.div`
+    width: 100%;
+    position: relative;
+    flex: 4;
 `;
 
 export const ButtonRegister = styled.button`
@@ -142,4 +148,10 @@ export const AskLogin = styled.div`
 
 export const PAsk = styled.p`
     color: #ffffff;
+`;
+
+export const MessageErorrs = styled.div`
+    padding-left: 15px;
+    color: rgb(79, 10, 10);
+    font-style: italic;
 `;
