@@ -4,7 +4,7 @@ const apiSlice = createApi({
 
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3100' }),
-    tagTypes: ['List', 'User'],
+    tagTypes: ['List', 'Users'],
     endpoints: builder => ({
         getUsers: builder.query({
             query: (args) => ({
@@ -19,16 +19,31 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: user
             }),
-            invalidatesTags: ['User']
-        })
+            invalidatesTags: ['Users']
+        }),
+        getUserActived: builder.query({
+            query: (args) => ({
+                url: '/userAcitived',
+                params: args
+            }),
+            providesTags: ['Users']
+        }),
+        userActived: builder.mutation({
+            query: (user) => ({
+                url: '/postUserActived',
+                method: 'POST',
+                body: user
+            }),
+            invalidatesTags: ['Users']
+        }),
     })
 
 })
 
 export const {
-    useGetUsersQuery, 
-    useAddNewUserMutation 
-
+    useGetUsersQuery,
+    useAddNewUserMutation,
+    useUserActivedMutation,
 } = apiSlice;
 
 export default apiSlice;

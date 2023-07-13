@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useGetUsersQuery } from '../../redux/api/api.slice';
+import { useUserActivedMutation } from '../../redux/api/api.slice';
 
 import '../basic.styles.css'
 import { 
@@ -33,7 +34,9 @@ const Login = () => {
         data: users = []
     } = useGetUsersQuery();
 
-    const onSubmit = (data) => {
+    const [ userActived ] = useUserActivedMutation();
+
+    const onSubmit = async (data) => {
         const email = data.email;
         const password = data.password;
 
@@ -43,6 +46,7 @@ const Login = () => {
             alert('Email not registered!')
         } else {
             if(findUser.password === password) {
+                await userActived(findUser)
                 alert('Logged in successfully!')
             } else {
                 alert('Incorrect password!')
