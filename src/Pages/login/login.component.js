@@ -2,11 +2,10 @@ import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { useGetUsersQuery } from '../../redux/api/api.slice';
-import { useUserActivedMutation } from '../../redux/api/api.slice';
+import { useLoginMutation } from '../../redux/api/api.slice';
 
 import '../basic.styles.css'
-import { 
+import {
     FormLogin,
     ImageLogin,
     Form,
@@ -30,30 +29,26 @@ const Login = () => {
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const {
-        data: users = []
-    } = useGetUsersQuery();
-
-    const [ userActived ] = useUserActivedMutation();
+    const [ loginUser ] = useLoginMutation();
 
     const onSubmit = async (data) => {
         const email = data.email;
         const password = data.password;
 
-        let findUser = users.find(item => item.email === email);
+        console.log(data)
 
-        if(findUser === undefined) {
-            alert('Email not registered!')
-        } else {
-            if(findUser.password === password) {
-                await userActived(findUser)
-                alert('Logged in successfully!')
+        try {
+            await loginUser({ email, password }).unwrap();
+            alert('Login successful!');
+        } catch (error) {
+            if (error.data) {
+                alert(error.data.message); // Hiển thị thông báo lỗi từ backend nếu có
             } else {
-                alert('Incorrect password!')
+                console.error('Lỗi trong quá trình đăng nhập:', error); // Lỗi không có trong backend
+                alert('Đã xảy ra lỗi trong quá trình đăng nhập');
             }
         }
     };
-
 
     return (
         <FormLogin>
@@ -67,12 +62,12 @@ const Login = () => {
                         <ElementInput>
                             <Label>
                                 Email
-                                {errors.email && <MessageErorrs>{errors.email.message}</MessageErorrs>}    
+                                {errors.email && <MessageErorrs>{errors.email.message}</MessageErorrs>}
                             </Label>
-                            <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </Svg>
                             <InputAndErrors>
+                                <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </Svg>
                                 <Input
                                     //{...register("email")}
                                     {...register("email", {
@@ -90,18 +85,18 @@ const Login = () => {
                         <ElementInput>
                             <Label>
                                 Password
-                                {errors.password && <MessageErorrs>{errors.password.message}</MessageErorrs>}    
+                                {errors.password && <MessageErorrs>{errors.password.message}</MessageErorrs>}
                             </Label>
-                            <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                            </Svg>
                             <InputAndErrors>
-                                <Input 
-                                    {...register("password",{
+                                <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                </Svg>
+                                <Input
+                                    {...register("password", {
                                         required: "Password is required"
-                                    })} 
-                                    type='password' 
-                                    placeholder='Password...' 
+                                    })}
+                                    type='password'
+                                    placeholder='Password...'
                                 />
                             </InputAndErrors>
                         </ElementInput>

@@ -39,8 +39,9 @@ export const Svg = styled.svg`
     position: absolute;
     width: 20px;
     color: #000000;
-    bottom: 10%;
-    left: 1%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 15px;
     z-index: 10;
 `;
 
@@ -152,6 +153,6 @@ export const PAsk = styled.p`
 
 export const MessageErorrs = styled.div`
     padding-left: 15px;
-    color: rgb(79, 10, 10);
+    color: red;
     font-style: italic;
 `;
