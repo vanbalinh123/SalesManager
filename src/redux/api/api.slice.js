@@ -22,13 +22,6 @@ const apiSlice = createApi({
             }),
             //invalidatesTags: ['Users']
         }),
-        getUserActived: builder.query({
-            query: (args) => ({
-                url: '/my-product',
-                params: args
-            }),
-            //providesTags: ['Users']
-        }),
         login: builder.mutation({
             query: (user) => ({
                 url: '/login',

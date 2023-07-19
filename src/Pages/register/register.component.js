@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import { useRegisterMutation } from '../../redux/api/api.slice';
-
-import '../basic.styles.css';
 import {
     FormRegister,
     InputAndErrors,
@@ -119,14 +117,14 @@ const Register = () => {
                                     {...register("password", {
                                         required: "Password is required"
                                     })}
-                                    type='text'
+                                    type='password'
                                     placeholder='Password...'
                                 />
                             </InputAndErrors>
                         </ElementInput>
                         <ElementInput>
                             <Label>
-                                Confilm password
+                                Confirm password
                                 {errors.confirm && <MessageErorrs>{errors.confirm.message}</MessageErorrs>}
                             </Label>
                             <InputAndErrors>

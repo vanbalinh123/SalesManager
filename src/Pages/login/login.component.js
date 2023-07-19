@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { useLoginMutation } from '../../redux/api/api.slice';
 
-import '../basic.styles.css'
 import {
     FormLogin,
     ImageLogin,
@@ -37,17 +36,27 @@ const Login = () => {
 
         console.log(data)
 
-        try {
-            await loginUser({ email, password }).unwrap();
-            alert('Login successful!');
-        } catch (error) {
-            if (error.data) {
-                alert(error.data.message); // Hiển thị thông báo lỗi từ backend nếu có
-            } else {
-                console.error('Lỗi trong quá trình đăng nhập:', error); // Lỗi không có trong backend
-                alert('Đã xảy ra lỗi trong quá trình đăng nhập');
-            }
+        const response = await loginUser({ email: email, password: password });
+        console.log(response)
+        if(response.error) {
+            alert('Incorrect account or password!')
+        } else {
+            alert('login successful');
+            localStorage.setItem('accessToken', JSON.stringify(response.data.accessToken));
         }
+
+        // try {
+        //     await loginUser({ email, password }).unwrap();
+        //     alert('Login successful!');
+        // } catch (error) {
+        //     if (error.data) {
+        //         alert(error.data.message); // Hiển thị thông báo lỗi từ backend nếu có
+        //     } else {
+        //         console.error('Lỗi trong quá trình đăng nhập:', error); // Lỗi không có trong backend
+        //         alert('Đã xảy ra lỗi trong quá trình đăng nhập');
+        //     }
+        // }
+
     };
 
     return (

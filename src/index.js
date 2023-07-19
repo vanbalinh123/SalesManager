@@ -11,6 +11,8 @@ import store from './redux/store';
 import Login from './Pages/login/login.component';
 import Register from './Pages/register/register.component';
 
+import './index.css';
+
 const router = createBrowserRouter([
   {
     path: '/',
