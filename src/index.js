@@ -10,6 +10,7 @@ import store from './redux/store';
 
 import Login from './Pages/login/login.component';
 import Register from './Pages/register/register.component';
+import Template from './comopnents/template/template.component';
 
 import './index.css';
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />
+  },
+  {
+    path: '/template',
+    element: <Template />
   }
 ])
 
