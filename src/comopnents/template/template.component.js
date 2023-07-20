@@ -8,7 +8,11 @@ import {
     Menu,
     ElementMenu,
     InfoDifer,
-    FlexNavLink
+    FlexNavLink,
+    DivImageNameUser,
+    ImageUser,
+    UserName,
+    DivImgUser
 } from './template.styles'
 
 const Template = () => {
@@ -29,10 +33,13 @@ const Template = () => {
                         <ElementMenu>Dashboard</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink>
-                        <ElementMenu>Staffs</ElementMenu>
+                        <ElementMenu>Products</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink>
-                        <ElementMenu>Products</ElementMenu>
+                        <ElementMenu>Product groups</ElementMenu>
+                    </FlexNavLink>
+                    <FlexNavLink>
+                        <ElementMenu>Staffs</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink>
                         <ElementMenu>Invoice</ElementMenu>
@@ -42,7 +49,15 @@ const Template = () => {
                     </FlexNavLink>
                 </Menu>
                 <InfoDifer>
-                    <div>User</div>
+                    <DivImageNameUser>
+                        <DivImgUser>
+                            <ImageUser 
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp3dOv-STCChtjq6TDVhqFBmGjcMY18VkshMmBf7PB&s" 
+                                alt='img user'    
+                            />
+                        </DivImgUser>
+                        <UserName>Nguyen Van A</UserName>
+                    </DivImageNameUser>
                 </InfoDifer>
             </HeaderPage>
         </MainPage>

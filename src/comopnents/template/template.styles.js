@@ -15,16 +15,15 @@ export const HeaderPage = styled.header`
     right: 0;
     display: flex;
     align-items: center;
-    height: 70px;
+    height: 60px;
     z-index: 2;
-    border: 1px solid red;
     padding: 0 50px;
+    background-color: #F5F5F5;
 `;
 
 export const DivLogo = styled.div`
     width: 300px;
     height: 100%;
-    border: 1px solid blue;
     display: flex;
     justify-content: center;
 `
@@ -39,30 +38,56 @@ export const ImageLogo = styled.img`
 export const Menu = styled.ul`
     display: flex;
     align-items: center;
-    height: 70px;
+    height: 60px;
     width: 100%;
     padding: 0 100px;
-    border: 1px solid grey;
     justify-content: center;
-
-    &li: {
-        backgroundcolor: red;
-    }
 `
 export const FlexNavLink = styled(NavLink)`
     flex: 1; 
     height: 100%;
+    color: grey;
 `;
 
 export const ElementMenu = styled.li`
-    border: 1px solid blue;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+    border-left: 2px solid #ffffff;
+
 `
 export const InfoDifer = styled.div`
     width: 300px;
-    height: 70px;
-    border: 1px solid green;
+    height: 60px;
+    border: 1px solid red;
+    
 `
+
+export const DivImageNameUser = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+`;
+
+export const DivImgUser = styled.div`
+    width: 50px;
+    height: 50px;
+    border-radius: 90px;
+
+`;
+
+export const ImageUser = styled.img`
+    width: 100%;
+    height: 100%;
+    border-radius: 90px;
+    object-fit: cover;
+     
+`;
+
+export const UserName = styled.span`
+
+`;
