@@ -43,6 +43,7 @@ const Login = () => {
         } else {
             alert('login successful');
             localStorage.setItem('accessToken', JSON.stringify(response.data.accessToken));
+            navigate('/')
         }
 
         // try {

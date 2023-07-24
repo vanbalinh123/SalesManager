@@ -1,4 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import {
     MainPage,
@@ -12,10 +14,20 @@ import {
     DivImageNameUser,
     ImageUser,
     UserName,
-    DivImgUser
+    DivImgUser,
+    ContentSection
 } from './template.styles'
 
 const Template = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        console.log(accessToken);
+        if (accessToken === "" || accessToken === null) {
+          navigate('/login');
+        }
+      }, []);
+    
 
     return (
         <MainPage>
@@ -32,7 +44,9 @@ const Template = () => {
                     <FlexNavLink>
                         <ElementMenu>Dashboard</ElementMenu>
                     </FlexNavLink>
-                    <FlexNavLink>
+                    <FlexNavLink
+                        to='/products'
+                    >
                         <ElementMenu>Products</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink>
@@ -51,15 +65,18 @@ const Template = () => {
                 <InfoDifer>
                     <DivImageNameUser>
                         <DivImgUser>
-                            <ImageUser 
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp3dOv-STCChtjq6TDVhqFBmGjcMY18VkshMmBf7PB&s" 
-                                alt='img user'    
+                            <ImageUser
+                                src="https://cdn5.vectorstock.com/i/1000x1000/54/69/male-user-icon-vector-8865469.jpg"
+                                alt='img user'
                             />
                         </DivImgUser>
                         <UserName>Nguyen Van A</UserName>
                     </DivImageNameUser>
                 </InfoDifer>
             </HeaderPage>
+            <ContentSection>
+                <Outlet />
+            </ContentSection>
         </MainPage>
     )
 }

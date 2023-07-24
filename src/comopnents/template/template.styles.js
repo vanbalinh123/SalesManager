@@ -2,14 +2,12 @@ import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 
 export const MainPage = styled.div`
-    position: fixed;
     width: 100%;
     heigh: 100%;
-    z-index: 1;
 `;
 
 export const HeaderPage = styled.header`
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -19,11 +17,13 @@ export const HeaderPage = styled.header`
     z-index: 2;
     padding: 0 50px;
     background-color: #F5F5F5;
+    color: grey;
 `;
 
 export const DivLogo = styled.div`
     width: 300px;
     height: 100%;
+    padding: 5px 0px;
     display: flex;
     justify-content: center;
 `
@@ -60,8 +60,6 @@ export const ElementMenu = styled.li`
 export const InfoDifer = styled.div`
     width: 300px;
     height: 60px;
-    border: 1px solid red;
-    
 `
 
 export const DivImageNameUser = styled.div`
@@ -74,8 +72,8 @@ export const DivImageNameUser = styled.div`
 `;
 
 export const DivImgUser = styled.div`
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 90px;
 
 `;
@@ -85,9 +83,16 @@ export const ImageUser = styled.img`
     height: 100%;
     border-radius: 90px;
     object-fit: cover;
-     
 `;
 
 export const UserName = styled.span`
 
 `;
+
+export const ContentSection = styled.section`
+    width: 100%;
+    margin-top: 60px;
+    margin-bottom: 60px;
+`;
+
+
