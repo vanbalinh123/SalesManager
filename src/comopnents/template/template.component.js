@@ -19,14 +19,14 @@ import {
 } from './template.styles'
 
 const Template = () => {
-    const navigate = useNavigate();
-    useEffect(() => {
-        const accessToken = localStorage.getItem('accessToken');
-        console.log(accessToken);
-        if (accessToken === "" || accessToken === null) {
-          navigate('/login');
-        }
-      }, []);
+    // const navigate = useNavigate();
+    // useEffect(() => {
+    //     const accessToken = localStorage.getItem('accessToken');
+    //     console.log(accessToken);
+    //     if (accessToken === "" || accessToken === null) {
+    //       navigate('/login');
+    //     }
+    //   }, []);
     
 
     return (
@@ -49,7 +49,9 @@ const Template = () => {
                     >
                         <ElementMenu>Products</ElementMenu>
                     </FlexNavLink>
-                    <FlexNavLink>
+                    <FlexNavLink
+                        to='/productsGroup'
+                    >
                         <ElementMenu>Product groups</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink>

@@ -12,6 +12,7 @@ import Login from './Pages/login/login.component';
 import Register from './Pages/register/register.component';
 import Template from './comopnents/template/template.component';
 import ProductsPage from './Pages/products/products.component';
+import ProductsGroup from './Pages/productsGroup/productGroup.component';
 
 import './index.css';
 const router = createBrowserRouter([
@@ -30,7 +31,11 @@ const router = createBrowserRouter([
       {
         path: 'products',
         element: <ProductsPage />
-      }
+      },
+      {
+        path: 'productsGroup',
+        element: <ProductsGroup />
+      },
     ]
   }
 ])
