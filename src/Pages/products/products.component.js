@@ -1,6 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { useForm } from 'react-hook-form';
+import { useEffect } from "react";
+
+import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
+import { useGetTrademarkQuery } from "../../redux/api/api.slice";
+import { useGetProductsQuery } from "../../redux/api/api.slice";
 
 import {
     HeaderProductsPage,
@@ -51,8 +56,6 @@ import {
     InputFile,
     LabelFile,
     ImgAdd,
-    ImgAdd2,
-    ImgAdd3,
     DivLabelImg,
     Button
 } from "./product.styles";
@@ -61,10 +64,18 @@ const ProductsPage = () => {
     const [showLayout, setShowLayout] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
-    const [selectedImage2, setSelectedImage2] = useState(null);
-    const [selectedImage3, setSelectedImage3] = useState(null);
-    console.log(errors)
 
+    const { data: productGroups } = useGetProductGroupsQuery();
+    const { data: trademark } = useGetTrademarkQuery();
+    const { data: products } = useGetProductsQuery();
+
+    const calculateTotalQuantity = () => {
+        let sumQuantity = 0;
+        products?.forEach(item => {
+          sumQuantity += Number(item.quantity);
+        });
+        return sumQuantity;
+    };
 
     const handleLayoutAddProductClick = () => {
         setShowLayout(true);
@@ -86,34 +97,6 @@ const ProductsPage = () => {
             // Xử lý việc đọc hình ảnh thành URL
             reader.onloadend = () => {
                 setSelectedImage(reader.result);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleFileChange2 = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            // Xử lý việc đọc hình ảnh thành URL
-            reader.onloadend = () => {
-                setSelectedImage2(reader.result);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleFileChange3 = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            // Xử lý việc đọc hình ảnh thành URL
-            reader.onloadend = () => {
-                setSelectedImage3(reader.result);
             };
 
             reader.readAsDataURL(file);
@@ -167,8 +150,8 @@ const ProductsPage = () => {
                                                 required: "Code is required"
                                             })}
                                             type="text" />
-                                            {/* {errors.code && <div>{errors.code.message}</div>}  */}
-                                    </DivInput>   
+                                        {/* {errors.code && <div>{errors.code.message}</div>}  */}
+                                    </DivInput>
                                     <DivInput>
                                         <SpanNameInput>Tên hàng</SpanNameInput>
                                         <InputAdd
@@ -184,19 +167,31 @@ const ProductsPage = () => {
                                                 required: "Group is required"
                                             })}
                                         >
-                                            <Option value="Nobita">Nobita</Option>
-                                            <Option value="Nobita1">Nobita1</Option>
-                                            <Option value="Nobita2">Nobita2</Option>
-                                            <Option value="Nobita3">Nobita3</Option>
+                                            <Option></Option>
+                                            <Option value="Mouse">Mouse</Option>
+                                            <Option value="Keyboard">Keyboard</Option>
+                                            <Option value="Loudspeaker">Loudspeaker</Option>
+                                            <Option value="Screen">Screen</Option>
                                         </SelectProductsGroup>
                                     </DivInput>
                                     <DivInput>
                                         <SpanNameInput>Thương hiệu</SpanNameInput>
-                                        <InputAdd
+                                        {/* <InputAdd
                                             {...register("Thuong hieu", {
                                                 required: "Thuong hieu is required"
                                             })}
-                                            type="text" />
+                                            type="text" /> */}
+                                        <SelectProductsGroup
+                                            {...register("Thuonghieu", {
+                                                required: "Thuong hieu is required"
+                                            })}
+                                        >
+                                            <Option></Option>
+                                            <Option value="Samsung">Samsung</Option>
+                                            <Option value="Apple">Apple</Option>
+                                            <Option value="Asus">Asus</Option>
+                                            <Option value="Xiaomi">Xiaomi</Option>
+                                        </SelectProductsGroup>
                                     </DivInput>
                                     <DivInput>
                                         <SpanNameInput>Số lượng(kho)</SpanNameInput>
@@ -238,11 +233,11 @@ const ProductsPage = () => {
                                     </TwoDivInput>
                                     <DivImagesAdd>
                                         <InputFile
-                                            {...register('image1', {
-                                                required: 'Image1 is required'
+                                            {...register('image', {
+                                                required: 'Image is required'
                                             })}
                                             type="file"
-                                            name="image1"
+                                            name="image"
                                             id="fileInput"
                                             onChange={handleFileChange1}
                                         />
@@ -252,40 +247,10 @@ const ProductsPage = () => {
                                                 <ImgAdd src={selectedImage} alt="Selected" />
                                             )}
                                         </DivLabelImg>
-                                        <InputFile
-                                            {...register('image2', {
-                                                required: 'Image2 is required'
-                                            })}
-                                            type="file"
-                                            name="image2"
-                                            id="fileInput2"
-                                            onChange={handleFileChange2}
-                                        />
-                                        <DivLabelImg>
-                                            <LabelFile for="fileInput2">Image</LabelFile>
-                                            {selectedImage2 && (
-                                                <ImgAdd2 src={selectedImage2} alt="Selected" />
-                                            )}
-                                        </DivLabelImg>
-                                        <InputFile
-                                            {...register('image3', {
-                                                required: 'Image3 is required'
-                                            })}
-                                            type="file"
-                                            name="image3"
-                                            id="fileInput3"
-                                            onChange={handleFileChange3}
-                                        />
-                                        <DivLabelImg>
-                                            <LabelFile for="fileInput3">Image</LabelFile>
-                                            {selectedImage3 && (
-                                                <ImgAdd3 src={selectedImage3} alt="Selected" />
-                                            )}
-                                        </DivLabelImg>
                                     </DivImagesAdd>
                                     <DivButton>
                                         <Button type="submit">Add</Button>
-                                        <Button 
+                                        <Button
                                             onClick={handleCloseLayoutAdd}
                                             type="button"
                                         >Close</Button>
@@ -302,10 +267,18 @@ const ProductsPage = () => {
                         <NameProductsGroup>Products Group</NameProductsGroup>
                         <UlProductsGroup>
                             <ItemProduct>All</ItemProduct>
-                            <ItemProduct>Mouse</ItemProduct>
-                            <ItemProduct>Keyboard</ItemProduct>
-                            <ItemProduct>Loudspeaker</ItemProduct>
-                            <ItemProduct>Screen</ItemProduct>
+                            {productGroups?.map(item => (
+                                <ItemProduct key={item.id}>{item.name}</ItemProduct>
+                            ))}
+                        </UlProductsGroup>
+                    </ProductsGroup>
+                    <ProductsGroup>
+                        <NameProductsGroup>Thương Hiệu</NameProductsGroup>
+                        <UlProductsGroup>
+                            <ItemProduct>All</ItemProduct>
+                            {trademark?.map(item => (
+                                <ItemProduct key={item.id}>{item.name}</ItemProduct>
+                            ))}
                         </UlProductsGroup>
                     </ProductsGroup>
                 </SideBarProductsPage>
@@ -314,8 +287,9 @@ const ProductsPage = () => {
                         <THeaderProducts>
                             <TrProducts>
                                 <ThProducts></ThProducts>
-                                <ThProducts>PLU</ThProducts>
+                                <ThProducts>Code</ThProducts>
                                 <ThProducts>Product name</ThProducts>
+                                <ThProducts>Trademark</ThProducts>
                                 <ThProducts>Price</ThProducts>
                                 <ThProducts>Cost of capital</ThProducts>
                                 <ThProducts>Quantity</ThProducts>
@@ -328,158 +302,22 @@ const ProductsPage = () => {
                                 <TdProducts></TdProducts>
                                 <TdProducts></TdProducts>
                                 <TdProducts></TdProducts>
-                                <TdProducts>1200</TdProducts>
+                                <TdProducts></TdProducts>
+                                <TdProducts>{calculateTotalQuantity()}</TdProducts>
                             </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
-                            <TrProducts>
-                                <TdProducts>
-                                    <ImgProduct alt="chuot" src="https://genk.mediacdn.vn/2018/7/23/photo-1-1532332293343908811983.jpg" />
-                                </TdProducts>
-                                <TdProducts>D123</TdProducts>
-                                <TdProducts>Chuột không dây ganing Newmen</TdProducts>
-                                <TdProducts>300.000</TdProducts>
-                                <TdProducts>30.000</TdProducts>
-                                <TdProducts>200</TdProducts>
-                            </TrProducts>
+                            {products?.map(item => (
+                                <TrProducts key={item.id}>
+                                    <TdProducts>
+                                        <ImgProduct alt={item.name} src={item.img} />
+                                    </TdProducts>
+                                    <TdProducts>{item.code}</TdProducts>
+                                    <TdProducts>{item.name}</TdProducts>
+                                    <TdProducts>{item.trademark}</TdProducts>
+                                    <TdProducts>{item.price}</TdProducts>
+                                    <TdProducts>{item.cost}</TdProducts>
+                                    <TdProducts>{item.quantity}</TdProducts>
+                                </TrProducts>
+                            ))}
                         </TBodyProducts>
                     </TableProducts>
                 </ContentProductsPage>

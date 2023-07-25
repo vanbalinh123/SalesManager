@@ -26,7 +26,7 @@ export const LayoutSearch = styled.div`
 export const DivSearch = styled.div`
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
 `;
 
 export const ValueToSearch = styled.span`
@@ -115,32 +115,44 @@ export const MainProductsPage = styled.section`
 //sidebar
 export const SideBarProductsPage = styled.nav`
     width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
 `;
 
 export const ProductsGroup = styled.div`
     width: 70%;
     margin: 0 auto;
-    background-color: #F5F5F5;
-    border-radius: 7px;
     box-shadow: grey 0px 3px 8px;
-    
 `;
 
 export const NameProductsGroup = styled.div`
     padding: 19px;
     font-size: 20px;
     font-weight: bold;
-    color: #696969;
+    color: #ffffff;
+    background-color: #696969;
+    
 `;
 
-export const UlProductsGroup = styled.div`
+export const UlProductsGroup = styled.ul`
     color: grey;
+    height: 250px;
+    overflow-y: scroll;
 `;
 
-export const ItemProduct= styled.div`
+export const ItemProduct= styled.li`
     padding: 15px;
     padding-left: 40px;
     border-top: 2px solid #ffffff;
+    cursor: pointer;
+    background-color: #F5F5F5; 
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: #A9A9A9;
+        color: #ffffff;
+    }
 `;
 
 
@@ -196,8 +208,8 @@ export const ImgProduct = styled.img`
 //layout add new product
 
 export const LayoutAddProduct = styled.div`
-    width: 50%;
-    height: 70%;
+    width: 60%;
+    height: 80%;
     background-color: #ffffff;
     z-index: 10;
     position: fixed;
@@ -258,7 +270,7 @@ export const InputAdd = styled.input`
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
-    box-shadow: grey 0px 3px 8px;
+    box-shadow: grey 0px 1px 2px;
     transition: all 0.3s;
     color: #696969;
 `;
@@ -269,7 +281,7 @@ export const SelectProductsGroup = styled.select`
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
-    box-shadow: grey 0px 3px 8px;
+    box-shadow: grey 0px 1px 2px;
     transition: all 0.3s;
     color: #696969;
 `;
@@ -292,7 +304,7 @@ export const InputDescribeAdd = styled.textarea`
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
-    box-shadow: grey 0px 3px 8px;
+    box-shadow: grey 0px 1px 2px;
     transition: all 0.3s;
     color: #696969;    
 `;
@@ -326,7 +338,7 @@ export const InputAddRight = styled.input`
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
-    box-shadow: grey 0px 3px 8px;
+    box-shadow: grey 0px 1px 2px;
     transition: all 0.3s;
     color: #696969; 
 `;
@@ -334,7 +346,6 @@ export const InputAddRight = styled.input`
 export const DivImagesAdd = styled.div`
     flex: 4;
     display: flex;
-    flex-direction: column;
 `
 
 export const InputFile = styled.input`
@@ -344,7 +355,6 @@ export const InputFile = styled.input`
 export const DivLabelImg = styled.div`
     flex: 1;
     display: flex;
-    align-items: center;
     gap: 20px;
 `;
 
@@ -358,9 +368,10 @@ export const LabelFile = styled.label`
     justify-content: center;
     border-radius: 5px;
     background-color: #F5F5F5;
-    box-shadow: grey 0px 3px 8px;
+    box-shadow: grey 0px 2px 6px;
     transition: all 0.3s;
     color: #696969;
+    
 
     &:hover{
         cursor: pointer;
@@ -370,23 +381,11 @@ export const LabelFile = styled.label`
 `;
 
 export const ImgAdd = styled.img`
-    width: 100px;
-    height: 80px;
-    object-fit: cover;
-    box-shadow: grey 0px 3px 8px;
-`;
-
-export const ImgAdd2 = styled.img`
-    width: 100px;
-    height: 80px;
-    object-fit: cover;
-    box-shadow: grey 0px 3px 8px;
-`;
-
-export const ImgAdd3 = styled.img`
-    width: 100px;
-    height: 80px;
-    object-fit: cover;
+    width: 250px;
+    height: 300px;
+    // object-fit: cover;
+    object-fit: contain;
+    border-radius: 7px;
     box-shadow: grey 0px 3px 8px;
 `;
 
@@ -404,7 +403,7 @@ export const Button = styled.button`
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
-    box-shadow: grey 0px 3px 8px;
+    box-shadow: grey 0px 2px 6px;
     transition: all 0.3s;
     color: #696969;
 

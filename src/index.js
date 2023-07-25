@@ -13,9 +13,14 @@ import Register from './Pages/register/register.component';
 import Template from './comopnents/template/template.component';
 import ProductsPage from './Pages/products/products.component';
 import ProductsGroup from './Pages/productsGroup/productGroup.component';
+import TestToken from './Pages/testToken/testToken.component';
 
 import './index.css';
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <TestToken />,
+  },
   {
     path: '/login',
     element: <Login />,
@@ -25,7 +30,7 @@ const router = createBrowserRouter([
     element: <Register />
   },
   {
-    path: '/',
+    path: '/template',
     element: <Template />,
     children: [
       {

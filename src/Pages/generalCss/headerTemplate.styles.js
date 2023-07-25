@@ -26,7 +26,7 @@ export const LayoutSearch = styled.div`
 export const DivSearch = styled.div`
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
 `;
 
 export const ValueToSearch = styled.span`

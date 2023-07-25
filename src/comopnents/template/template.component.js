@@ -15,25 +15,15 @@ import {
     ImageUser,
     UserName,
     DivImgUser,
-    ContentSection
+    ContentSection,
 } from './template.styles'
 
 const Template = () => {
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     const accessToken = localStorage.getItem('accessToken');
-    //     console.log(accessToken);
-    //     if (accessToken === "" || accessToken === null) {
-    //       navigate('/login');
-    //     }
-    //   }, []);
-    
-
     return (
         <MainPage>
             <HeaderPage>
                 <DivLogo>
-                    <NavLink to='/'>
+                    <NavLink to='/template/dashboard'>
                         <ImageLogo
                             src='https://cdn3.vectorstock.com/i/1000x1000/57/62/sales-manager-rubber-stamp-vector-15605762.jpg'
                             alt='logo'
@@ -41,26 +31,34 @@ const Template = () => {
                     </NavLink>
                 </DivLogo>
                 <Menu>
-                    <FlexNavLink>
+                    <FlexNavLink
+                        to='/template/dashboard'
+                    >
                         <ElementMenu>Dashboard</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink
-                        to='/products'
+                        to='/template/products'
                     >
                         <ElementMenu>Products</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink
-                        to='/productsGroup'
+                        to='/template/productsGroup'
                     >
                         <ElementMenu>Product groups</ElementMenu>
                     </FlexNavLink>
-                    <FlexNavLink>
+                    <FlexNavLink
+                        to='/template/staffs'
+                    >
                         <ElementMenu>Staffs</ElementMenu>
                     </FlexNavLink>
-                    <FlexNavLink>
+                    <FlexNavLink
+                        to='/template/invoice'
+                    >
                         <ElementMenu>Invoice</ElementMenu>
                     </FlexNavLink>
-                    <FlexNavLink>
+                    <FlexNavLink
+                        to='/template/warehouse'
+                    >
                         <ElementMenu>Warehouse</ElementMenu>
                     </FlexNavLink>
                 </Menu>

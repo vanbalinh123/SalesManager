@@ -1,16 +1,35 @@
 import { styled } from "styled-components";
 
-export const MainLayoutAddGroup = styled.div`
-    border: 1px solid red;
-    width: 100%;
-    display: flex;
+//add
+export const LayoutAddProductGroup = styled.div`
+    flex: 1;
+    padding: 20px;
 `;
 
-//left
-export const LayoutProductGroups = styled.div`
-    flex: 1;
-    border: 1px solid blue;
-`
+export const FormAddNewProductGroups = styled.form`
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+`;
+
+export const InputAddProductGroup = styled.input`
+    width: 350px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    border: 1px solid #F5F5F5;
+    box-shadow: grey 0px 2px 6px;
+`;
+
+
+//show
+export const MainLayoutAddGroup = styled.div`
+    width: 100%;
+    padding: 40px 0px;
+`;
 
 export const ProductGroups = styled.div`
     width: 70%;
@@ -27,25 +46,34 @@ export const NameProductsGroup = styled.div`
     color: #696969;
 `;
 
-export const UlProductsGroup = styled.div`
+export const UlProductsGroup = styled.ul`
     color: grey;
 `;
 
-export const ItemProduct= styled.div`
+export const ItemProduct = styled.li`
+    padding: 15px;
+    padding-left: 60px;
+    border-top: 2px solid #ffffff;
+    display: flex;
+    position: relative;
+`;
+
+export const QuantityItem = styled.div`
+    position: absolute;
+    right: 60px;
+`
+
+export const NameItemProduct = styled.li`
     padding: 15px;
     padding-left: 40px;
     border-top: 2px solid #ffffff;
+    display: flex;
+    position: relative;
 `;
 
+export const QuantityItemProduct = styled.div`
+    position: absolute;
+    right: 40px;
+`
 
-//right
-export const LayoutAddProductGroup = styled.div`
-    border: 1px solid green;
-    flex: 1;
-`;
 
-export const FormAddNewProductGroups = styled.form`
-    border: 1px solid red;
-    width: 90%;
-    margin: 0 auto;
-`;

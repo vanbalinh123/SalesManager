@@ -47,6 +47,18 @@ export const FlexNavLink = styled(NavLink)`
     flex: 1; 
     height: 100%;
     color: grey;
+    background-color: #F5F5F5;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: #696969; 
+        color: white; 
+    }
+
+    &.active {
+        background-color: #696969; 
+        color: white; 
+      }
 `;
 
 export const ElementMenu = styled.li`
@@ -94,5 +106,4 @@ export const ContentSection = styled.section`
     margin-top: 60px;
     margin-bottom: 60px;
 `;
-
 

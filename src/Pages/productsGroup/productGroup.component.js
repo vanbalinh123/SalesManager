@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
 
+import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
+import { useGetProductsQuery } from "../../redux/api/api.slice";
+
 import {
     HeaderProductsPage,
     NameOutlet,
@@ -10,24 +13,35 @@ import {
     ButtonSearch,
     Svg,
     SpanSearch,
-    DivAddProduct,
     ButtonAddProduct,
     SpanAddProduct
 } from "../generalCss/headerTemplate.styles";
 
-import { 
+import {
     MainLayoutAddGroup,
-    LayoutProductGroups,
     LayoutAddProductGroup,
     ProductGroups,
     NameProductsGroup,
     UlProductsGroup,
     ItemProduct,
-    FormAddNewProductGroups
+    FormAddNewProductGroups,
+    InputAddProductGroup,
+    QuantityItem,
+    QuantityItemProduct,
+    NameItemProduct
 } from "./productGroup.styles";
 
 const ProductsGroup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { data: productGroups } = useGetProductGroupsQuery();
+    const { data: products } = useGetProductsQuery();
+
+    const getTotalQuantityByProductGroup = (groupName) => {
+        const filteredProducts = products?.filter((item) => item.productGroups === groupName);
+        const totalQuantity = filteredProducts.reduce((total, item) => total + Number(item.quantity), 0);
+        return totalQuantity;
+    };
+
     return (
         <div>
             <HeaderProductsPage>
@@ -47,24 +61,38 @@ const ProductsGroup = () => {
                         <SpanSearch>Search</SpanSearch>
                     </ButtonSearch>
                 </LayoutSearch>
-            </HeaderProductsPage>
-            <MainLayoutAddGroup>
-                <LayoutProductGroups>
-                    <ProductGroups>
-                        <NameProductsGroup>Product Groups</NameProductsGroup>
-                        <UlProductsGroup>
-                            <ItemProduct>Mouse</ItemProduct>
-                            <ItemProduct>Keyboard</ItemProduct>
-                            <ItemProduct>Loudspeaker</ItemProduct>
-                            <ItemProduct>Screen</ItemProduct>
-                        </UlProductsGroup>
-                    </ProductGroups>
-                </LayoutProductGroups>
                 <LayoutAddProductGroup>
                     <FormAddNewProductGroups>
-                        <span>Add New Product Groups</span>
+                        <InputAddProductGroup
+                            type="text"
+                            placeholder="Name Product Group..."
+                        />
+                        <ButtonAddProduct>
+                            <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </Svg>
+                            <SpanAddProduct>Add</SpanAddProduct>
+                        </ButtonAddProduct>
                     </FormAddNewProductGroups>
                 </LayoutAddProductGroup>
+            </HeaderProductsPage>
+            <MainLayoutAddGroup>
+                <ProductGroups>
+                    <NameProductsGroup>Product Groups</NameProductsGroup>
+                    <UlProductsGroup>
+                        <NameItemProduct>
+                            Name Product Groups
+                            <QuantityItemProduct>Quantity</QuantityItemProduct>
+                        </NameItemProduct>
+                        {productGroups?.map(item => (
+                            <ItemProduct key={item.id}>
+                                {item.name}
+                                <QuantityItem>{getTotalQuantityByProductGroup(item.name)}</QuantityItem>
+                            </ItemProduct>
+                        ))}
+            
+                    </UlProductsGroup>
+                </ProductGroups>
             </MainLayoutAddGroup>
         </div>
     )

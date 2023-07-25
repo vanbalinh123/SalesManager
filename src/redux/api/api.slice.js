@@ -5,11 +5,11 @@ const apiSlice = createApi({
     baseQuery: fetchBaseQuery({ 
         baseUrl: 'http://localhost:3100',
         prepareHeaders: (headers) => {
-            const token = JSON.stringify(localStorage.getItem('accessToken'));
-            if(token) {
-                headers.set('authorization', `Bearer ${token}`)
+            const token = JSON.parse(localStorage.getItem('accessToken'));
+            if (token) {
+                headers.set('Authorization', `Bearer ${token}`);
             }
-            return headers
+            return headers;
         }
     }),
     tagTypes: ['List', 'Users'],
@@ -30,6 +30,15 @@ const apiSlice = createApi({
             }),
             //invalidatesTags: ['Users']
         }),
+        getProductGroups: builder.query({
+            query: () => '/productGroups'
+        }),
+        getTrademark: builder.query({
+            query: () => '/trademark'
+        }),
+        getProducts: builder.query({
+            query: () => '/products',
+        }),
     })
 
 })
@@ -37,6 +46,9 @@ const apiSlice = createApi({
 export const {
     useRegisterMutation,
     useLoginMutation,
+    useGetProductGroupsQuery,
+    useGetTrademarkQuery,
+    useGetProductsQuery
 } = apiSlice;
 
 export default apiSlice;
