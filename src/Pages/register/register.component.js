@@ -42,7 +42,7 @@ const Register = () => {
             try {
                 await addNewUser({ username, email, password }).unwrap();
                 alert('You have successfully created an account!');
-                navigate('/');
+                navigate('/login');
             } catch (error) {
                 if (error.data) {
                     alert(error.data.message); // Hiển thị thông báo lỗi từ backend nếu có
@@ -145,7 +145,7 @@ const Register = () => {
                         <ButtonRegister>Register</ButtonRegister>
                         <AskLogin>
                             <PAsk>You have account?</PAsk>
-                            <NavLink to='/'>Login</NavLink>
+                            <NavLink to='/login'>Login</NavLink>
                         </AskLogin>
                     </ButtonRegisterOrLogin>
                 </Operation>

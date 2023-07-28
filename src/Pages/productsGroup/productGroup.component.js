@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetProductsQuery } from "../../redux/api/api.slice";
@@ -33,14 +34,25 @@ import {
 
 const ProductsGroup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { data: productGroups } = useGetProductGroupsQuery();
-    const { data: products } = useGetProductsQuery();
+    const [name, setName] = useState('');
+    const [name1, setName1] = useState('');
+
+    const nameForProduct = '';
+    const codeForProduct = '';
+
+    const { data: products } = useGetProductsQuery({name: nameForProduct, code: codeForProduct });
+    const { data: productGroups } = useGetProductGroupsQuery({name: name1});
+    console.log(products)
 
     const getTotalQuantityByProductGroup = (groupName) => {
         const filteredProducts = products?.filter((item) => item.productGroups === groupName);
-        const totalQuantity = filteredProducts.reduce((total, item) => total + Number(item.quantity), 0);
+        const totalQuantity = filteredProducts?.reduce((total, item) => total + Number(item.quantity), 0);
         return totalQuantity;
     };
+
+    const handleSearch = () => {
+        setName1(name)
+    }
 
     return (
         <div>
@@ -52,9 +64,13 @@ const ProductsGroup = () => {
                         <InputSearch
                             type="text"
                             placeholder="Product group name..."
+                            value={name}
+                            onChange={(e) => setName(e.target.value)} 
                         />
                     </DivSearch>
-                    <ButtonSearch>
+                    <ButtonSearch
+                        onClick={handleSearch}
+                    >
                         <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </Svg>
@@ -65,7 +81,7 @@ const ProductsGroup = () => {
                     <FormAddNewProductGroups>
                         <InputAddProductGroup
                             type="text"
-                            placeholder="Name Product Group..."
+                                                    
                         />
                         <ButtonAddProduct>
                             <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

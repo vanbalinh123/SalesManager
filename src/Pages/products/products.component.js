@@ -1,11 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import { useForm } from 'react-hook-form';
 import { useEffect } from "react";
+
 
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetTrademarkQuery } from "../../redux/api/api.slice";
 import { useGetProductsQuery } from "../../redux/api/api.slice";
+import AddProduct from "./addProduct/addProduct.component";
 
 import {
     HeaderProductsPage,
@@ -34,40 +35,19 @@ import {
     TBodyProducts,
     TdProducts,
     ImgProduct,
-    LayoutAddProduct,
-    FormAdd,
-    TitleLayoutAdd,
-    MainLayoutAdd,
-    LeftLayoutAdd,
-    DivInput,
-    SpanNameInput,
-    InputAdd,
-    SelectProductsGroup,
-    Option,
-    InputDescribeAdd,
-    DivDescribeInput,
-    RightLayoutAdd,
-    TwoDivInput,
-    DivImagesAdd,
-    DivButton,
-    DivInputRight,
-    SpanNameInputRight,
-    InputAddRight,
-    InputFile,
-    LabelFile,
-    ImgAdd,
-    DivLabelImg,
-    Button
 } from "./product.styles";
 
 const ProductsPage = () => {
     const [showLayout, setShowLayout] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [ name, setName ] = useState('');
+    const [ code, setCode ] = useState('');
+    const [ name1, setName1 ] = useState('');
+    const [ code1, setCode1 ] = useState('');
 
-    const { data: productGroups } = useGetProductGroupsQuery();
+    const { data: productGroups } = useGetProductGroupsQuery({});
     const { data: trademark } = useGetTrademarkQuery();
-    const { data: products } = useGetProductsQuery();
+    const { data: products } = useGetProductsQuery({name: name1, code: code1});
+    console.log(products)
 
     const calculateTotalQuantity = () => {
         let sumQuantity = 0;
@@ -81,27 +61,10 @@ const ProductsPage = () => {
         setShowLayout(true);
     }
 
-    const handleCloseLayoutAdd = () => {
-        setShowLayout(false);
+    const handleSearch = () => {
+        setName1(name)
+        setCode1(code)
     }
-
-    const handleAddProduct = (data) => {
-        console.log(data)
-    }
-
-    const handleFileChange1 = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            // Xử lý việc đọc hình ảnh thành URL
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    };
 
     return (
         <div>
@@ -110,13 +73,25 @@ const ProductsPage = () => {
                 <LayoutSearch>
                     <DivSearch>
                         <ValueToSearch>Tên hàng</ValueToSearch>
-                        <InputSearch type="text" placeholder="Name Products..." />
+                        <InputSearch 
+                            type="text" 
+                            placeholder="Name Products..." 
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
                     </DivSearch>
                     <DivSearch>
                         <ValueToSearch>Mã Hàng</ValueToSearch>
-                        <InputSearch type="text" placeholder="Code Products..." />
+                        <InputSearch 
+                            type="text" 
+                            placeholder="Code Products..."
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)} 
+                        />
                     </DivSearch>
-                    <ButtonSearch>
+                    <ButtonSearch
+                        onClick={handleSearch}
+                    >
                         <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </Svg>
@@ -133,133 +108,7 @@ const ProductsPage = () => {
                         <SpanAddProduct>Add New Product</SpanAddProduct>
                     </ButtonAddProduct>
                 </DivAddProduct>
-                {showLayout &&
-                    <LayoutAddProduct
-                        onSubmit={handleSubmit(handleAddProduct)}
-                    >
-                        <FormAdd
-                            onSubmit={handleSubmit(handleAddProduct)}
-                        >
-                            <TitleLayoutAdd>New Product</TitleLayoutAdd>
-                            <MainLayoutAdd>
-                                <LeftLayoutAdd>
-                                    <DivInput>
-                                        <SpanNameInput>Mã hàng</SpanNameInput>
-                                        <InputAdd
-                                            {...register("code", {
-                                                required: "Code is required"
-                                            })}
-                                            type="text" />
-                                        {/* {errors.code && <div>{errors.code.message}</div>}  */}
-                                    </DivInput>
-                                    <DivInput>
-                                        <SpanNameInput>Tên hàng</SpanNameInput>
-                                        <InputAdd
-                                            {...register("Name", {
-                                                required: "Name is required"
-                                            })}
-                                            type="text" />
-                                    </DivInput>
-                                    <DivInput>
-                                        <SpanNameInput>Nhóm hàng</SpanNameInput>
-                                        <SelectProductsGroup
-                                            {...register("group", {
-                                                required: "Group is required"
-                                            })}
-                                        >
-                                            <Option></Option>
-                                            <Option value="Mouse">Mouse</Option>
-                                            <Option value="Keyboard">Keyboard</Option>
-                                            <Option value="Loudspeaker">Loudspeaker</Option>
-                                            <Option value="Screen">Screen</Option>
-                                        </SelectProductsGroup>
-                                    </DivInput>
-                                    <DivInput>
-                                        <SpanNameInput>Thương hiệu</SpanNameInput>
-                                        {/* <InputAdd
-                                            {...register("Thuong hieu", {
-                                                required: "Thuong hieu is required"
-                                            })}
-                                            type="text" /> */}
-                                        <SelectProductsGroup
-                                            {...register("Thuonghieu", {
-                                                required: "Thuong hieu is required"
-                                            })}
-                                        >
-                                            <Option></Option>
-                                            <Option value="Samsung">Samsung</Option>
-                                            <Option value="Apple">Apple</Option>
-                                            <Option value="Asus">Asus</Option>
-                                            <Option value="Xiaomi">Xiaomi</Option>
-                                        </SelectProductsGroup>
-                                    </DivInput>
-                                    <DivInput>
-                                        <SpanNameInput>Số lượng(kho)</SpanNameInput>
-                                        <InputAdd
-                                            {...register("So luong", {
-                                                required: "So luong is required"
-                                            })}
-                                            type="number" />
-                                    </DivInput>
-                                    <DivDescribeInput>
-                                        <SpanNameInput>Mô tả</SpanNameInput>
-                                        <InputDescribeAdd
-                                            {...register("Desribe", {
-                                                required: "Desribe is required"
-                                            })}
-                                            type="text" />
-                                    </DivDescribeInput>
-                                </LeftLayoutAdd>
-                                <RightLayoutAdd>
-                                    <TwoDivInput>
-                                        <DivInputRight>
-                                            <SpanNameInputRight>Cost</SpanNameInputRight>
-                                            <InputAddRight
-                                                {...register("Cost", {
-                                                    required: "Cost is required"
-                                                })}
-                                                type="number"
-                                            />
-                                        </DivInputRight>
-                                        <DivInputRight>
-                                            <SpanNameInputRight>Price</SpanNameInputRight>
-                                            <InputAddRight
-                                                {...register("Price", {
-                                                    required: "Price is required"
-                                                })}
-                                                type="number"
-                                            />
-                                        </DivInputRight>
-                                    </TwoDivInput>
-                                    <DivImagesAdd>
-                                        <InputFile
-                                            {...register('image', {
-                                                required: 'Image is required'
-                                            })}
-                                            type="file"
-                                            name="image"
-                                            id="fileInput"
-                                            onChange={handleFileChange1}
-                                        />
-                                        <DivLabelImg>
-                                            <LabelFile for="fileInput">Image</LabelFile>
-                                            {selectedImage && (
-                                                <ImgAdd src={selectedImage} alt="Selected" />
-                                            )}
-                                        </DivLabelImg>
-                                    </DivImagesAdd>
-                                    <DivButton>
-                                        <Button type="submit">Add</Button>
-                                        <Button
-                                            onClick={handleCloseLayoutAdd}
-                                            type="button"
-                                        >Close</Button>
-                                    </DivButton>
-                                </RightLayoutAdd>
-                            </MainLayoutAdd>
-                        </FormAdd>
-                    </LayoutAddProduct>
-                }
+                {showLayout && <AddProduct setShowLayout={setShowLayout} />}
             </HeaderProductsPage>
             <MainProductsPage>
                 <SideBarProductsPage>
@@ -273,7 +122,7 @@ const ProductsPage = () => {
                         </UlProductsGroup>
                     </ProductsGroup>
                     <ProductsGroup>
-                        <NameProductsGroup>Thương Hiệu</NameProductsGroup>
+                        <NameProductsGroup>Trademark</NameProductsGroup>
                         <UlProductsGroup>
                             <ItemProduct>All</ItemProduct>
                             {trademark?.map(item => (

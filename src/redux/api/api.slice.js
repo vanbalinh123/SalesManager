@@ -1,18 +1,31 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+const baseQuery = fetchBaseQuery({ 
+    baseUrl: 'http://localhost:3100',
+    prepareHeaders: (headers) => {
+        const token = JSON.parse(localStorage.getItem('accessToken'));
+        if (token) {
+            headers.set('Authorization', `Bearer ${token}`);
+        }
+        return headers;
+    }
+});
+
+const baseQueryWithAuth = async (args, api, extraOptions) => {
+    const result = await baseQuery(args, api, extraOptions);
+    console.log("hehe", result, args, api, extraOptions);
+    if(args.url !== 'login' && args.url !== 'register') {
+        if (result.error && result.error.originalStatus === 401) {
+            window.location.href = '/login';
+        }
+    }
+    return result;
+};
+
 const apiSlice = createApi({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({ 
-        baseUrl: 'http://localhost:3100',
-        prepareHeaders: (headers) => {
-            const token = JSON.parse(localStorage.getItem('accessToken'));
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
-            }
-            return headers;
-        }
-    }),
-    tagTypes: ['List', 'Users'],
+    baseQuery: baseQueryWithAuth,
+    refetchOnMountOrArgChange: true,
     endpoints: builder => ({
         register: builder.mutation({
             query: (user) => ({
@@ -20,7 +33,6 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: user
             }),
-            //invalidatesTags: ['Users']
         }),
         login: builder.mutation({
             query: (user) => ({
@@ -28,17 +40,34 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: user
             }),
-            //invalidatesTags: ['Users']
         }),
         getProductGroups: builder.query({
-            query: () => '/productGroups'
+            query: ({name}) => ({
+                url: '/productGroups',
+                params: { name: name },
+              }),
         }),
         getTrademark: builder.query({
             query: () => '/trademark'
         }),
         getProducts: builder.query({
-            query: () => '/products',
+            serializeQueryArgs: () => {
+                return undefined;
+              },
+            query: ({ name, code }) => ({
+                url: '/products',
+                params: { name, code }
+            })
+            // `products?name=${name}&code=${code}`
         }),
+        addProduct: builder.mutation({
+            query: (data) => ({
+                url: '/products/add',
+                method: 'POST',
+                body: data        
+            }),
+        })
+
     })
 
 })
@@ -48,7 +77,8 @@ export const {
     useLoginMutation,
     useGetProductGroupsQuery,
     useGetTrademarkQuery,
-    useGetProductsQuery
+    useGetProductsQuery,
+    useAddProductMutation
 } = apiSlice;
 
 export default apiSlice;
