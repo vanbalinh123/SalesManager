@@ -35,6 +35,7 @@ import {
 const AddProduct = ({ setShowLayout }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [selectedImage, setSelectedImage] = useState(null);
+    const [img, setImg] = useState(""); // Khởi tạo img với chuỗi rỗng
 
     const [addProduct] = useAddProductMutation();
     const { data: productGroups } = useGetProductGroupsQuery({});
@@ -43,6 +44,20 @@ const AddProduct = ({ setShowLayout }) => {
     const handleCloseLayoutAdd = () => {
         setShowLayout(false);
     }
+
+    const handleFileChange1 = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                setSelectedImage(reader.result);
+                setImg(reader.result); // Lưu URL hình ảnh vào img state
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleAddProduct = async (data) => {
         const productData = {
@@ -54,39 +69,23 @@ const AddProduct = ({ setShowLayout }) => {
             describe: data.describe,
             cost: data.cost,
             price: data.price,
-            img: data.img,
+            img: img,
         };
         try {
             await addProduct(productData);
-            alert('oke do')
+            alert('Product added successfully!')
+            setShowLayout(false);
         } catch (error) {
-            if(error.data) {
+            if (error.data) {
                 alert(error.data.message)
             } else {
-                alert('loi loi')
+                alert('Errors')
             }
         }
-       
     }
 
-    const handleFileChange1 = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            // Xử lý việc đọc hình ảnh thành URL
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    };
-
     return (
-        <LayoutAddProduct
-            onSubmit={handleSubmit(handleAddProduct)}
-        >
+        <LayoutAddProduct>
             <FormAdd
                 onSubmit={handleSubmit(handleAddProduct)}
             >

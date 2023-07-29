@@ -13,7 +13,7 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithAuth = async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions);
-    console.log("hehe", result, args, api, extraOptions);
+    // console.log("hehe", result, args, api, extraOptions);
     if(args.url !== 'login' && args.url !== 'register') {
         if (result.error && result.error.originalStatus === 401) {
             window.location.href = '/login';
@@ -47,6 +47,27 @@ const apiSlice = createApi({
                 params: { name: name },
               }),
         }),
+        addProductGroup: builder.mutation({
+            query: (data) => ({
+                url: '/productGroups/add',
+                method: 'POST',
+                body: data
+            }),
+            async onQueryStarted(productGroup, {queryFulfilled, dispatch}) {               
+                try {
+                    const { data: created } = await queryFulfilled();
+
+                    console.log(productGroup)
+    
+                    dispatch(apiSlice.util.updateQueryData('getProductGroups', undefined, (draft) => {
+                        draft?.push(created);
+                    }))    
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }),
         getTrademark: builder.query({
             query: () => '/trademark'
         }),
@@ -58,7 +79,6 @@ const apiSlice = createApi({
                 url: '/products',
                 params: { name, code }
             })
-            // `products?name=${name}&code=${code}`
         }),
         addProduct: builder.mutation({
             query: (data) => ({
@@ -66,7 +86,18 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: data        
             }),
-        })
+            async onQueryStarted(product, {dispatch, queryFulfilled}) {
+                const action = apiSlice.util.updateQueryData('getProducts', undefined, draft => {
+                    draft.push(product);
+                });
+                const patchResult = dispatch(action);
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            }
+        }),
 
     })
 
@@ -78,7 +109,8 @@ export const {
     useGetProductGroupsQuery,
     useGetTrademarkQuery,
     useGetProductsQuery,
-    useAddProductMutation
+    useAddProductMutation,
+    useAddProductGroupMutation
 } = apiSlice;
 
 export default apiSlice;

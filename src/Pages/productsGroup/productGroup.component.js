@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetProductsQuery } from "../../redux/api/api.slice";
+import { useAddProductGroupMutation } from "../../redux/api/api.slice";
 
 import {
     HeaderProductsPage,
@@ -42,7 +43,6 @@ const ProductsGroup = () => {
 
     const { data: products } = useGetProductsQuery({name: nameForProduct, code: codeForProduct });
     const { data: productGroups } = useGetProductGroupsQuery({name: name1});
-    console.log(products)
 
     const getTotalQuantityByProductGroup = (groupName) => {
         const filteredProducts = products?.filter((item) => item.productGroups === groupName);
@@ -50,8 +50,25 @@ const ProductsGroup = () => {
         return totalQuantity;
     };
 
+    const [ addProductGroup ] = useAddProductGroupMutation();
+
     const handleSearch = () => {
         setName1(name)
+    };
+
+    const handleAddProductGroup = async (data) => {
+        try {
+            await addProductGroup(data)
+            alert('Product Group added successfully!');
+
+        } catch (error) {
+            if(error.data) {
+                alert(error.data.message)
+            } else {
+                alert('Errors')
+            }
+        }
+
     }
 
     return (
@@ -78,10 +95,14 @@ const ProductsGroup = () => {
                     </ButtonSearch>
                 </LayoutSearch>
                 <LayoutAddProductGroup>
-                    <FormAddNewProductGroups>
+                    <FormAddNewProductGroups
+                        onSubmit={handleSubmit(handleAddProductGroup)}
+                    >
                         <InputAddProductGroup
                             type="text"
-                                                    
+                            {...register("nameProductGroup", {
+                                required: "Name Product Group is required"
+                            })}         
                         />
                         <ButtonAddProduct>
                             <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

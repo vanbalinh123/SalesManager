@@ -47,7 +47,6 @@ const ProductsPage = () => {
     const { data: productGroups } = useGetProductGroupsQuery({});
     const { data: trademark } = useGetTrademarkQuery();
     const { data: products } = useGetProductsQuery({name: name1, code: code1});
-    console.log(products)
 
     const calculateTotalQuantity = () => {
         let sumQuantity = 0;
