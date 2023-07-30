@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const baseQuery = fetchBaseQuery({ 
+const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:3100',
     prepareHeaders: (headers) => {
         const token = JSON.parse(localStorage.getItem('accessToken'));
@@ -14,7 +14,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithAuth = async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions);
     // console.log("hehe", result, args, api, extraOptions);
-    if(args.url !== 'login' && args.url !== 'register') {
+    if (args.url !== 'register') {
         if (result.error && result.error.originalStatus === 401) {
             window.location.href = '/login';
         }
@@ -42,10 +42,13 @@ const apiSlice = createApi({
             }),
         }),
         getProductGroups: builder.query({
-            query: ({name}) => ({
+            serializeQueryArgs: () => {
+                return undefined;
+            },
+            query: ({ name }) => ({
                 url: '/productGroups',
                 params: { name: name },
-              }),
+            }),
         }),
         addProductGroup: builder.mutation({
             query: (data) => ({
@@ -53,15 +56,12 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: data
             }),
-            async onQueryStarted(productGroup, {queryFulfilled, dispatch}) {               
+            async onQueryStarted(productGroup, { queryFulfilled, dispatch }) {
                 try {
-                    const { data: created } = await queryFulfilled();
-
-                    console.log(productGroup)
-    
+                    const { data: created } = await queryFulfilled;
                     dispatch(apiSlice.util.updateQueryData('getProductGroups', undefined, (draft) => {
                         draft?.push(created);
-                    }))    
+                    }))
 
                 } catch (error) {
                     console.log(error)
@@ -74,7 +74,7 @@ const apiSlice = createApi({
         getProducts: builder.query({
             serializeQueryArgs: () => {
                 return undefined;
-              },
+            },
             query: ({ name, code }) => ({
                 url: '/products',
                 params: { name, code }
@@ -84,9 +84,9 @@ const apiSlice = createApi({
             query: (data) => ({
                 url: '/products/add',
                 method: 'POST',
-                body: data        
+                body: data
             }),
-            async onQueryStarted(product, {dispatch, queryFulfilled}) {
+            async onQueryStarted(product, { dispatch, queryFulfilled }) {
                 const action = apiSlice.util.updateQueryData('getProducts', undefined, draft => {
                     draft.push(product);
                 });

@@ -121,7 +121,8 @@ const ProductsGroup = () => {
                             Name Product Groups
                             <QuantityItemProduct>Quantity</QuantityItemProduct>
                         </NameItemProduct>
-                        {productGroups?.map(item => (
+                        {/* {productGroups?.map(item => console.log(item))} */}
+                        {productGroups?.map(item => (                           
                             <ItemProduct key={item.id}>
                                 {item.name}
                                 <QuantityItem>{getTotalQuantityByProductGroup(item.name)}</QuantityItem>
