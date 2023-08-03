@@ -37,12 +37,13 @@ const ProductsGroup = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [name, setName] = useState('');
     const [name1, setName1] = useState('');
+    const [productGroupName, setProductGroupName] = useState('');
 
     const nameForProduct = '';
     const codeForProduct = '';
 
-    const { data: products } = useGetProductsQuery({name: nameForProduct, code: codeForProduct });
-    const { data: productGroups } = useGetProductGroupsQuery({name: name1});
+    const { data: products } = useGetProductsQuery({ name: nameForProduct, code: codeForProduct });
+    const { data: productGroups } = useGetProductGroupsQuery({ name: name1 });
 
     const getTotalQuantityByProductGroup = (groupName) => {
         const filteredProducts = products?.filter((item) => item.productGroups === groupName);
@@ -50,7 +51,7 @@ const ProductsGroup = () => {
         return totalQuantity;
     };
 
-    const [ addProductGroup ] = useAddProductGroupMutation();
+    const [addProductGroup] = useAddProductGroupMutation();
 
     const handleSearch = () => {
         setName1(name)
@@ -58,17 +59,17 @@ const ProductsGroup = () => {
 
     const handleAddProductGroup = async (data) => {
         try {
-            await addProductGroup(data)
+            await addProductGroup(data);
+            setProductGroupName('')
             alert('Product Group added successfully!');
 
         } catch (error) {
-            if(error.data) {
+            if (error.data) {
                 alert(error.data.message)
             } else {
                 alert('Errors')
             }
         }
-
     }
 
     return (
@@ -82,7 +83,7 @@ const ProductsGroup = () => {
                             type="text"
                             placeholder="Product group name..."
                             value={name}
-                            onChange={(e) => setName(e.target.value)} 
+                            onChange={(e) => setName(e.target.value)}
                         />
                     </DivSearch>
                     <ButtonSearch
@@ -102,7 +103,9 @@ const ProductsGroup = () => {
                             type="text"
                             {...register("nameProductGroup", {
                                 required: "Name Product Group is required"
-                            })}         
+                            })}
+                            value={productGroupName}
+                            onChange={(e) => setProductGroupName(e.target.value)}
                         />
                         <ButtonAddProduct>
                             <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -121,14 +124,12 @@ const ProductsGroup = () => {
                             Name Product Groups
                             <QuantityItemProduct>Quantity</QuantityItemProduct>
                         </NameItemProduct>
-                        {/* {productGroups?.map(item => console.log(item))} */}
-                        {productGroups?.map(item => (                           
+                        {productGroups?.map(item => (
                             <ItemProduct key={item.id}>
                                 {item.name}
                                 <QuantityItem>{getTotalQuantityByProductGroup(item.name)}</QuantityItem>
                             </ItemProduct>
                         ))}
-            
                     </UlProductsGroup>
                 </ProductGroups>
             </MainLayoutAddGroup>

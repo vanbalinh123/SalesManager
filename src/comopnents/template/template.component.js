@@ -2,6 +2,8 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
+import { useUserLoginQuery } from '../../redux/api/api.slice';
+
 import {
     MainPage,
     HeaderPage,
@@ -19,6 +21,10 @@ import {
 } from './template.styles'
 
 const Template = () => {
+
+    const { data: userLogin } = useUserLoginQuery();
+    console.log(userLogin)
+
     return (
         <MainPage>
             <HeaderPage>
@@ -64,13 +70,20 @@ const Template = () => {
                 </Menu>
                 <InfoDifer>
                     <DivImageNameUser>
-                        <DivImgUser>
-                            <ImageUser
-                                src="https://cdn5.vectorstock.com/i/1000x1000/54/69/male-user-icon-vector-8865469.jpg"
-                                alt='img user'
-                            />
+                        <DivImgUser>                            
+                            {userLogin?.avatar? (
+                                <ImageUser
+                                    src={userLogin.avatar || "https://cdn5.vectorstock.com/i/1000x1000/54/69/male-user-icon-vector-8865469.jpg"}
+                                    alt='img user'
+                                />
+                            ) : (
+                                <ImageUser
+                                    src="https://cdn5.vectorstock.com/i/1000x1000/54/69/male-user-icon-vector-8865469.jpg"
+                                    alt='img user'
+                                />
+                            )}
                         </DivImgUser>
-                        <UserName>Nguyen Van A</UserName>
+                        <UserName>{userLogin?.username}</UserName>
                     </DivImageNameUser>
                 </InfoDifer>
             </HeaderPage>

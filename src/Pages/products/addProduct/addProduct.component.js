@@ -19,45 +19,24 @@ import {
     InputDescribeAdd,
     DivDescribeInput,
     RightLayoutAdd,
-    TwoDivInput,
-    DivImagesAdd,
+    FourDivInput,
     DivButton,
     DivInputRight,
     SpanNameInputRight,
     InputAddRight,
-    InputFile,
-    LabelFile,
-    ImgAdd,
-    DivLabelImg,
     Button
 } from './addProduct.styles'
 
 const AddProduct = ({ setShowLayout }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [img, setImg] = useState(""); // Khởi tạo img với chuỗi rỗng
+    const { register, handleSubmit } = useForm();
 
     const [addProduct] = useAddProductMutation();
-    const { data: productGroups } = useGetProductGroupsQuery({});
+    const { data: productGroups } = useGetProductGroupsQuery();
     const { data: trademark } = useGetTrademarkQuery();
 
     const handleCloseLayoutAdd = () => {
         setShowLayout(false);
     }
-
-    const handleFileChange1 = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-                setImg(reader.result); // Lưu URL hình ảnh vào img state
-            };
-
-            reader.readAsDataURL(file);
-        }
-    };
 
     const handleAddProduct = async (data) => {
         const productData = {
@@ -69,7 +48,7 @@ const AddProduct = ({ setShowLayout }) => {
             describe: data.describe,
             cost: data.cost,
             price: data.price,
-            img: img,
+            img: data.img,
         };
         try {
             await addProduct(productData);
@@ -135,16 +114,8 @@ const AddProduct = ({ setShowLayout }) => {
                                 ))}
                             </SelectProductsGroup>
                         </DivInput>
-                        <DivInput>
-                            <SpanNameInput>Số lượng(kho)</SpanNameInput>
-                            <InputAdd
-                                {...register("quantity", {
-                                    required: "Quantity is required"
-                                })}
-                                type="number" />
-                        </DivInput>
                         <DivDescribeInput>
-                            <SpanNameInput>Mô tả</SpanNameInput>
+                            <SpanNameInput>Desribe</SpanNameInput>
                             <InputDescribeAdd
                                 {...register("describe", {
                                     required: "Desribe is required"
@@ -153,7 +124,16 @@ const AddProduct = ({ setShowLayout }) => {
                         </DivDescribeInput>
                     </LeftLayoutAdd>
                     <RightLayoutAdd>
-                        <TwoDivInput>
+                        <FourDivInput>
+                            <DivInputRight>
+                                <SpanNameInputRight>Image</SpanNameInputRight>
+                                <InputAddRight
+                                    {...register('img', {
+                                        required: 'Image is required'
+                                    })}
+                                    type="text"
+                                />
+                            </DivInputRight>
                             <DivInputRight>
                                 <SpanNameInputRight>Cost</SpanNameInputRight>
                                 <InputAddRight
@@ -172,24 +152,15 @@ const AddProduct = ({ setShowLayout }) => {
                                     type="number"
                                 />
                             </DivInputRight>
-                        </TwoDivInput>
-                        <DivImagesAdd>
-                            <InputFile
-                                {...register('img', {
-                                    required: 'Image is required'
-                                })}
-                                type="file"
-                                name="image"
-                                id="fileInput"
-                                onChange={handleFileChange1}
-                            />
-                            <DivLabelImg>
-                                <LabelFile for="fileInput">Image</LabelFile>
-                                {selectedImage && (
-                                    <ImgAdd src={selectedImage} alt="Selected" />
-                                )}
-                            </DivLabelImg>
-                        </DivImagesAdd>
+                            <DivInputRight>
+                                <SpanNameInputRight>Quantity</SpanNameInputRight>
+                                <InputAddRight
+                                    {...register("quantity", {
+                                        required: "Quantity is required"
+                                    })}
+                                    type="number" />
+                            </DivInputRight>
+                        </FourDivInput>
                         <DivButton>
                             <Button type="submit">Add</Button>
                             <Button

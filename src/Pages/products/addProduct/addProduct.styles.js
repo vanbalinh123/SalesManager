@@ -39,7 +39,7 @@ export const MainLayoutAdd = styled.div`
 
 //left layout
 export const LeftLayoutAdd = styled.div`
-    width: 60%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -104,12 +104,12 @@ export const InputDescribeAdd = styled.textarea`
 
 //right layout
 export const RightLayoutAdd = styled.div`
-    width: 40%;
+    width: 50%;
     display: flex;
     flex-direction: column;
 `;
 
-export const TwoDivInput = styled.div`
+export const FourDivInput = styled.div`
     flex: 2;
     display: flex; 
     flex-direction: column;
@@ -134,52 +134,6 @@ export const InputAddRight = styled.input`
     box-shadow: grey 0px 1px 2px;
     transition: all 0.3s;
     color: #696969; 
-`;
-
-export const DivImagesAdd = styled.div`
-    flex: 4;
-    display: flex;
-`
-
-export const InputFile = styled.input`
-    display: none;
-`;
-
-export const DivLabelImg = styled.div`
-    flex: 1;
-    display: flex;
-    gap: 20px;
-`;
-
-
-export const LabelFile = styled.label`
-    cursor: pointer;
-    width: 100px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    background-color: #F5F5F5;
-    box-shadow: grey 0px 2px 6px;
-    transition: all 0.3s;
-    color: #696969;
-    
-
-    &:hover{
-        cursor: pointer;
-        opacity: 0.8;
-        box-shadow: grey 0px 1px 1px;
-    }
-`;
-
-export const ImgAdd = styled.img`
-    width: 250px;
-    height: 300px;
-    // object-fit: cover;
-    object-fit: contain;
-    border-radius: 7px;
-    box-shadow: grey 0px 3px 8px;
 `;
 
 export const DivButton = styled.div`

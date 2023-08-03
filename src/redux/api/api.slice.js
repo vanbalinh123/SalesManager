@@ -41,13 +41,16 @@ const apiSlice = createApi({
                 body: user
             }),
         }),
+        userLogin: builder.query({
+            query: () => '/userLogin'  
+        }),
         getProductGroups: builder.query({
             serializeQueryArgs: () => {
                 return undefined;
             },
-            query: ({ name }) => ({
+            query: (name) => ({
                 url: '/productGroups',
-                params: { name: name },
+                params: name,
             }),
         }),
         addProductGroup: builder.mutation({
@@ -110,7 +113,8 @@ export const {
     useGetTrademarkQuery,
     useGetProductsQuery,
     useAddProductMutation,
-    useAddProductGroupMutation
+    useAddProductGroupMutation,
+    useUserLoginQuery
 } = apiSlice;
 
 export default apiSlice;
