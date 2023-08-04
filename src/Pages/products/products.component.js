@@ -40,13 +40,16 @@ import {
 const ProductsPage = () => {
     const [showLayout, setShowLayout] = useState(false);
     const [ name, setName ] = useState('');
-    const [ code, setCode ] = useState('');
     const [ name1, setName1 ] = useState('');
+    const [ code, setCode ] = useState('');
     const [ code1, setCode1 ] = useState('');
+    const [ productGroupSearch, setProductGroupSearch ] = useState('');
+    const [ trademarkSearch, setTradeMarkSearch ] = useState('');
 
-    const { data: productGroups } = useGetProductGroupsQuery({});
+
+    const { data: productGroups } = useGetProductGroupsQuery();
     const { data: trademark } = useGetTrademarkQuery();
-    const { data: products } = useGetProductsQuery({name: name1, code: code1});
+    const { data: products } = useGetProductsQuery({name: name1, code: code1, productGroups: productGroupSearch, trademark: trademarkSearch});
 
     const calculateTotalQuantity = () => {
         let sumQuantity = 0;
@@ -114,18 +117,28 @@ const ProductsPage = () => {
                     <ProductsGroup>
                         <NameProductsGroup>Products Group</NameProductsGroup>
                         <UlProductsGroup>
-                            <ItemProduct>All</ItemProduct>
+                            <ItemProduct
+                                onClick={() => setProductGroupSearch('')}
+                            >All</ItemProduct>
                             {productGroups?.map(item => (
-                                <ItemProduct key={item.id}>{item.name}</ItemProduct>
+                                <ItemProduct 
+                                    key={item.id}
+                                    onClick={() => setProductGroupSearch(item.name)}
+                                >{item.name}</ItemProduct>
                             ))}
                         </UlProductsGroup>
                     </ProductsGroup>
                     <ProductsGroup>
                         <NameProductsGroup>Trademark</NameProductsGroup>
                         <UlProductsGroup>
-                            <ItemProduct>All</ItemProduct>
+                            <ItemProduct
+                                onClick={() => setTradeMarkSearch('')}
+                            >All</ItemProduct>
                             {trademark?.map(item => (
-                                <ItemProduct key={item.id}>{item.name}</ItemProduct>
+                                <ItemProduct 
+                                    key={item.id}
+                                    onClick={() => setTradeMarkSearch(item.name)}
+                                >{item.name}</ItemProduct>
                             ))}
                         </UlProductsGroup>
                     </ProductsGroup>
@@ -138,6 +151,7 @@ const ProductsPage = () => {
                                 <ThProducts>Code</ThProducts>
                                 <ThProducts>Product name</ThProducts>
                                 <ThProducts>Trademark</ThProducts>
+                                <ThProducts>Product Groups</ThProducts>
                                 <ThProducts>Price</ThProducts>
                                 <ThProducts>Cost of capital</ThProducts>
                                 <ThProducts>Quantity</ThProducts>
@@ -145,6 +159,7 @@ const ProductsPage = () => {
                         </THeaderProducts>
                         <TBodyProducts>
                             <TrProducts>
+                                <TdProducts></TdProducts>
                                 <TdProducts></TdProducts>
                                 <TdProducts></TdProducts>
                                 <TdProducts></TdProducts>
@@ -161,6 +176,7 @@ const ProductsPage = () => {
                                     <TdProducts>{item.code}</TdProducts>
                                     <TdProducts>{item.name}</TdProducts>
                                     <TdProducts>{item.trademark}</TdProducts>
+                                    <TdProducts>{item.productGroups}</TdProducts>
                                     <TdProducts>{item.price}</TdProducts>
                                     <TdProducts>{item.cost}</TdProducts>
                                     <TdProducts>{item.quantity}</TdProducts>

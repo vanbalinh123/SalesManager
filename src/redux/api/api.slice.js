@@ -78,9 +78,9 @@ const apiSlice = createApi({
             serializeQueryArgs: () => {
                 return undefined;
             },
-            query: ({ name, code }) => ({
+            query: ({ name, code, productGroups, trademark }) => ({
                 url: '/products',
-                params: { name, code }
+                params: { name, code, productGroups, trademark }
             })
         }),
         addProduct: builder.mutation({
