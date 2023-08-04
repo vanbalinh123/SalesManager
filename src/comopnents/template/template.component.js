@@ -23,7 +23,6 @@ import {
 const Template = () => {
 
     const { data: userLogin } = useUserLoginQuery();
-    console.log(userLogin)
 
     return (
         <MainPage>

@@ -196,6 +196,7 @@ export const TBodyProducts = styled.tbody`
 export const TdProducts = styled.td`
     border: 1px solid #ccc;
     padding: 8px;
+    color: grey;
     text-align: center;
 `;
 

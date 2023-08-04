@@ -58,7 +58,7 @@ export const FlexNavLink = styled(NavLink)`
     &.active {
         background-color: #696969; 
         color: white; 
-      }
+    }
 `;
 
 export const ElementMenu = styled.li`

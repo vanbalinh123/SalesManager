@@ -34,8 +34,6 @@ const Login = () => {
         const email = data.email;
         const password = data.password;
 
-        console.log(data)
-
         const response = await loginUser({ email: email, password: password });
         console.log(response)
         if(response.error) {
