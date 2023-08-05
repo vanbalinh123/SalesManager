@@ -59,10 +59,9 @@ const ProductsGroup = () => {
 
     const handleAddProductGroup = async (data) => {
         try {
-            await addProductGroup(data);
+            await addProductGroup(data).unwrap();
             setProductGroupName('')
             alert('Product Group added successfully!');
-
         } catch (error) {
             if (error.data) {
                 alert(error.data.message)

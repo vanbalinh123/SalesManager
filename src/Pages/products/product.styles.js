@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled, css } from "styled-components";
 
 //header
 export const HeaderProductsPage = styled.header`
@@ -120,7 +120,7 @@ export const SideBarProductsPage = styled.nav`
     gap: 50px;
 `;
 
-export const ProductsGroup = styled.div`
+export const ChildOfSidebar = styled.div`
     width: 70%;
     margin: 0 auto;
     box-shadow: grey 0px 3px 8px;
@@ -132,27 +132,76 @@ export const NameProductsGroup = styled.div`
     font-weight: bold;
     color: #ffffff;
     background-color: #696969;
-    
+`;
+
+export const NameTrademark = styled.div`
+    padding: 19px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #696969;
 `;
 
 export const UlProductsGroup = styled.ul`
     color: grey;
     height: 250px;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 2px;
 `;
 
-export const ItemProduct= styled.li`
+export const UlTrademark = styled.ul`
+    color: grey;
+    height: 250px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 2px;
+`;
+
+export const ItemProductGroups = styled.li`
     padding: 15px;
     padding-left: 40px;
-    border-top: 2px solid #ffffff;
     cursor: pointer;
     background-color: #F5F5F5; 
-    transition: all 0.3s;
+    transition: all 0.2s;
 
     &:hover {
         background-color: #A9A9A9;
         color: #ffffff;
     }
+
+    ${({ active }) => active && css`
+        background-color: #A9A9A9;
+        color: #ffffff;
+        border-left: 7px solid #696969;
+        padding: 20px;
+        padding-left: 50px;
+    `}
+`;
+
+export const ItemTrademark = styled.li`
+    padding: 15px;
+    padding-left: 40px;
+    cursor: pointer;
+    background-color: #F5F5F5; 
+    transition: all 0.2s;
+
+    &:hover {
+        background-color: #A9A9A9;
+        color: #ffffff;
+    }
+
+    ${({ active }) => active && css`
+        background-color: #A9A9A9;
+        color: #ffffff;
+        border-left: 7px solid #696969;
+        padding: 20px;
+        padding-left: 50px;
+    `}
 `;
 
 

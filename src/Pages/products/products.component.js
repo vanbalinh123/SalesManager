@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 
-
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetTrademarkQuery } from "../../redux/api/api.slice";
 import { useGetProductsQuery } from "../../redux/api/api.slice";
@@ -24,10 +23,12 @@ import {
     SpanSearch,
     SpanAddProduct,
     DivAddProduct,
-    ProductsGroup,
+    ChildOfSidebar,
     NameProductsGroup,
     UlProductsGroup,
-    ItemProduct,
+    UlTrademark,
+    ItemProductGroups,
+    ItemTrademark,
     TableProducts,
     TrProducts,
     THeaderProducts,
@@ -35,10 +36,12 @@ import {
     TBodyProducts,
     TdProducts,
     ImgProduct,
+    NameTrademark,
 } from "./product.styles";
 
 const ProductsPage = () => {
     const [showLayout, setShowLayout] = useState(false);
+
     const [ name, setName ] = useState('');
     const [ name1, setName1 ] = useState('');
     const [ code, setCode ] = useState('');
@@ -46,10 +49,10 @@ const ProductsPage = () => {
     const [ productGroupSearch, setProductGroupSearch ] = useState('');
     const [ trademarkSearch, setTradeMarkSearch ] = useState('');
 
-
     const { data: productGroups } = useGetProductGroupsQuery();
     const { data: trademark } = useGetTrademarkQuery();
     const { data: products } = useGetProductsQuery({name: name1, code: code1, productGroups: productGroupSearch, trademark: trademarkSearch});
+
 
     const calculateTotalQuantity = () => {
         let sumQuantity = 0;
@@ -114,34 +117,46 @@ const ProductsPage = () => {
             </HeaderProductsPage>
             <MainProductsPage>
                 <SideBarProductsPage>
-                    <ProductsGroup>
+                    <ChildOfSidebar>
                         <NameProductsGroup>Products Group</NameProductsGroup>
                         <UlProductsGroup>
-                            <ItemProduct
+                            <ItemProductGroups
                                 onClick={() => setProductGroupSearch('')}
-                            >All</ItemProduct>
+                                active={productGroupSearch === ''}
+                            >
+                                All
+                            </ItemProductGroups>
                             {productGroups?.map(item => (
-                                <ItemProduct 
+                                <ItemProductGroups 
                                     key={item.id}
                                     onClick={() => setProductGroupSearch(item.name)}
-                                >{item.name}</ItemProduct>
+                                    active={productGroupSearch === item.name}
+                                >
+                                    {item.name}
+                                </ItemProductGroups>
                             ))}
                         </UlProductsGroup>
-                    </ProductsGroup>
-                    <ProductsGroup>
-                        <NameProductsGroup>Trademark</NameProductsGroup>
-                        <UlProductsGroup>
-                            <ItemProduct
+                    </ChildOfSidebar>
+                    <ChildOfSidebar>
+                        <NameTrademark>Trademark</NameTrademark>
+                        <UlTrademark>
+                            <ItemTrademark
                                 onClick={() => setTradeMarkSearch('')}
-                            >All</ItemProduct>
+                                active={trademarkSearch === ''}
+                            >
+                                All
+                            </ItemTrademark>
                             {trademark?.map(item => (
-                                <ItemProduct 
+                                <ItemTrademark 
                                     key={item.id}
                                     onClick={() => setTradeMarkSearch(item.name)}
-                                >{item.name}</ItemProduct>
+                                    active={trademarkSearch === item.name}
+                                >
+                                    {item.name}
+                                </ItemTrademark>
                             ))}
-                        </UlProductsGroup>
-                    </ProductsGroup>
+                        </UlTrademark>
+                    </ChildOfSidebar>
                 </SideBarProductsPage>
                 <ContentProductsPage>
                     <TableProducts>

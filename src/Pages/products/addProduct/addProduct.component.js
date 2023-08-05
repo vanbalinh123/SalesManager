@@ -39,19 +39,19 @@ const AddProduct = ({ setShowLayout }) => {
     }
 
     const handleAddProduct = async (data) => {
-        const productData = {
-            name: data.name,
-            code: data.code,
-            productGroups: data.productGroups,
-            trademark: data.trademark,
-            quantity: data.quantity,
-            describe: data.describe,
-            cost: data.cost,
-            price: data.price,
-            img: data.img,
-        };
         try {
-            await addProduct(productData);
+            const productData = {
+                name: data.name,
+                code: data.code,
+                productGroups: data.productGroups,
+                trademark: data.trademark,
+                quantity: data.quantity,
+                describe: data.describe,
+                cost: data.cost,
+                price: data.price,
+                img: data.img,
+            };
+            await addProduct(productData).unwrap();
             alert('Product added successfully!')
             setShowLayout(false);
         } catch (error) {
