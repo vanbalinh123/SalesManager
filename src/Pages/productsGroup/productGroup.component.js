@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useEffect } from "react";
 
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetProductsQuery } from "../../redux/api/api.slice";
 import { useAddProductGroupMutation } from "../../redux/api/api.slice";
+import { useUpdateProductGroupMutation } from "../../redux/api/api.slice";
 
 import {
     HeaderProductsPage,
@@ -34,16 +36,25 @@ import {
 } from "./productGroup.styles";
 
 const ProductsGroup = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, watch } = useForm();
     const [name, setName] = useState('');
     const [name1, setName1] = useState('');
-    const [productGroupName, setProductGroupName] = useState('');
+    const [check, setCheck] = useState(false);
+    const [checkId, setCheckId] = useState('');
 
-    const nameForProduct = '';
-    const codeForProduct = '';
+    const watchedValue = watch('nameProductGroup')
 
-    const { data: products } = useGetProductsQuery({ name: nameForProduct, code: codeForProduct });
+    useEffect(() => {
+        if(watchedValue === '') {
+            setCheck(false)
+        }   
+    }, [watchedValue])
+
+    const { data: products } = useGetProductsQuery({});
     const { data: productGroups } = useGetProductGroupsQuery({ name: name1 });
+
+    const [addProductGroup] = useAddProductGroupMutation();
+    const [updateProductGroup] = useUpdateProductGroupMutation();
 
     const getTotalQuantityByProductGroup = (groupName) => {
         const filteredProducts = products?.filter((item) => item.productGroups === groupName);
@@ -51,24 +62,49 @@ const ProductsGroup = () => {
         return totalQuantity;
     };
 
-    const [addProductGroup] = useAddProductGroupMutation();
-
     const handleSearch = () => {
         setName1(name)
     };
 
     const handleAddProductGroup = async (data) => {
-        try {
-            await addProductGroup(data).unwrap();
-            setProductGroupName('')
-            alert('Product Group added successfully!');
-        } catch (error) {
-            if (error.data) {
-                alert(error.data.message)
-            } else {
-                alert('Errors')
+        console.log(data)
+        if(check === false) {
+            try {
+                await addProductGroup(data).unwrap();
+                setValue('nameProductGroup', );
+                alert('Product Group added successfully!');
+            } catch (error) {
+                if (error.data) {
+                    alert(error.data.message)
+                } else {
+                    alert('Errors')
+                }
+            }
+        } else {
+            try {
+                const a = {
+                    id: checkId,
+                    name: data.nameProductGroup
+                }
+                await updateProductGroup(a).unwrap();
+                setValue('nameProductGroup', );
+                setCheck(false)
+                alert('Product Group updated successfully!')
+            } catch (error) {
+                if (error.data) {
+                    alert(error.data.message)
+                } else {
+                    alert('Errors')
+                }
             }
         }
+        
+    };
+
+    const handleItemClick = (data) => {
+        setValue('nameProductGroup', data.name);
+        setCheckId(data.id);
+        setCheck(true)
     }
 
     return (
@@ -103,15 +139,22 @@ const ProductsGroup = () => {
                             {...register("nameProductGroup", {
                                 required: "Name Product Group is required"
                             })}
-                            value={productGroupName}
-                            onChange={(e) => setProductGroupName(e.target.value)}
                         />
-                        <ButtonAddProduct>
-                            <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </Svg>
-                            <SpanAddProduct>Add</SpanAddProduct>
-                        </ButtonAddProduct>
+                        {check === false ? (
+                            <ButtonAddProduct>
+                                <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </Svg>
+                                <SpanAddProduct>Add</SpanAddProduct>
+                            </ButtonAddProduct>
+                        ) : (
+                            <ButtonAddProduct>
+                                <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                </Svg>
+                                <SpanAddProduct>Update</SpanAddProduct>
+                            </ButtonAddProduct>
+                        )}
                     </FormAddNewProductGroups>
                 </LayoutAddProductGroup>
             </HeaderProductsPage>
@@ -124,9 +167,14 @@ const ProductsGroup = () => {
                             <QuantityItemProduct>Quantity</QuantityItemProduct>
                         </NameItemProduct>
                         {productGroups?.map(item => (
-                            <ItemProduct key={item.id}>
+                            <ItemProduct
+                                key={item.id}
+                                onClick={() => handleItemClick(item)}
+                            >
                                 {item.name}
-                                <QuantityItem>{getTotalQuantityByProductGroup(item.name)}</QuantityItem>
+                                <QuantityItem>
+                                    {getTotalQuantityByProductGroup(item.name)}
+                                </QuantityItem>
                             </ItemProduct>
                         ))}
                     </UlProductsGroup>

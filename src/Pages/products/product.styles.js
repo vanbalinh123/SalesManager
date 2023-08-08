@@ -249,6 +249,48 @@ export const TdProducts = styled.td`
     text-align: center;
 `;
 
+export const TdProductsUpdate = styled.td`
+    border: 1px solid #ccc;
+    padding: 8px;
+    color: grey;
+    text-align: center;
+
+    svg {
+        tranform: scale(1);
+        color: dodgerblue;
+        transition: all 0.3s;
+    }
+
+    &:hover{
+        cursor: pointer;
+        svg {
+            transform: scale(1.3);         
+        }
+        
+    }
+`;
+
+export const TdProductsDelete = styled.td`
+    border: 1px solid #ccc;
+    padding: 8px;
+    color: grey;
+    text-align: center;
+
+    svg {
+        tranform: scale(1);
+        color: red;
+        transition: all 0.3s;
+    }
+    
+    &:hover{
+        cursor: pointer;
+        svg {
+            transform: scale(1.3);
+        }
+        
+    }
+`;
+
 export const ImgProduct = styled.img`
     width: 50px;
 `;

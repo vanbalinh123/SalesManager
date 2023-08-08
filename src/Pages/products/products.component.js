@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetTrademarkQuery } from "../../redux/api/api.slice";
 import { useGetProductsQuery } from "../../redux/api/api.slice";
+import { useDeletedProductMutation } from "../../redux/api/api.slice";
 import AddProduct from "./addProduct/addProduct.component";
 
 import {
@@ -37,33 +38,44 @@ import {
     TdProducts,
     ImgProduct,
     NameTrademark,
+    TdProductsDelete,
+    TdProductsUpdate
 } from "./product.styles";
 
 const ProductsPage = () => {
     const [showLayout, setShowLayout] = useState(false);
+    const [check, setCheck] = useState('');
+    const [productUpdate, setProductUpdate] = useState({});
 
-    const [ name, setName ] = useState('');
-    const [ name1, setName1 ] = useState('');
-    const [ code, setCode ] = useState('');
-    const [ code1, setCode1 ] = useState('');
-    const [ productGroupSearch, setProductGroupSearch ] = useState('');
-    const [ trademarkSearch, setTradeMarkSearch ] = useState('');
+    const [name, setName] = useState('');
+    const [name1, setName1] = useState('');
+    const [code, setCode] = useState('');
+    const [code1, setCode1] = useState('');
+    const [productGroupSearch, setProductGroupSearch] = useState('');
+    const [trademarkSearch, setTradeMarkSearch] = useState('');
 
     const { data: productGroups } = useGetProductGroupsQuery();
     const { data: trademark } = useGetTrademarkQuery();
-    const { data: products } = useGetProductsQuery({name: name1, code: code1, productGroups: productGroupSearch, trademark: trademarkSearch});
-
+    const { data: products } = useGetProductsQuery({ name: name1, code: code1, productGroups: productGroupSearch, trademark: trademarkSearch });
+    const [ deletedProduct ] = useDeletedProductMutation();
 
     const calculateTotalQuantity = () => {
         let sumQuantity = 0;
         products?.forEach(item => {
-          sumQuantity += Number(item.quantity);
+            sumQuantity += Number(item.quantity);
         });
         return sumQuantity;
     };
 
     const handleLayoutAddProductClick = () => {
         setShowLayout(true);
+        setCheck("add");
+    }
+
+    const handleLayoutUpdateProductClick = (item) => {
+        setShowLayout(true);
+        setCheck("update");
+        setProductUpdate(item)
     }
 
     const handleSearch = () => {
@@ -71,27 +83,48 @@ const ProductsPage = () => {
         setCode1(code)
     }
 
+    const handleDeleteProductClick = async (item) => {
+        const isConfirmed = window.confirm(`Do you want to delete product '${item.name.toUpperCase()}' or not?`);
+        if(isConfirmed) {
+            try {
+                await deletedProduct(item.id).unwrap();
+            } catch (error) {
+                if(error.data) {
+                    alert(error.data.message)
+                } else {
+                    alert('error')
+                }
+            }
+        }
+    }
+
     return (
         <div>
+            {showLayout && <AddProduct
+                setShowLayout={setShowLayout}
+                check={check}
+                productUpdate={productUpdate}
+
+            />}
             <HeaderProductsPage>
                 <NameOutlet>Products</NameOutlet>
                 <LayoutSearch>
                     <DivSearch>
                         <ValueToSearch>Tên hàng</ValueToSearch>
-                        <InputSearch 
-                            type="text" 
-                            placeholder="Name Products..." 
+                        <InputSearch
+                            type="text"
+                            placeholder="Name Products..."
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
                     </DivSearch>
                     <DivSearch>
                         <ValueToSearch>Mã Hàng</ValueToSearch>
-                        <InputSearch 
-                            type="text" 
+                        <InputSearch
+                            type="text"
                             placeholder="Code Products..."
                             value={code}
-                            onChange={(e) => setCode(e.target.value)} 
+                            onChange={(e) => setCode(e.target.value)}
                         />
                     </DivSearch>
                     <ButtonSearch
@@ -113,7 +146,6 @@ const ProductsPage = () => {
                         <SpanAddProduct>Add New Product</SpanAddProduct>
                     </ButtonAddProduct>
                 </DivAddProduct>
-                {showLayout && <AddProduct setShowLayout={setShowLayout} />}
             </HeaderProductsPage>
             <MainProductsPage>
                 <SideBarProductsPage>
@@ -127,7 +159,7 @@ const ProductsPage = () => {
                                 All
                             </ItemProductGroups>
                             {productGroups?.map(item => (
-                                <ItemProductGroups 
+                                <ItemProductGroups
                                     key={item.id}
                                     onClick={() => setProductGroupSearch(item.name)}
                                     active={productGroupSearch === item.name}
@@ -147,7 +179,7 @@ const ProductsPage = () => {
                                 All
                             </ItemTrademark>
                             {trademark?.map(item => (
-                                <ItemTrademark 
+                                <ItemTrademark
                                     key={item.id}
                                     onClick={() => setTradeMarkSearch(item.name)}
                                     active={trademarkSearch === item.name}
@@ -170,6 +202,8 @@ const ProductsPage = () => {
                                 <ThProducts>Price</ThProducts>
                                 <ThProducts>Cost of capital</ThProducts>
                                 <ThProducts>Quantity</ThProducts>
+                                <ThProducts style={{width:"70px"}}></ThProducts>
+                                <ThProducts style={{width:"70px"}}></ThProducts>
                             </TrProducts>
                         </THeaderProducts>
                         <TBodyProducts>
@@ -182,6 +216,8 @@ const ProductsPage = () => {
                                 <TdProducts></TdProducts>
                                 <TdProducts></TdProducts>
                                 <TdProducts>{calculateTotalQuantity()}</TdProducts>
+                                <TdProducts></TdProducts>
+                                <TdProducts></TdProducts>
                             </TrProducts>
                             {products?.map(item => (
                                 <TrProducts key={item.id}>
@@ -195,6 +231,20 @@ const ProductsPage = () => {
                                     <TdProducts>{item.price}</TdProducts>
                                     <TdProducts>{item.cost}</TdProducts>
                                     <TdProducts>{item.quantity}</TdProducts>
+                                    <TdProductsUpdate
+                                        onClick={() => handleLayoutUpdateProductClick(item)}
+                                    >
+                                        <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                        </Svg>
+                                    </TdProductsUpdate>
+                                    <TdProductsDelete
+                                        onClick={() => handleDeleteProductClick(item)}
+                                    >
+                                        <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                        </Svg>
+                                    </TdProductsDelete>
                                 </TrProducts>
                             ))}
                         </TBodyProducts>

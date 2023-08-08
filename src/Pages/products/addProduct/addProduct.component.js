@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 
 import { useAddProductMutation } from '../../../redux/api/api.slice';
 import { useGetProductGroupsQuery } from '../../../redux/api/api.slice';
 import { useGetTrademarkQuery } from '../../../redux/api/api.slice';
+import { useUpdateProductMutation } from '../../../redux/api/api.slice';
 
 import {
     LayoutAddProduct,
@@ -27,40 +29,82 @@ import {
     Button
 } from './addProduct.styles'
 
-const AddProduct = ({ setShowLayout }) => {
-    const { register, handleSubmit } = useForm();
+const AddProduct = ({ setShowLayout, check, productUpdate }) => {
+    const { register, handleSubmit, setValue } = useForm();
 
-    const [addProduct] = useAddProductMutation();
+    const [ addProduct ] = useAddProductMutation();
     const { data: productGroups } = useGetProductGroupsQuery();
     const { data: trademark } = useGetTrademarkQuery();
+    const [ update ] = useUpdateProductMutation();
+
+    useEffect(() => {
+        if (check === 'update' && productUpdate) {
+            setValue('name', productUpdate.name);
+            setValue('code', productUpdate.code);
+            setValue('productGroups', productUpdate.productGroups);
+            setValue('trademark', productUpdate.trademark);
+            setValue('quantity', productUpdate.quantity);
+            setValue('describe', productUpdate.describe);
+            setValue('cost', productUpdate.cost);
+            setValue('price', productUpdate.price);
+            setValue('img', productUpdate.img);
+        }
+    }, [check, productUpdate, setValue]);
 
     const handleCloseLayoutAdd = () => {
         setShowLayout(false);
     }
 
     const handleAddProduct = async (data) => {
-        try {
-            const productData = {
-                name: data.name,
-                code: data.code,
-                productGroups: data.productGroups,
-                trademark: data.trademark,
-                quantity: data.quantity,
-                describe: data.describe,
-                cost: data.cost,
-                price: data.price,
-                img: data.img,
-            };
-            await addProduct(productData).unwrap();
-            alert('Product added successfully!')
-            setShowLayout(false);
-        } catch (error) {
-            if (error.data) {
-                alert(error.data.message)
-            } else {
-                alert('Errors')
+        if (check === "add") {
+            try {
+                const productData = {
+                    name: data.name,
+                    code: data.code,
+                    productGroups: data.productGroups,
+                    trademark: data.trademark,
+                    quantity: data.quantity,
+                    describe: data.describe,
+                    cost: data.cost,
+                    price: data.price,
+                    img: data.img,
+                };
+                await addProduct(productData).unwrap();
+                alert('Product added successfully!')
+                setShowLayout(false);
+            } catch (error) {
+                if (error.data) {
+                    alert(error.data.message)
+                } else {
+                    alert('Errors')
+                }
+            }
+        } else {
+            try {
+                const productData = {
+                    id: productUpdate.id,
+                    name: data.name,
+                    code: data.code,
+                    productGroups: data.productGroups,
+                    trademark: data.trademark,
+                    quantity: data.quantity,
+                    describe: data.describe,
+                    cost: data.cost,
+                    price: data.price,
+                    img: data.img,
+                };
+                await update(productData).unwrap();
+                alert('Product updated successfully!')
+                setShowLayout(false);
+            } catch (error) {
+                if (error.data) {
+                    alert(error.data.message)
+                } else {
+                    alert('Errors')
+                }
             }
         }
+
     }
 
     return (
@@ -162,7 +206,12 @@ const AddProduct = ({ setShowLayout }) => {
                             </DivInputRight>
                         </FourDivInput>
                         <DivButton>
-                            <Button type="submit">Add</Button>
+                            {check === "add" ? (
+                                <Button type="submit">Add</Button>
+                            ) : (
+                                <Button type="submit">Update</Button>
+                            )}
+
                             <Button
                                 onClick={handleCloseLayoutAdd}
                                 type="button"

@@ -42,7 +42,7 @@ const apiSlice = createApi({
             }),
         }),
         userLogin: builder.query({
-            query: () => '/userLogin'  
+            query: () => '/userLogin'
         }),
         getProductGroups: builder.query({
             serializeQueryArgs: () => {
@@ -65,12 +65,32 @@ const apiSlice = createApi({
                     dispatch(apiSlice.util.updateQueryData('getProductGroups', undefined, (draft) => {
                         draft?.push(created);
                     }))
-
                 } catch (error) {
                     console.log(error)
                 }
             }
         }),
+        updateProductGroup: builder.mutation({
+            query: (data) => ({
+                url: '/productGroups/update',
+                method: 'POST',
+                body: data
+            }),
+            async onQueryStarted(updatedProductGroup, { dispatch, queryFulfilled }) {
+                const action = apiSlice.util.updateQueryData('getProductGroups', undefined, (draft) => {
+                  const index = draft.findIndex((item) => item.id === updatedProductGroup.id);
+                  if (index !== -1) {
+                    draft[index] = updatedProductGroup;
+                  }
+                });
+                const patchResult = dispatch(action);
+                try {
+                  await queryFulfilled;
+                } catch {
+                  patchResult.undo();
+                }
+              }
+        }),        
         getTrademark: builder.query({
             query: () => '/trademark'
         }),
@@ -101,7 +121,47 @@ const apiSlice = createApi({
                 }
             }
         }),
-
+        updateProduct: builder.mutation({
+            query: (data) => ({
+                url: '/product/update',
+                method: 'POST',
+                body: data
+            }),
+            async onQueryStarted(product, { dispatch, queryFulfilled }) {
+                const action = apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
+                    const index = draft.findIndex((item) => item.id === product.id);
+                    if (index !== -1) {
+                        draft[index] = product;
+                    }
+                });
+                const patchResult = dispatch(action);
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            }
+        }),
+        deletedProduct: builder.mutation({
+            query: (id) => ({
+                url: `/product/delete/${id}`,
+                method: 'DELETE',
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                const action = apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
+                    const index = draft.findIndex((item) => item.id === id);
+                    if (index !== -1) {
+                        draft.splice(index, 1);
+                    }
+                });
+                const patchResult = dispatch(action)
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        })
     })
 
 })
@@ -114,7 +174,10 @@ export const {
     useGetProductsQuery,
     useAddProductMutation,
     useAddProductGroupMutation,
-    useUserLoginQuery
+    useUserLoginQuery,
+    useUpdateProductMutation,
+    useDeletedProductMutation,
+    useUpdateProductGroupMutation
 } = apiSlice;
 
 export default apiSlice;
