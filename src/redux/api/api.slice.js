@@ -91,6 +91,26 @@ const apiSlice = createApi({
                 }
               }
         }),        
+        deletedProductGroup: builder.mutation({
+            query: (id) => ({
+                url: `/productGroup/delete/${id}`,
+                method: 'DELETE'
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                const action = apiSlice.util.updateQueryData('getProductGroups', undefined, (draft) => {
+                    const index = draft.findIndex((item) => item.id === id);
+                    if (index !== -1) {
+                        draft.splice(index, 1);
+                    }
+                });
+                const patchResult = dispatch(action)
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        }),
         getTrademark: builder.query({
             query: () => '/trademark'
         }),
@@ -161,7 +181,7 @@ const apiSlice = createApi({
                     patchResult.undo();
                 }
             },
-        })
+        }),
     })
 
 })
@@ -177,7 +197,8 @@ export const {
     useUserLoginQuery,
     useUpdateProductMutation,
     useDeletedProductMutation,
-    useUpdateProductGroupMutation
+    useUpdateProductGroupMutation,
+    useDeletedProductGroupMutation
 } = apiSlice;
 
 export default apiSlice;

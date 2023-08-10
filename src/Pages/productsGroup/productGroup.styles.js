@@ -50,17 +50,47 @@ export const UlProductsGroup = styled.ul`
     color: grey;
 `;
 
+export const SvgDelete = styled.svg`
+    width: 20px;
+    color: red;
+    position: absolute;
+    right: 60px;
+    tranform: scale(1);
+    transition: all 0.3s;
+
+    &:hover {
+        transform: scale(1.3);
+    }
+`;
+
+export const SvgUpdate = styled.svg`
+    width: 20px;
+    color: blue;
+    position: absolute;
+    right: 110px;
+    tranform: scale(1);
+    transition: all 0.3s;
+
+    &:hover {
+        transform: scale(1.3);
+    }
+`;
+
 export const ItemProduct = styled.li`
     padding: 15px;
     padding-left: 60px;
     border-top: 2px solid #ffffff;
     display: flex;
     position: relative;
+
+    &:hover {
+        cursor: pointer;
+    };
 `;
 
 export const QuantityItem = styled.div`
     position: absolute;
-    right: 60px;
+    right: 220px;
 `
 
 export const NameItemProduct = styled.li`
@@ -73,7 +103,7 @@ export const NameItemProduct = styled.li`
 
 export const QuantityItemProduct = styled.div`
     position: absolute;
-    right: 40px;
+    right: 200px;
 `
 
 
