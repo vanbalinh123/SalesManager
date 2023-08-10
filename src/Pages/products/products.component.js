@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import ReactPaginate from "react-paginate";
 
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetTrademarkQuery } from "../../redux/api/api.slice";
@@ -39,7 +40,10 @@ import {
     ImgProduct,
     NameTrademark,
     TdProductsDelete,
-    TdProductsUpdate
+    TdProductsUpdate,
+    Pagination,
+    PageItem,
+    PageLink
 } from "./product.styles";
 
 const ProductsPage = () => {
@@ -96,6 +100,10 @@ const ProductsPage = () => {
                 }
             }
         }
+    }
+
+    const handlePageClick = (data) => {
+        console.log(data)
     }
 
     return (
@@ -249,6 +257,18 @@ const ProductsPage = () => {
                             ))}
                         </TBodyProducts>
                     </TableProducts>
+                    <ReactPaginate 
+                        previousLabel={'prrevious'}
+                        nextLabel={'next'}
+                        breakLabel={'...'}
+                        pageCount={25}
+                        marginPagesDisplayed={5}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageClick}
+                        containerClassName= {Pagination}
+                        pageClassName={PageItem}
+                        pageLinkClassName={PageLink}
+                    />
                 </ContentProductsPage>
             </MainProductsPage>
         </div>

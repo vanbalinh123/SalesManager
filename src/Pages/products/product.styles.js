@@ -1,5 +1,7 @@
 import { styled, css } from "styled-components";
 
+import ReactPaginate from "react-paginate";
+
 //header
 export const HeaderProductsPage = styled.header`
     width: 100%;
@@ -296,3 +298,22 @@ export const ImgProduct = styled.img`
 `;
 
 
+// pagination
+export const Pagination = styled(ReactPaginate)`
+    border: 1px solid red;
+    color: red;
+    display: flex;
+    width: 600px;
+`
+
+export const PageItem = styled.li`
+    border: 1px solid red;
+    color: red;
+    width: 600px;
+`
+
+export const PageLink = styled.li`
+    border: 1px solid red;
+    color: red;
+    width: 600px;
+`
