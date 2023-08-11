@@ -298,22 +298,3 @@ export const ImgProduct = styled.img`
 `;
 
 
-// pagination
-export const Pagination = styled(ReactPaginate)`
-    border: 1px solid red;
-    color: red;
-    display: flex;
-    width: 600px;
-`
-
-export const PageItem = styled.li`
-    border: 1px solid red;
-    color: red;
-    width: 600px;
-`
-
-export const PageLink = styled.li`
-    border: 1px solid red;
-    color: red;
-    width: 600px;
-`

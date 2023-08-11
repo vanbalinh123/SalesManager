@@ -118,9 +118,9 @@ const apiSlice = createApi({
             serializeQueryArgs: () => {
                 return undefined;
             },
-            query: ({ name, code, productGroups, trademark }) => ({
+            query: ({ name, code, productGroups, trademark, page}) => ({
                 url: '/products',
-                params: { name, code, productGroups, trademark }
+                params: { name, code, productGroups, trademark, page}
             })
         }),
         addProduct: builder.mutation({
@@ -131,7 +131,7 @@ const apiSlice = createApi({
             }),
             async onQueryStarted(product, { dispatch, queryFulfilled }) {
                 const action = apiSlice.util.updateQueryData('getProducts', undefined, draft => {
-                    draft.push(product);
+                    draft.products.push(product);
                 });
                 const patchResult = dispatch(action);
                 try {
@@ -149,9 +149,9 @@ const apiSlice = createApi({
             }),
             async onQueryStarted(product, { dispatch, queryFulfilled }) {
                 const action = apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
-                    const index = draft.findIndex((item) => item.id === product.id);
+                    const index = draft.products.findIndex((item) => item.id === product.id);
                     if (index !== -1) {
-                        draft[index] = product;
+                        draft.products[index] = product;
                     }
                 });
                 const patchResult = dispatch(action);
@@ -169,9 +169,9 @@ const apiSlice = createApi({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 const action = apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
-                    const index = draft.findIndex((item) => item.id === id);
+                    const index = draft.products.findIndex((item) => item.id === id);
                     if (index !== -1) {
-                        draft.splice(index, 1);
+                        draft.products.splice(index, 1);
                     }
                 });
                 const patchResult = dispatch(action)

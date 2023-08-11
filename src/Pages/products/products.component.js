@@ -1,13 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import { useEffect } from "react";
-import ReactPaginate from "react-paginate";
 
 import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
 import { useGetTrademarkQuery } from "../../redux/api/api.slice";
 import { useGetProductsQuery } from "../../redux/api/api.slice";
 import { useDeletedProductMutation } from "../../redux/api/api.slice";
 import AddProduct from "./addProduct/addProduct.component";
+import PaginateProducts from "./pagination/pagination.components";
 
 import {
     HeaderProductsPage,
@@ -41,15 +40,14 @@ import {
     NameTrademark,
     TdProductsDelete,
     TdProductsUpdate,
-    Pagination,
-    PageItem,
-    PageLink
 } from "./product.styles";
 
 const ProductsPage = () => {
     const [showLayout, setShowLayout] = useState(false);
     const [check, setCheck] = useState('');
     const [productUpdate, setProductUpdate] = useState({});
+
+    const [currentPage, setCurrentPage] = useState(0);
 
     const [name, setName] = useState('');
     const [name1, setName1] = useState('');
@@ -60,16 +58,15 @@ const ProductsPage = () => {
 
     const { data: productGroups } = useGetProductGroupsQuery();
     const { data: trademark } = useGetTrademarkQuery();
-    const { data: products } = useGetProductsQuery({ name: name1, code: code1, productGroups: productGroupSearch, trademark: trademarkSearch });
-    const [ deletedProduct ] = useDeletedProductMutation();
+    const { data: products } = useGetProductsQuery({
+        name: name1,
+        code: code1,
+        productGroups: productGroupSearch,
+        trademark: trademarkSearch,
+        page: currentPage
+    });
+    const [deletedProduct] = useDeletedProductMutation();
 
-    const calculateTotalQuantity = () => {
-        let sumQuantity = 0;
-        products?.forEach(item => {
-            sumQuantity += Number(item.quantity);
-        });
-        return sumQuantity;
-    };
 
     const handleLayoutAddProductClick = () => {
         setShowLayout(true);
@@ -85,15 +82,41 @@ const ProductsPage = () => {
     const handleSearch = () => {
         setName1(name)
         setCode1(code)
+        if(name === '' && code === '') {
+            setCurrentPage(currentPage)
+        } else {
+            setCurrentPage(0)
+        }
+        
+    }
+
+    const handleTradeMarkAllClick = () => {
+        setTradeMarkSearch('')
+        setCurrentPage(0)
+    }
+
+    const handleTradeMarkItemClick = (item) => {
+        setTradeMarkSearch(item.name)
+        setCurrentPage(0)
+    }
+
+    const handleProductGroupsAlClick = () => {
+        setProductGroupSearch('')
+        setCurrentPage(0)
+    }
+
+    const handleProductGroupItemClick = (item) => {
+        setProductGroupSearch(item.name)
+        setCurrentPage(0)
     }
 
     const handleDeleteProductClick = async (item) => {
         const isConfirmed = window.confirm(`Do you want to delete product '${item.name.toUpperCase()}' or not?`);
-        if(isConfirmed) {
+        if (isConfirmed) {
             try {
                 await deletedProduct(item.id).unwrap();
             } catch (error) {
-                if(error.data) {
+                if (error.data) {
                     alert(error.data.message)
                 } else {
                     alert('error')
@@ -102,9 +125,6 @@ const ProductsPage = () => {
         }
     }
 
-    const handlePageClick = (data) => {
-        console.log(data)
-    }
 
     return (
         <div>
@@ -161,7 +181,7 @@ const ProductsPage = () => {
                         <NameProductsGroup>Products Group</NameProductsGroup>
                         <UlProductsGroup>
                             <ItemProductGroups
-                                onClick={() => setProductGroupSearch('')}
+                                onClick={() => handleProductGroupsAlClick()}
                                 active={productGroupSearch === ''}
                             >
                                 All
@@ -169,7 +189,7 @@ const ProductsPage = () => {
                             {productGroups?.map(item => (
                                 <ItemProductGroups
                                     key={item.id}
-                                    onClick={() => setProductGroupSearch(item.name)}
+                                    onClick={() => handleProductGroupItemClick(item)}
                                     active={productGroupSearch === item.name}
                                 >
                                     {item.name}
@@ -181,7 +201,7 @@ const ProductsPage = () => {
                         <NameTrademark>Trademark</NameTrademark>
                         <UlTrademark>
                             <ItemTrademark
-                                onClick={() => setTradeMarkSearch('')}
+                                onClick={() => handleTradeMarkAllClick()}
                                 active={trademarkSearch === ''}
                             >
                                 All
@@ -189,7 +209,7 @@ const ProductsPage = () => {
                             {trademark?.map(item => (
                                 <ItemTrademark
                                     key={item.id}
-                                    onClick={() => setTradeMarkSearch(item.name)}
+                                    onClick={() => handleTradeMarkItemClick(item)}
                                     active={trademarkSearch === item.name}
                                 >
                                     {item.name}
@@ -210,24 +230,12 @@ const ProductsPage = () => {
                                 <ThProducts>Price</ThProducts>
                                 <ThProducts>Cost of capital</ThProducts>
                                 <ThProducts>Quantity</ThProducts>
-                                <ThProducts style={{width:"70px"}}></ThProducts>
-                                <ThProducts style={{width:"70px"}}></ThProducts>
+                                <ThProducts style={{ width: "70px" }}></ThProducts>
+                                <ThProducts style={{ width: "70px" }}></ThProducts>
                             </TrProducts>
                         </THeaderProducts>
                         <TBodyProducts>
-                            <TrProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts>{calculateTotalQuantity()}</TdProducts>
-                                <TdProducts></TdProducts>
-                                <TdProducts></TdProducts>
-                            </TrProducts>
-                            {products?.map(item => (
+                            {products?.products?.map(item => (
                                 <TrProducts key={item.id}>
                                     <TdProducts>
                                         <ImgProduct alt={item.name} src={item.img} />
@@ -257,18 +265,11 @@ const ProductsPage = () => {
                             ))}
                         </TBodyProducts>
                     </TableProducts>
-                    <ReactPaginate 
-                        previousLabel={'prrevious'}
-                        nextLabel={'next'}
-                        breakLabel={'...'}
-                        pageCount={25}
-                        marginPagesDisplayed={5}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageClick}
-                        containerClassName= {Pagination}
-                        pageClassName={PageItem}
-                        pageLinkClassName={PageLink}
-                    />
+                    <PaginateProducts 
+                        currentPage = {currentPage}
+                        setCurrentPage = {setCurrentPage}
+                        products = {products}
+                    />          
                 </ContentProductsPage>
             </MainProductsPage>
         </div>
