@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
-import { useAddProductMutation } from '../../../redux/api/api.slice';
-import { useGetProductGroupsQuery } from '../../../redux/api/api.slice';
-import { useGetTrademarkQuery } from '../../../redux/api/api.slice';
-import { useUpdateProductMutation } from '../../../redux/api/api.slice';
+import { useAddProductMutation } from '../../../redux/api/products-api.slice';
+import { useUpdateProductMutation } from '../../../redux/api/products-api.slice';
+import { useGetTrademarkQuery } from '../../../redux/api/trademark-api.slice';
+import { useGetProductGroupsQuery } from '../../../redux/api/productGroups-api.slice';
 
 import {
     LayoutAddProduct,
@@ -32,10 +31,11 @@ import {
 const AddProduct = ({ setShowLayout, check, productUpdate }) => {
     const { register, handleSubmit, setValue } = useForm();
 
-    const [ addProduct ] = useAddProductMutation();
+    const [addProduct] = useAddProductMutation();
     const { data: productGroups } = useGetProductGroupsQuery();
     const { data: trademark } = useGetTrademarkQuery();
-    const [ update ] = useUpdateProductMutation();
+    const [update] = useUpdateProductMutation();
+
 
     useEffect(() => {
         if (check === 'update' && productUpdate) {
@@ -69,6 +69,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                     price: data.price,
                     img: data.img,
                 };
+                console.log(productData)
                 await addProduct(productData).unwrap();
                 alert('Product added successfully!')
                 setShowLayout(false);
@@ -112,7 +113,11 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
             <FormAdd
                 onSubmit={handleSubmit(handleAddProduct)}
             >
-                <TitleLayoutAdd>New Product</TitleLayoutAdd>
+                {check === "add" 
+                    && <TitleLayoutAdd>New Product</TitleLayoutAdd>
+                    || <TitleLayoutAdd>Update Product</TitleLayoutAdd>
+                }
+                
                 <MainLayoutAdd>
                     <LeftLayoutAdd>
                         <DivInput>

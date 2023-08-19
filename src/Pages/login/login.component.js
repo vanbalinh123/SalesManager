@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { useLoginMutation } from '../../redux/api/api.slice';
+import { useLoginMutation } from '../../redux/api/login-api.slice.js';
 
 import {
     FormLogin,

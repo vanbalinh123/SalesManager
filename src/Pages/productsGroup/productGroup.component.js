@@ -2,11 +2,16 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useEffect } from "react";
 
-import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
-import { useGetProductsQuery } from "../../redux/api/api.slice";
-import { useAddProductGroupMutation } from "../../redux/api/api.slice";
-import { useUpdateProductGroupMutation } from "../../redux/api/api.slice";
-import { useDeletedProductGroupMutation } from "../../redux/api/api.slice";
+import { useGetProductsQuery } from "../../redux/api/products-api.slice";
+import { useGetProductGroupsQuery } from "../../redux/api/productGroups-api.slice";
+import { useAddProductGroupMutation } from "../../redux/api/productGroups-api.slice";
+import { useUpdateProductGroupMutation } from "../../redux/api/productGroups-api.slice";
+import { useDeletedProductGroupMutation } from "../../redux/api/productGroups-api.slice";
+
+// import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
+// import { useAddProductGroupMutation } from "../../redux/api/api.slice";
+// import { useUpdateProductGroupMutation } from "../../redux/api/api.slice";
+// import { useDeletedProductGroupMutation } from "../../redux/api/api.slice";
 
 import {
     HeaderProductsPage,

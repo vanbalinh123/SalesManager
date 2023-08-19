@@ -1,8 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
-import { useUserLoginQuery } from '../../redux/api/api.slice';
+import { useUserLoginQuery } from '../../redux/api/login-api.slice';
 
 import {
     MainPage,

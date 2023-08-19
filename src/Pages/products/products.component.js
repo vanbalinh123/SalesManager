@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
 
-import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
-import { useGetTrademarkQuery } from "../../redux/api/api.slice";
-import { useGetProductsQuery } from "../../redux/api/api.slice";
-import { useDeletedProductMutation } from "../../redux/api/api.slice";
+import { useGetTrademarkQuery } from "../../redux/api/trademark-api.slice";
+import { useGetProductsQuery } from "../../redux/api/products-api.slice";
+import { useDeletedProductMutation } from "../../redux/api/products-api.slice";
+import { useGetProductGroupsQuery } from "../../redux/api/productGroups-api.slice";
+
 import AddProduct from "./addProduct/addProduct.component";
 import PaginateProducts from "./pagination/pagination.components";
 
@@ -109,6 +110,7 @@ const ProductsPage = () => {
         setProductGroupSearch(item.name)
         setCurrentPage(0)
     }
+
 
     const handleDeleteProductClick = async (item) => {
         const isConfirmed = window.confirm(`Do you want to delete product '${item.name.toUpperCase()}' or not?`);

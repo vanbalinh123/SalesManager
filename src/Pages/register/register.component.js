@@ -1,9 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
-import { useRegisterMutation } from '../../redux/api/api.slice';
+import { useRegisterMutation } from '../../redux/api/register-api.slice';
 import {
     FormRegister,
     InputAndErrors,

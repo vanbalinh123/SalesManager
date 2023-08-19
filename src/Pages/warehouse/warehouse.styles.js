@@ -1,80 +1,6 @@
 import { styled, css } from "styled-components";
 
-import ReactPaginate from "react-paginate";
-
-//header
-export const HeaderProductsPage = styled.header`
-    width: 100%;
-    height: 100px;
-    display: flex;
-    padding-left: 20px;
-    padding-right: 20px;
-    align-items: center;
-`;
-
-export const NameOutlet = styled.span`
-    width: 20%;
-    font-size: 25px;
-    font-weight: bold;
-`;
-
-export const LayoutSearch = styled.div`
-    width: 60%;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-`;
-
-export const DivSearch = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 15px;
-`;
-
-export const ValueToSearch = styled.span`
-
-`;
-
-export const InputSearch = styled.input`
-    padding: 10px;
-    width: 250px;
-    border: none;
-    border-radius: 5px;
-    border: 1px solid #F5F5F5;
-    box-shadow: grey 0px 2px 6px;
-
-`;
-
-export const ButtonSearch = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    padding: 0px 15px;
-    border-radius: 5px;
-    background-color: #F5F5F5;
-    gap: 5px;
-
-    box-shadow: grey 0px 3px 8px;
-    transition: all 0.3s;
-    color: #696969;
-
-    &:hover{
-        cursor: pointer;
-        opacity: 0.8;
-        box-shadow: grey 0px 1px 1px;
-    }
-`;
-
-export const Svg = styled.svg`
-    width: 20px;
-`;
-
-export const SpanSearch = styled.span`
-    font-size: 15px;
-`
-
-export const DivAddProduct = styled.div`
+export const DivAdd = styled.div`
     width: 20%;
     display: flex;
     align-items: center;
@@ -82,7 +8,7 @@ export const DivAddProduct = styled.div`
     gap: 5px;
 `;
 
-export const ButtonAddProduct = styled.button`
+export const ButtonAdd = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -102,19 +28,20 @@ export const ButtonAddProduct = styled.button`
     }
 `;
 
-export const SpanAddProduct = styled.span`
+
+export const SpanAdd = styled.span`
     font-size: 15px;
 `
 
 //main
-export const MainProductsPage = styled.section`
+export const MainPage = styled.section`
     width: 100%;
     display: flex;
 `;
 
 
 //sidebar
-export const SideBarProductsPage = styled.nav`
+export const SideBarPage = styled.nav`
     width: 30%;
     display: flex;
     flex-direction: column;
@@ -127,7 +54,7 @@ export const ChildOfSidebar = styled.div`
     box-shadow: grey 0px 3px 8px;
 `;
 
-export const NameProductsGroup = styled.div`
+export const Active = styled.div`
     padding: 19px;
     font-size: 20px;
     font-weight: bold;
@@ -135,7 +62,7 @@ export const NameProductsGroup = styled.div`
     background-color: #696969;
 `;
 
-export const NameTrademark = styled.div`
+export const Time = styled.div`
     padding: 19px;
     font-size: 20px;
     font-weight: bold;
@@ -143,27 +70,25 @@ export const NameTrademark = styled.div`
     background-color: #696969;
 `;
 
-export const UlProductsGroup = styled.ul`
+export const UlActive = styled.ul`
     color: grey;
-    height: 250px;
-    overflow-y: scroll;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 2px;
     margin-top: 2px;
 `;
 
-export const UlTrademark = styled.ul`
+export const UlTime = styled.ul`
     color: grey;
-    height: 250px;
-    overflow-y: scroll;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 2px;
     margin-top: 2px;
 `;
 
-export const ItemProductGroups = styled.li`
+export const ItemActive = styled.li`
     padding: 15px;
     padding-left: 40px;
     cursor: pointer;
@@ -184,7 +109,7 @@ export const ItemProductGroups = styled.li`
     `}
 `;
 
-export const ItemTrademark = styled.li`
+export const ItemTime = styled.li`
     padding: 15px;
     padding-left: 40px;
     cursor: pointer;
@@ -207,18 +132,18 @@ export const ItemTrademark = styled.li`
 
 
 //content
-export const ContentProductsPage = styled.div`
+export const ContentPage = styled.div`
     width: 70%;
 `;
 
-export const TableProducts = styled.table`
+export const Table = styled.table`
     width: 95%;
     border-collapse: collapse;
     table-layout: fixed;
     box-shadow: grey 0px 3px 8px;
 `;
 
-export const TrProducts = styled.tr`
+export const Tr = styled.tr`
     transition: all 0.3s;
     &:hover {
         background-color: #ddd;
@@ -226,11 +151,11 @@ export const TrProducts = styled.tr`
     }
 `;
 
-export const THeaderProducts = styled.thead`
+export const THeader = styled.thead`
     
 `;
 
-export const ThProducts = styled.th`
+export const Th = styled.th`
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;
@@ -239,18 +164,18 @@ export const ThProducts = styled.th`
 `;
 
 
-export const TBodyProducts = styled.tbody`
+export const TBody = styled.tbody`
     
 `;
 
-export const TdProducts = styled.td`
+export const Td = styled.td`
     border: 1px solid #ccc;
     padding: 8px;
     color: grey;
     text-align: center;
 `;
 
-export const TdProductsUpdate = styled.td`
+export const TdUpdate = styled.td`
     border: 1px solid #ccc;
     padding: 8px;
     color: grey;
@@ -271,7 +196,7 @@ export const TdProductsUpdate = styled.td`
     }
 `;
 
-export const TdProductsDelete = styled.td`
+export const TdDelete = styled.td`
     border: 1px solid #ccc;
     padding: 8px;
     color: grey;
@@ -292,8 +217,6 @@ export const TdProductsDelete = styled.td`
     }
 `;
 
-export const ImgProduct = styled.img`
+export const Img = styled.img`
     width: 50px;
 `;
-
-
