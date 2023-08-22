@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useEffect } from "react";
+
 import PaginateProducts from "../products/pagination/pagination.components";
 import Coupon from "./coupon/coupon.component";
 
@@ -7,13 +9,11 @@ import {
     useGetReturnCouponQuery
 } from "../../redux/api/warehouse-api.slice";
 
-
 import {
     HeaderProductsPage,
     NameOutlet,
     LayoutSearch,
     DivSearch,
-    ValueToSearch,
     InputSearch,
     ButtonSearch,
     Svg,
@@ -40,9 +40,6 @@ import {
     Th,
     TBody,
     Td,
-    TdUpdate,
-    TdDelete,
-    Img,
 } from "./warehouse.styles";
 
 const WareHouse = () => {
@@ -53,7 +50,8 @@ const WareHouse = () => {
     const [codeSearch1, setCodeSearch1] = useState('');
     const [codeSearch2, setCodeSearch2] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
-
+    const [check, setCheck] = useState('');
+    const [itemDetail, setItemDetail] = useState({})
 
     const { data: importedCoupon } = useGetImportCouponQuery({
         code: codeSearch1,
@@ -66,20 +64,20 @@ const WareHouse = () => {
 
     const handleStatusImportClick = () => {
         setStatusSearch('Import');
-        setCheckStatus(true);
         setCodeSearch('');
-        setCodeSearch2('')
+        setCodeSearch2('');
+        setCurrentPage(0);
     }
 
     const handleStatusReturnClick = () => {
         setStatusSearch('Return');
-        setCheckStatus(false);
         setCodeSearch('');
-        setCodeSearch1('')
+        setCodeSearch1('');
+        setCurrentPage(0);
     }
 
     const handleSearch = () => {
-        if (checkStatus === true) {
+        if (statusSearch === 'Import') {
             setCodeSearch1(codeSearch);
             if (codeSearch === '') {
                 setCurrentPage(currentPage)
@@ -98,19 +96,29 @@ const WareHouse = () => {
     }
 
     const handleLayoutAddClick = () => {
-        setShowLayout(true)
+        setShowLayout(true);
+        setCheck('add')
     }
 
+    const handleItemImportClick = (item) => {
+        setShowLayout(true);
+        setCheck('detail');
+        setItemDetail(item)
+    }
+ 
     return (
         <div>
             {showLayout && 
-                <Coupon />
+                <Coupon 
+                    setShowLayout={setShowLayout}
+                    check={check}
+                    itemDetail={itemDetail}
+                />
             }
             <HeaderProductsPage>
                 <NameOutlet>Warehouse</NameOutlet>
                 <LayoutSearch>
                     <DivSearch>
-                        {/* <ValueToSearch>Code</ValueToSearch> */}
                         <InputSearch
                             type="text"
                             placeholder="Code..."
@@ -127,7 +135,7 @@ const WareHouse = () => {
                         <SpanSearch>Search</SpanSearch>
                     </ButtonSearch>
                 </LayoutSearch>
-                {checkStatus === true &&
+                {statusSearch === 'Import' &&
                     <DivAdd>
                         <ButtonAdd
                         onClick={handleLayoutAddClick}
@@ -162,14 +170,8 @@ const WareHouse = () => {
                     <ChildOfSidebar>
                         <Time>Time</Time>
                         <UlTime>
-                            <ItemTime
-                            // onClick={() => handleTradeMarkAllClick()}
-                            // active={trademarkSearch === ''}
-                            >
-                                This month
-                            </ItemTime>
                             <ItemTime>
-                                Another choice
+                                This month
                             </ItemTime>
                         </UlTime>
                     </ChildOfSidebar>
@@ -185,8 +187,12 @@ const WareHouse = () => {
                             </Tr>
                         </THeader>
                         <TBody>
-                            {checkStatus === true && importedCoupon?.import.map(item => (
-                                <Tr key={item.id}>
+                            {statusSearch === 'Import' 
+                                && importedCoupon?.import.map(item => (
+                                <Tr 
+                                    key={item.id}
+                                    onClick={() => handleItemImportClick(item)}
+                                >
                                     <Td>{item.codeImport}</Td>
                                     <Td>{item.date}</Td>
                                     <Td>{item.totalCost}</Td>
@@ -207,7 +213,7 @@ const WareHouse = () => {
                     <PaginateProducts
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
-                        products={checkStatus ? importedCoupon : returnedCoupon}
+                        products={statusSearch ==='Import' ? importedCoupon : returnedCoupon}
                     />
                 </ContentPage>
             </MainPage>

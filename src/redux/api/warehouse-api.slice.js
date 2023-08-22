@@ -1,4 +1,5 @@
 import apiSlice from "./api.slice";
+import { current } from "@reduxjs/toolkit";
 
 const warehouseApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -11,6 +12,23 @@ const warehouseApi = apiSlice.injectEndpoints({
                 params: {code, page}
             })
          }),
+         addImportCoupon: builder.mutation({
+            query: (data) => ({
+                url: '/importCoupon/add',
+                method: 'POST',
+                body: data
+            }),
+            async onQueryStarted(data, { queryFulfilled, dispatch }) {
+                try {
+                    const { data: created } = await queryFulfilled;
+                    dispatch(apiSlice.util.updateQueryData('getImportCoupon', undefined, (draft) => {
+                        draft?.import.push(created);
+                    }))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+         }), 
          getReturnCoupon: builder.query({
             serializeQueryArgs: () => {
                 return undefined;
@@ -24,6 +42,7 @@ const warehouseApi = apiSlice.injectEndpoints({
 })
 
 export const { 
-    useGetImportCouponQuery ,
-    useGetReturnCouponQuery
+    useGetImportCouponQuery,
+    useGetReturnCouponQuery,
+    useAddImportCouponMutation
 } = warehouseApi;

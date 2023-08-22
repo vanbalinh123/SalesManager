@@ -69,7 +69,6 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                     price: data.price,
                     img: data.img,
                 };
-                console.log(productData)
                 await addProduct(productData).unwrap();
                 alert('Product added successfully!')
                 setShowLayout(false);
