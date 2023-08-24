@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import PaginateProducts from "../products/pagination/pagination.components";
 import Coupon from "./coupon/coupon.component";
+import ReturnCoupon from "./returnCoupon/returnCoupon.component";
 
 import {
     useGetImportCouponQuery,
@@ -42,24 +43,55 @@ import {
     Td,
 } from "./warehouse.styles";
 
+const getCurrentDate = () => {
+    const currentDate = new Date();
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    return day;
+}
+
+const getCurrentMonth = () => {
+    const currentDate = new Date();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    return month;
+}
+
+const getCurrentYear = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+
+    return year;
+}
+
 const WareHouse = () => {
     const [showLayout, setShowLayout] = useState(false);
-    const [checkStatus, setCheckStatus] = useState(true);
+    const [showLayoutReturn, setShowLayoutReturn] = useState(false)
     const [statusSearch, setStatusSearch] = useState('Import');
     const [codeSearch, setCodeSearch] = useState('');
     const [codeSearch1, setCodeSearch1] = useState('');
     const [codeSearch2, setCodeSearch2] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [check, setCheck] = useState('');
-    const [itemDetail, setItemDetail] = useState({})
+    const [checkReturn, setCheckReturn] = useState('');
+    const [itemDetail, setItemDetail] = useState({});
+    const [all, setAll] = useState(true)
+    const [day, setDay] = useState('');
+    const [month, setMonth] = useState('');
+    const [year, setYear] = useState('');
 
     const { data: importedCoupon } = useGetImportCouponQuery({
         code: codeSearch1,
-        page: currentPage
+        page: currentPage,
+        day: day,
+        month: month,
+        year: year
+
     });
     const { data: returnedCoupon } = useGetReturnCouponQuery({
         code: codeSearch2,
-        page: currentPage
+        page: currentPage,
+        day: day,
+        month: month,
+        year: year
     });
 
     const handleStatusImportClick = () => {
@@ -105,16 +137,66 @@ const WareHouse = () => {
         setCheck('detail');
         setItemDetail(item)
     }
- 
+
+    const handleItemReturnClick = (item) => {
+        setShowLayoutReturn(true)
+        setCheckReturn('detail')
+        setItemDetail(item)
+    } 
+
+    const handleAllTimeClick = () => {
+        setDay('')
+        setMonth('')
+        setYear('')
+        setAll(true)
+        setCurrentPage(0)
+    }
+
+    const handleThisMonthClick = () => {
+        setMonth(getCurrentMonth())
+        setDay('')
+        setYear('')
+        setAll(false)
+        setCurrentPage(0);
+    }
+
+    const handleThisDayClick = () => {
+        setDay(getCurrentDate())
+        setMonth('')
+        setYear('')
+        setAll(false)
+        setCurrentPage(0);
+    }
+
+    const handleThisYearClick = () => {
+        setYear(String(getCurrentYear()))
+        setDay('')
+        setMonth('')
+        setAll(false)
+        setCurrentPage(0);
+    }
+
     return (
         <div>
-            {showLayout && 
-                <Coupon 
+            {showLayout &&
+                <Coupon
                     setShowLayout={setShowLayout}
                     check={check}
                     itemDetail={itemDetail}
+                    setShowLayOutReturn={setShowLayoutReturn}
+                    setCheckReturn={setCheckReturn}
                 />
             }
+
+            {
+                showLayoutReturn &&
+                <ReturnCoupon
+                    setShowLayoutReturn={setShowLayoutReturn}
+                    checkReturn={checkReturn}
+                    itemDetail={itemDetail}
+                />
+            }
+
             <HeaderProductsPage>
                 <NameOutlet>Warehouse</NameOutlet>
                 <LayoutSearch>
@@ -138,7 +220,7 @@ const WareHouse = () => {
                 {statusSearch === 'Import' &&
                     <DivAdd>
                         <ButtonAdd
-                        onClick={handleLayoutAddClick}
+                            onClick={handleLayoutAddClick}
                         >
                             <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -163,15 +245,36 @@ const WareHouse = () => {
                                 active={statusSearch === 'Return'}
                                 onClick={() => handleStatusReturnClick()}
                             >
-                                Returns
+                                Return
                             </ItemActive>
                         </UlActive>
                     </ChildOfSidebar>
                     <ChildOfSidebar>
                         <Time>Time</Time>
                         <UlTime>
-                            <ItemTime>
+                            <ItemTime
+                                onClick={() => handleAllTimeClick()}
+                                active={all}
+                            >
+                                All
+                            </ItemTime>
+                            <ItemTime
+                                onClick={() => handleThisDayClick()}
+                                active={day}
+                            >
+                                This Day
+                            </ItemTime>
+                            <ItemTime
+                                onClick={() => handleThisMonthClick()}
+                                active={month}
+                            >
                                 This month
+                            </ItemTime>
+                            <ItemTime
+                                onClick={() => handleThisYearClick()}
+                                active={year}
+                            >
+                                This Year
                             </ItemTime>
                         </UlTime>
                     </ChildOfSidebar>
@@ -187,22 +290,25 @@ const WareHouse = () => {
                             </Tr>
                         </THeader>
                         <TBody>
-                            {statusSearch === 'Import' 
+                            {statusSearch === 'Import'
                                 && importedCoupon?.import.map(item => (
-                                <Tr 
-                                    key={item.id}
-                                    onClick={() => handleItemImportClick(item)}
-                                >
-                                    <Td>{item.codeImport}</Td>
-                                    <Td>{item.date}</Td>
-                                    <Td>{item.totalCost}</Td>
-                                    <Td>{item.status}</Td>
-                                </Tr>
-                            )) ||
+                                    <Tr
+                                        key={item.id}
+                                        onClick={() => handleItemImportClick(item)}
+                                    >
+                                        <Td>{item.codeImport}</Td>
+                                        <Td>{item.date.year}-{item.date.month}-{item.date.day}</Td>
+                                        <Td>{item.totalCost}</Td>
+                                        <Td>{item.status}</Td>
+                                    </Tr>
+                                )) ||
                                 returnedCoupon?.return.map(item => (
-                                    <Tr key={item.id}>
+                                    <Tr 
+                                        key={item.id}
+                                        onClick={() => handleItemReturnClick(item)}
+                                    >
                                         <Td>{item.codeReturn}</Td>
-                                        <Td>{item.date}</Td>
+                                        <Td>{item.date.year}-{item.date.month}-{item.date.day}</Td>
                                         <Td>{item.totalCost}</Td>
                                         <Td>{item.status}</Td>
                                     </Tr>
@@ -213,7 +319,7 @@ const WareHouse = () => {
                     <PaginateProducts
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
-                        products={statusSearch ==='Import' ? importedCoupon : returnedCoupon}
+                        products={statusSearch === 'Import' ? importedCoupon : returnedCoupon}
                     />
                 </ContentPage>
             </MainPage>

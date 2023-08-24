@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useRef } from "react";
 
 import { useGetProductsQuery } from "../../../redux/api/products-api.slice";
 import { useUserLoginQuery } from "../../../redux/api/login-api.slice";
@@ -50,7 +51,7 @@ import {
 
 import { Svg } from "../../generalCss/headerTemplate.styles";
 
-const Coupon = ({ setShowLayout, check, itemDetail }) => {
+const Coupon = ({ setShowLayout, check, itemDetail, setShowLayOutReturn, setCheckReturn }) => {
     const [name, setName] = useState('');
     const [name1, setName1] = useState('');
     const [checkSearch, setCheckSearch] = useState(false);
@@ -83,7 +84,7 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
         let exist = selectedProducts.find(i => i.id === item.id);
         if (exist === undefined) {
             setSelectedProducts([...selectedProducts, { ...item, quantity: '0' }]);
-        } 
+        }
         // else {
         //     alert('This product already exists!')
         // }
@@ -107,11 +108,21 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
 
     const getCurrentDate = () => {
         const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
         const day = String(currentDate.getDate()).padStart(2, '0');
+        return day;
+    }
 
-        return `${year}-${month}-${day}`;
+    const getCurrentMonth = () => {
+        const currentDate = new Date();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        return month;
+    }
+
+    const getCurrentYear = () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+
+        return year;
     }
 
     const calTotalCost = () => {
@@ -122,9 +133,6 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
         return totalCost;
     }
 
-
-    //Dòng 260 em không hiểu sao type="number" của em 
-    //vẫn nhập số thập phân và số bé hơn 1 được
     const handleAddNewImport = async () => {
         if (selectedProducts.length === 0) {
             alert('No products have been imported yet');
@@ -145,7 +153,11 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
                 nameUserImport: userLogin?.username,
                 status: 'Import',
                 note: notes,
-                date: getCurrentDate(),
+                date:{
+                    day: getCurrentDate(),
+                    month: getCurrentMonth(),
+                    year: String(getCurrentYear())
+                },
                 totalCost: calTotalCost(),
                 productsImported: selectedProducts
             };
@@ -181,6 +193,46 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
         });
     }
 
+    const useClickOutSide = (handler) => {
+        let domNode = useRef()
+
+        useEffect(() => {
+            let maybeHandler;
+
+            if (checkSearch === false) {
+                setName('')
+            }
+
+            if (checkSearch) {
+                maybeHandler = (event) => {
+                    if (domNode.current && !domNode.current.contains(event.target)) {
+                        handler();
+                    }
+                };
+
+                document.addEventListener("mousedown", maybeHandler);
+            }
+
+            return () => {
+                if (handler) {
+                    document.removeEventListener("mousedown", maybeHandler);
+                }
+            };
+        }, [checkSearch]);
+
+        return domNode;
+    }
+
+    let domNode = useClickOutSide(() => {
+        setCheckSearch(false)
+    })
+
+    const handleReturnClick = () => {
+        setShowLayout(false)
+        setShowLayOutReturn(true)
+        setCheckReturn('return')
+    }
+
     return (
         <LayoutAdd>
             <LeftLayoutAdd>
@@ -189,7 +241,9 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
                     || <NameLayOut>Detail Import</NameLayOut>
                 }
                 {check === 'add' &&
-                    <SearchLayout>
+                    <SearchLayout
+                        ref={domNode}
+                    >
                         <SpanName>Product Name</SpanName>
                         <Input
                             type="text"
@@ -304,8 +358,8 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
                         </DivInfoLeftChild>
                         <DivInfoRightChild>
                             {check === 'add'
-                                && <SpanInfoChild>{getCurrentDate()}</SpanInfoChild>
-                                || <SpanInfoChild>{itemDetail?.date}</SpanInfoChild>
+                                && <SpanInfoChild>{getCurrentYear() + "-" + getCurrentMonth() + "-" + getCurrentDate()}</SpanInfoChild>
+                                || <SpanInfoChild>{itemDetail?.date.year}-{itemDetail?.date.month}-{itemDetail?.date.day}</SpanInfoChild>
                             }
 
                         </DivInfoRightChild>
@@ -361,7 +415,7 @@ const Coupon = ({ setShowLayout, check, itemDetail }) => {
                                 Import
                             </Button>
                             || <Button
-
+                                onClick={() => handleReturnClick()}
                             >
                                 Return
                             </Button>

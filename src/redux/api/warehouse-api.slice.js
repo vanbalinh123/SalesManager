@@ -7,12 +7,12 @@ const warehouseApi = apiSlice.injectEndpoints({
             serializeQueryArgs: () => {
                 return undefined;
             },
-            query: ({code, page}) => ({
+            query: ({ code, page, day, month, year }) => ({
                 url: '/importCoupon',
-                params: {code, page}
+                params: { code, page, day, month, year }
             })
-         }),
-         addImportCoupon: builder.mutation({
+        }),
+        addImportCoupon: builder.mutation({
             query: (data) => ({
                 url: '/importCoupon/add',
                 method: 'POST',
@@ -28,21 +28,39 @@ const warehouseApi = apiSlice.injectEndpoints({
                     console.log(error)
                 }
             }
-         }), 
-         getReturnCoupon: builder.query({
+        }),
+        getReturnCoupon: builder.query({
             serializeQueryArgs: () => {
                 return undefined;
             },
-            query: ({code, page}) => ({
+            query: ({ code, page, day, month, year }) => ({
                 url: '/returnCoupon',
-                params: {code, page}
+                params: { code, page, day, month, year }
             })
-         }),
+        }),
+        addReturnCoupon: builder.mutation({
+            query: (data) => ({
+                url: '/returnCoupon/add',
+                method: 'POST',
+                body: data
+            }),
+            async onQueryStarted(data, { queryFulfilled, dispatch }) {
+                try {
+                    const { data: created } = await queryFulfilled;
+                    dispatch(apiSlice.util.updateQueryData('getReturnCoupon', undefined, (draft) => {
+                        draft?.return.push(created);
+                    }))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }),
     })
 })
 
-export const { 
+export const {
     useGetImportCouponQuery,
     useGetReturnCouponQuery,
-    useAddImportCouponMutation
+    useAddImportCouponMutation,
+    useAddReturnCouponMutation
 } = warehouseApi;
