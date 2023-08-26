@@ -15,6 +15,7 @@ import ProductsPage from './Pages/products/products.component';
 import ProductsGroup from './Pages/productsGroup/productGroup.component';
 import TestToken from './Pages/testToken/testToken.component';
 import WareHouse from './Pages/warehouse/warehouse.component';
+import Staffs from './Pages/staffs/staffs.component';
 
 import './index.css';
 const router = createBrowserRouter([
@@ -41,10 +42,14 @@ const router = createBrowserRouter([
       {
         path: 'productsGroup',
         element: <ProductsGroup />
-      },,
+      },
       {
         path: '/template/warehouse',
         element: <WareHouse />
+      },
+      {
+        path: '/template/staffs',
+        element: <Staffs />
       }
     ]
   }

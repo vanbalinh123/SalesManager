@@ -19,7 +19,6 @@ import {
 } from './template.styles'
 
 const Template = () => {
-
     const { data: userLogin } = useUserLoginQuery();
 
     return (
@@ -50,6 +49,11 @@ const Template = () => {
                         <ElementMenu>Product groups</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink
+                        to='/template/warehouse'
+                    >
+                        <ElementMenu>Warehouse</ElementMenu>
+                    </FlexNavLink>
+                    <FlexNavLink
                         to='/template/staffs'
                     >
                         <ElementMenu>Staffs</ElementMenu>
@@ -58,11 +62,6 @@ const Template = () => {
                         to='/template/invoice'
                     >
                         <ElementMenu>Invoice</ElementMenu>
-                    </FlexNavLink>
-                    <FlexNavLink
-                        to='/template/warehouse'
-                    >
-                        <ElementMenu>Warehouse</ElementMenu>
                     </FlexNavLink>
                 </Menu>
                 <InfoDifer>

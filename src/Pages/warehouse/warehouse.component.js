@@ -188,8 +188,7 @@ const WareHouse = () => {
                 />
             }
 
-            {
-                showLayoutReturn &&
+            {showLayoutReturn &&
                 <ReturnCoupon
                     setShowLayoutReturn={setShowLayoutReturn}
                     checkReturn={checkReturn}

@@ -8,11 +8,6 @@ import { useAddProductGroupMutation } from "../../redux/api/productGroups-api.sl
 import { useUpdateProductGroupMutation } from "../../redux/api/productGroups-api.slice";
 import { useDeletedProductGroupMutation } from "../../redux/api/productGroups-api.slice";
 
-// import { useGetProductGroupsQuery } from "../../redux/api/api.slice";
-// import { useAddProductGroupMutation } from "../../redux/api/api.slice";
-// import { useUpdateProductGroupMutation } from "../../redux/api/api.slice";
-// import { useDeletedProductGroupMutation } from "../../redux/api/api.slice";
-
 import {
     HeaderProductsPage,
     NameOutlet,
