@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useGetStaffsQuery } from '../../redux/api/staffs-api.slice';
 import AddStaff from './addStaff/addStaff.component';
 import { useDeleteStaffMutation } from '../../redux/api/staffs-api.slice';
+import PayRoll from './addPayroll/addPayroll.component';
 
 import PaginateProducts from '../products/pagination/pagination.components';
 import {
@@ -30,7 +31,7 @@ import {
     Td,
     TdUpdate,
     TdDelete,
-    Img
+    Img,
 } from './staffs.styles';
 
 const Staffs = () => {
@@ -44,6 +45,7 @@ const Staffs = () => {
     const [check, setCheck] = useState('')
     const [showLayout, setShowLayout] = useState(false);
     const [staffUpdate, setStaffUpdate] = useState({})
+    const [checkShowAddPayroll, setCheckShowAddPayroll] = useState(false)
 
     const { data: staffs } = useGetStaffsQuery({
         codeStaff: code1,
@@ -98,7 +100,10 @@ const Staffs = () => {
         setShowLayout(true)
     }
 
-    console.log(staffUpdate)
+    const handlePayrollClick = (item) => {
+        setCheckShowAddPayroll(true)
+        setStaffUpdate(item)
+    }
 
     return (
         <div>
@@ -106,9 +111,18 @@ const Staffs = () => {
                 <AddStaff
                     check={check}
                     setShowLayout={setShowLayout}
-                    staffUpdate = {staffUpdate}
+                    staffUpdate={staffUpdate}
                 />
             }
+
+            {checkShowAddPayroll === true &&
+                <PayRoll
+                    setCheckShowAddPayroll={setCheckShowAddPayroll}
+                    staffUpdate={staffUpdate}
+                />
+            }
+
+
             <HeaderProductsPage>
                 <NameOutlet>Staffs</NameOutlet>
                 <LayoutSearch>
@@ -165,7 +179,6 @@ const Staffs = () => {
                 <Table>
                     <THeader>
                         <Tr>
-                            {/* <Th style={{ width: "70px" }}></Th> */}
                             <Th>Code</Th>
                             <Th>Name</Th>
                             <Th>Sex</Th>
@@ -176,6 +189,7 @@ const Staffs = () => {
                             <Th>Salary/month</Th>
                             <Th style={{ width: "70px" }}></Th>
                             <Th style={{ width: "70px" }}></Th>
+                            <Th style={{ width: "70px" }}></Th>
                         </Tr>
                     </THeader>
                     <TBody>
@@ -183,9 +197,6 @@ const Staffs = () => {
                             <Tr
                                 key={item.id}
                             >
-                                {/* <Td>
-                                    <Img src={item.src} />
-                                </Td> */}
                                 <Td>{item.codeStaff}</Td>
                                 <Td>{item.nameStaff}</Td>
                                 <Td>{item.sex}</Td>
@@ -194,6 +205,13 @@ const Staffs = () => {
                                 <Td>{item.position}</Td>
                                 <Td>{item.workingTime}</Td>
                                 <Td>{item.salary}</Td>
+                                <Td
+                                    onClick={() => handlePayrollClick(item)}
+                                >
+                                    <Svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </Svg>
+                                </Td>
                                 <TdUpdate
                                     onClick={() => handleUpdateItemCick(item)}
                                 >

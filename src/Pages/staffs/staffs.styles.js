@@ -92,3 +92,6 @@ export const Img = styled.img`
     height: 50px;
     object-fit: cover;
 `;
+
+
+

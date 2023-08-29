@@ -16,6 +16,7 @@ import ProductsGroup from './Pages/productsGroup/productGroup.component';
 import TestToken from './Pages/testToken/testToken.component';
 import WareHouse from './Pages/warehouse/warehouse.component';
 import Staffs from './Pages/staffs/staffs.component';
+import Invoice from './Pages/invoice/invoice.component';
 
 import './index.css';
 const router = createBrowserRouter([
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: '/template/staffs',
         element: <Staffs />
+      },
+      {
+        path: '/template/invoice',
+        element: <Invoice />
       }
     ]
   }
