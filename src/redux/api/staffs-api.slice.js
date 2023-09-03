@@ -40,7 +40,7 @@ const staffsApi = apiSlice.injectEndpoints({
                         console.log(created)
                         const index = draft.staffs.findIndex((item) => item.id === created.id);
                         if(index !== -1) {
-                            draft?.staffs.splice(created, 1);
+                            draft?.staffs.splice(index, 1);
                         }  
                     }))
                 } catch (error) {

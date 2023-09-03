@@ -39,11 +39,32 @@ const invoiceApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        deleteStaffInvoice: builder.mutation({
+            query: (id) => ({
+                url: `/invoice/delete/${id}`,
+                method: 'DELETE'
+            }),
+            async onQueryStarted(args, { queryFulfilled, dispatch }) {
+                try {
+                    const { data: created } = await queryFulfilled;
+                    dispatch(apiSlice.util.updateQueryData('getStaffsSalary', undefined, (draft) => {
+                        console.log(created)
+                        const index = draft.staffs.findIndex((item) => item.id === created.id);
+                        if(index !== -1) {
+                            draft.staffs.splice(index, 1);
+                        }  
+                    }))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }),
     })
 })
 
 export const {
     useGetStaffsSalaryQuery,
     useAddStaffSalaryMutation,
-    useUpdateStaffSalaryMutation
+    useUpdateStaffSalaryMutation,
+    useDeleteStaffInvoiceMutation
 } = invoiceApi

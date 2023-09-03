@@ -9,7 +9,7 @@ const TestToken = () => {
         if (accessToken === "" || accessToken === null) {
           navigate('/login');
         } else {
-            navigate('/template/products')
+            navigate('/template/dashboard')
         }
       }, []);
     

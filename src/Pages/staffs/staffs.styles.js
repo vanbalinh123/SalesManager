@@ -47,8 +47,6 @@ export const Td = styled.td`
 
 export const TdUpdate = styled.td`
     border: 1px solid #ccc;
-    padding: 8px;
-    color: grey;
     text-align: center;
 
     svg {
@@ -66,10 +64,27 @@ export const TdUpdate = styled.td`
     }
 `;
 
+export const TdPayroll = styled.td`
+    border: 1px solid #ccc;
+    text-align: center;
+
+    svg {
+        tranform: scale(1);
+        color: grey;
+        transition: all 0.3s;
+    }
+
+    &:hover{
+        cursor: pointer;
+        svg {
+            transform: scale(1.3);         
+        }
+        
+    }
+`;
+
 export const TdDelete = styled.td`
     border: 1px solid #ccc;
-    padding: 8px;
-    color: grey;
     text-align: center;
 
     svg {

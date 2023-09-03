@@ -65,7 +65,7 @@ export const SvgDelete = styled.svg`
 
 export const SvgUpdate = styled.svg`
     width: 20px;
-    color: blue;
+    color: dodgerblue;
     position: absolute;
     right: 110px;
     tranform: scale(1);

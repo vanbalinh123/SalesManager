@@ -17,6 +17,7 @@ import TestToken from './Pages/testToken/testToken.component';
 import WareHouse from './Pages/warehouse/warehouse.component';
 import Staffs from './Pages/staffs/staffs.component';
 import Invoice from './Pages/invoice/invoice.component';
+import Dashboard from './Pages/dashboard/dashboard.component';
 
 import './index.css';
 const router = createBrowserRouter([
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: '/template/invoice',
         element: <Invoice />
+      },
+      {
+        path: '/template/dashboard',
+        element: <Dashboard />
       }
     ]
   }
