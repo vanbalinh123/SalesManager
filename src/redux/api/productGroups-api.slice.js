@@ -7,13 +7,13 @@ const productGroups = apiSlice.injectEndpoints({
                 return undefined;
             },
             query: (name) => ({
-                url: '/productGroups',
+                url: '/productGroups/',
                 params: name,
             }),
         }),
         addProductGroup: builder.mutation({
             query: (data) => ({
-                url: '/productGroups/add',
+                url: '/productGroups/',
                 method: 'POST',
                 body: data
             }),
@@ -30,8 +30,8 @@ const productGroups = apiSlice.injectEndpoints({
         }),
         updateProductGroup: builder.mutation({
             query: (data) => ({
-                url: '/productGroups/update',
-                method: 'POST',
+                url: `/productGroups/${data.id}`,
+                method: 'PATCH',
                 body: data
             }),
             async onQueryStarted(updatedProductGroup, { dispatch, queryFulfilled }) {
@@ -51,7 +51,7 @@ const productGroups = apiSlice.injectEndpoints({
         }),        
         deletedProductGroup: builder.mutation({
             query: (id) => ({
-                url: `/productGroup/delete/${id}`,
+                url: `/productGroups/${id}`,
                 method: 'DELETE'
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {

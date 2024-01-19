@@ -13,6 +13,7 @@ import Register from './Pages/register/register.component';
 import Template from './comopnents/template/template.component';
 import ProductsPage from './Pages/products/products.component';
 import ProductsGroup from './Pages/productsGroup/productGroup.component';
+import Trademarks from './Pages/trademark/trademark.component';
 import TestToken from './Pages/testToken/testToken.component';
 import WareHouse from './Pages/warehouse/warehouse.component';
 import Staffs from './Pages/staffs/staffs.component';
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: 'productsGroup',
         element: <ProductsGroup />
+      },
+      {
+        path: 'trademark',
+        element: <Trademarks />
       },
       {
         path: '/template/warehouse',

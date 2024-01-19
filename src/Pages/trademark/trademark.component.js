@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import { useGetProductsQuery } from "../../redux/api/products-api.slice";
-import { useGetProductGroupsQuery } from "../../redux/api/productGroups-api.slice";
-import { useAddProductGroupMutation } from "../../redux/api/productGroups-api.slice";
-import { useUpdateProductGroupMutation } from "../../redux/api/productGroups-api.slice";
-import { useDeletedProductGroupMutation } from "../../redux/api/productGroups-api.slice";
 
+import { useGetTrademarkQuery } from "../../redux/api/trademark-api.slice";
+import { useUpdateTrademarkMutation } from "../../redux/api/trademark-api.slice";
+import { useAddTrademarkMutation } from "../../redux/api/trademark-api.slice";
+import { useDeletedTrademarkMutation } from "../../redux/api/trademark-api.slice";
 import {
     HeaderProductsPage,
     NameOutlet,
@@ -36,9 +36,9 @@ import {
     NameItemProduct,
     SvgDelete,
     SvgUpdate
-} from "./productGroup.styles";
+} from "./trademark.styles";
 
-const ProductsGroup = () => {
+const Trademarks = () => {
     const { register, handleSubmit, setValue, watch } = useForm();
     const [name, setName] = useState('');
     const [name1, setName1] = useState('');
@@ -54,14 +54,13 @@ const ProductsGroup = () => {
     }, [watchedValue])
 
     const { data: products } = useGetProductsQuery({});
-    const { data: productGroups } = useGetProductGroupsQuery({ name: name1 });
-
-    const [addProductGroup] = useAddProductGroupMutation();
-    const [updateProductGroup] = useUpdateProductGroupMutation();
-    const [deletedProductGroup] = useDeletedProductGroupMutation();
-
+    const { data: trademarks } = useGetTrademarkQuery({ name: name1 });
+    const [addTrademark] = useAddTrademarkMutation();
+    const [updateTrademark] = useUpdateTrademarkMutation();
+    const [deletedTrademark] = useDeletedTrademarkMutation();
+    console.log(trademarks)
     const getTotalQuantityByProductGroup = (groupName) => {
-        const filteredProducts = products?.products.filter((item) => item.productGroups === groupName);
+        const filteredProducts = products?.products.filter((item) => item.trademark === groupName);
         const totalQuantity = filteredProducts?.reduce((total, item) => total + Number(item.quantity), 0);
         return totalQuantity;
     };
@@ -73,7 +72,7 @@ const ProductsGroup = () => {
     const handleAddProductGroup = async (data) => {
         if (check === false) {
             try {
-                await addProductGroup(data).unwrap();
+                await addTrademark(data).unwrap();
                 
                 setValue('nameProductGroup',);
                 alert('Product Group added successfully!');
@@ -92,7 +91,7 @@ const ProductsGroup = () => {
                     name: data.nameProductGroup
                 }
                 console.log(a)
-                await updateProductGroup(a).unwrap();
+                await updateTrademark(a).unwrap();
                 setValue('nameProductGroup',);
                 setCheck(false)
                 alert('Product Group updated successfully!')
@@ -115,10 +114,10 @@ const ProductsGroup = () => {
     }
 
     const handleDeleteProductGroup = async (item) => {
-        const isConfirmed = window.confirm(`Do you want to delete product '${item.name.toUpperCase()}' or not?`);
+        const isConfirmed = window.confirm(`Do you want to delete trademark '${item.name.toUpperCase()}' or not?`);
         if(isConfirmed) {
             try {
-                await deletedProductGroup(item._id).unwrap();
+                await deletedTrademark(item._id).unwrap();
             } catch (error) {
                 if(error.data) {
                     alert(error.data.message)
@@ -132,13 +131,13 @@ const ProductsGroup = () => {
     return (
         <div>
             <HeaderProductsPage>
-                <NameOutlet>Product Groups</NameOutlet>
+                <NameOutlet>Trademark</NameOutlet>
                 <LayoutSearch>
                     <DivSearch>
-                        <ValueToSearch>Product group name</ValueToSearch>
+                        <ValueToSearch>Trademark name</ValueToSearch>
                         <InputSearch
                             type="text"
-                            placeholder="Product group name..."
+                            placeholder="Trademark name..."
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
@@ -182,13 +181,13 @@ const ProductsGroup = () => {
             </HeaderProductsPage>
             <MainLayoutAddGroup>
                 <ProductGroups>
-                    <NameProductsGroup>Product Groups</NameProductsGroup>
+                    <NameProductsGroup>Trademarks</NameProductsGroup>
                     <UlProductsGroup>
                         <NameItemProduct>
-                            Name Product Groups
+                            Name Trademark
                             <QuantityItemProduct>Quantity</QuantityItemProduct>
                         </NameItemProduct>
-                        {productGroups?.map(item => (
+                        {trademarks?.map(item => (
                             <ItemProduct
                                 key={item.id}
                             >
@@ -219,4 +218,4 @@ const ProductsGroup = () => {
     )
 }
 
-export default ProductsGroup;
+export default Trademarks;

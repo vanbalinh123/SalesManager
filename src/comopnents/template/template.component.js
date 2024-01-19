@@ -21,6 +21,7 @@ import {
 const Template = () => {
     const { data: userLogin } = useUserLoginQuery();
 
+
     return (
         <MainPage>
             <HeaderPage>
@@ -49,6 +50,11 @@ const Template = () => {
                         <ElementMenu>Product groups</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink
+                        to='/template/trademark'
+                    >
+                        <ElementMenu>Trademark</ElementMenu>
+                    </FlexNavLink>
+                    <FlexNavLink
                         to='/template/warehouse'
                     >
                         <ElementMenu>Warehouse</ElementMenu>
@@ -67,9 +73,9 @@ const Template = () => {
                 <InfoDifer>
                     <DivImageNameUser>
                         <DivImgUser>                            
-                            {userLogin?.avatar? (
+                            {userLogin?.data.user.avatar? (
                                 <ImageUser
-                                    src={userLogin.avatar || "https://cdn5.vectorstock.com/i/1000x1000/54/69/male-user-icon-vector-8865469.jpg"}
+                                    src={userLogin?.data.user.avatar || "https://cdn5.vectorstock.com/i/1000x1000/54/69/male-user-icon-vector-8865469.jpg"}
                                     alt='img user'
                                 />
                             ) : (
@@ -79,7 +85,7 @@ const Template = () => {
                                 />
                             )}
                         </DivImgUser>
-                        <UserName>{userLogin?.username}</UserName>
+                        <UserName>{userLogin?.data.user.username}</UserName>
                     </DivImageNameUser>
                 </InfoDifer>
             </HeaderPage>

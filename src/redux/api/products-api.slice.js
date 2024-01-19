@@ -7,13 +7,13 @@ const productsApi = apiSlice.injectEndpoints({
                 return undefined;
             },
             query: ({ name, code, productGroups, trademark, page}) => ({
-                url: '/products',
+                url: '/products/',
                 params: { name, code, productGroups, trademark, page}
             })
         }),
         addProduct: builder.mutation({
             query: (data) => ({
-                url: '/products/add',
+                url: '/products/',
                 method: 'POST',
                 body: data
             }),
@@ -31,8 +31,8 @@ const productsApi = apiSlice.injectEndpoints({
         }),
         updateProduct: builder.mutation({
             query: (data) => ({
-                url: '/product/update',
-                method: 'POST',
+                url: `/products/${data.id}`,
+                method: 'PATCH',
                 body: data
             }),
             async onQueryStarted(product, { dispatch, queryFulfilled }) {
@@ -52,7 +52,7 @@ const productsApi = apiSlice.injectEndpoints({
         }),
         deletedProduct: builder.mutation({
             query: (id) => ({
-                url: `/product/delete/${id}`,
+                url: `/products/${id}`,
                 method: 'DELETE',
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {

@@ -40,7 +40,8 @@ const Login = () => {
             alert('Incorrect account or password!')
         } else {
             alert('login successful');
-            localStorage.setItem('accessToken', JSON.stringify(response.data.accessToken));
+            console.log(response)
+            localStorage.setItem('accessToken', JSON.stringify(response.data.data.token));
             navigate('/')
         }
 

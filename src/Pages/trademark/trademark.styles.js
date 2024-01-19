@@ -55,6 +55,7 @@ export const SvgDelete = styled.svg`
     color: red;
     position: absolute;
     right: 60px;
+
     transition: all 0.3s;
 
     &:hover {

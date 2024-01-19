@@ -39,7 +39,7 @@ const Register = () => {
             alert('Confirm password is wrong!')
         } else {
             try {
-                await addNewUser({ username, email, password }).unwrap();
+                await addNewUser({ username, email, password, confirm }).unwrap();
                 alert('You have successfully created an account!');
                 navigate('/login');
             } catch (error) {

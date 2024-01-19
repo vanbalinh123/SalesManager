@@ -70,6 +70,8 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                     img: data.img,
                 };
                 await addProduct(productData).unwrap();
+                const response = addProduct(productData);
+                console.log(response)
                 alert('Product added successfully!')
                 setShowLayout(false);
             } catch (error) {
@@ -82,7 +84,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
         } else {
             try {
                 const productData = {
-                    id: productUpdate.id,
+                    id: productUpdate._id,
                     name: data.name,
                     code: data.code,
                     productGroups: data.productGroups,
@@ -93,6 +95,8 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                     price: data.price,
                     img: data.img,
                 };
+
+                console.log(productData)
                 await update(productData).unwrap();
                 alert('Product updated successfully!')
                 setShowLayout(false);

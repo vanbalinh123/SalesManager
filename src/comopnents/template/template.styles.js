@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 
 export const MainPage = styled.div`
     width: 100%;
-    heigh: 100%;
+    height: 100%;
 `;
 
 export const HeaderPage = styled.header`
@@ -70,7 +70,7 @@ export const ElementMenu = styled.li`
 
 `
 export const InfoDifer = styled.div`
-    width: 300px;
+    width: 250px;
     height: 60px;
 `
 
