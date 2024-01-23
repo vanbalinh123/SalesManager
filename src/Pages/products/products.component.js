@@ -67,7 +67,6 @@ const ProductsPage = () => {
     page: currentPage,
   });
   const [deletedProduct] = useDeletedProductMutation();
-  console.log(products);
 
   const handleLayoutAddProductClick = () => {
     setShowLayout(true);
@@ -126,6 +125,8 @@ const ProductsPage = () => {
       }
     }
   };
+
+  console.log(products)
 
   return (
     <div>
@@ -256,14 +257,14 @@ const ProductsPage = () => {
             </THeaderProducts>
             <TBodyProducts>
               {products?.products?.map((item) => (
-                <TrProducts key={item.id}>
+                <TrProducts key={item._id}>
                   <TdProducts>
                     <ImgProduct alt={item.name} src={item.img} />
                   </TdProducts>
                   <TdProducts>{item.code}</TdProducts>
                   <TdProducts>{item.name}</TdProducts>
-                  <TdProducts>{item.trademark}</TdProducts>
-                  <TdProducts>{item.productGroups}</TdProducts>
+                  <TdProducts>{item.trademark?.name}</TdProducts>
+                  <TdProducts>{item.productGroup?.name}</TdProducts>
                   <TdProducts>{item.price}</TdProducts>
                   <TdProducts>{item.cost}</TdProducts>
                   <TdProducts>{item.quantity}</TdProducts>
@@ -317,7 +318,7 @@ const ProductsPage = () => {
               Let's add Trademark!!
             </div>
           )}
-          {products?.length > 0 && (
+          {products?.products.length > 0 && (
             <PaginateProducts
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}

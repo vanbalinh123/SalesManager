@@ -52,7 +52,7 @@ const Template = () => {
                     <FlexNavLink
                         to='/template/trademark'
                     >
-                        <ElementMenu>Trademark</ElementMenu>
+                        <ElementMenu>Trademarks</ElementMenu>
                     </FlexNavLink>
                     <FlexNavLink
                         to='/template/warehouse'

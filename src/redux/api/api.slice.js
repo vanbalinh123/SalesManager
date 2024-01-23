@@ -5,8 +5,14 @@ const baseQuery = fetchBaseQuery({
     prepareHeaders: (headers) => {
         const token = JSON.parse(localStorage.getItem('accessToken'));
         if (token) {
+            
             headers.set('authorization', `Bearer ${token}`);
+            console.log(headers, 'header')
+            // headers['authorization'] = `Bearer ${token}`;
         }
+
+        console.log(headers)
+        console.log(token, token)
         return headers;
     }
 });

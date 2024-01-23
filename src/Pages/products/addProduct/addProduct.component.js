@@ -36,13 +36,14 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
     const { data: trademark } = useGetTrademarkQuery();
     const [update] = useUpdateProductMutation();
 
+    console.log(productUpdate, 'dasgasf')
 
     useEffect(() => {
         if (check === 'update' && productUpdate) {
             setValue('name', productUpdate.name);
             setValue('code', productUpdate.code);
-            setValue('productGroups', productUpdate.productGroups);
-            setValue('trademark', productUpdate.trademark);
+            setValue('productGroups', productUpdate.productGroup._id);
+            setValue('trademark', productUpdate.trademark._id);
             setValue('quantity', productUpdate.quantity);
             setValue('describe', productUpdate.describe);
             setValue('cost', productUpdate.cost);
@@ -56,6 +57,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
     }
 
     const handleAddProduct = async (data) => {
+        console.log(data)
         if (check === "add") {
             try {
                 const productData = {
@@ -70,8 +72,6 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                     img: data.img,
                 };
                 await addProduct(productData).unwrap();
-                const response = addProduct(productData);
-                console.log(response)
                 alert('Product added successfully!')
                 setShowLayout(false);
             } catch (error) {
@@ -96,7 +96,6 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                     img: data.img,
                 };
 
-                console.log(productData)
                 await update(productData).unwrap();
                 alert('Product updated successfully!')
                 setShowLayout(false);
@@ -149,7 +148,10 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                             >
                                 <Option></Option>
                                 {productGroups?.map(item => (
-                                    <Option key={item.id}>{item.name}</Option>
+                                    <Option 
+                                        key={item._id}
+                                        value={item._id}
+                                    >{item.name}</Option>
                                 ))}
                             </SelectProductsGroup>
                         </DivInput>
@@ -162,7 +164,10 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                             >
                                 <Option></Option>
                                 {trademark?.map(item => (
-                                    <Option key={item.id}>{item.name}</Option>
+                                    <Option 
+                                        key={item.id}
+                                        value={item._id}
+                                    >{item.name}</Option>
                                 ))}
                             </SelectProductsGroup>
                         </DivInput>

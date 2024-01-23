@@ -18,15 +18,15 @@ const productsApi = apiSlice.injectEndpoints({
                 body: data
             }),
             async onQueryStarted(product, { dispatch, queryFulfilled }) {
-                const action = apiSlice.util.updateQueryData('getProducts', undefined, draft => {
-                    draft.products.push(product);
-                });
-                const patchResult = dispatch(action);
                 try {
-                    await queryFulfilled;
-                } catch {
-                    patchResult.undo();
+                    const { data: created } = await queryFulfilled;
+                    dispatch(apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
+                        draft.products.push(created.data.products);
+                    }))
+                } catch (error) {
+                    console.log(error)
                 }
+
             }
         }),
         updateProduct: builder.mutation({
@@ -35,18 +35,20 @@ const productsApi = apiSlice.injectEndpoints({
                 method: 'PATCH',
                 body: data
             }),
-            async onQueryStarted(product, { dispatch, queryFulfilled }) {
-                const action = apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
-                    const index = draft.products.findIndex((item) => item.id === product.id);
-                    if (index !== -1) {
-                        draft.products[index] = product;
-                    }
-                });
-                const patchResult = dispatch(action);
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+
                 try {
-                    await queryFulfilled;
-                } catch {
-                    patchResult.undo();
+                    const { data: updated } = await queryFulfilled;
+                    dispatch(apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
+                        // console.log(JSON.parse(JSON.stringify(draft.products)));
+                        const index = draft.products.findIndex((item) => item._id === updated.data.product._id);
+                        console.log(index)
+                        if (index !== -1) {
+                            draft.products[index] = updated.data.product;
+                          }
+                    }))
+                } catch (error) {
+                    console.log(error)
                 }
             }
         }),
@@ -57,7 +59,7 @@ const productsApi = apiSlice.injectEndpoints({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 const action = apiSlice.util.updateQueryData('getProducts', undefined, (draft) => {
-                    const index = draft.products.findIndex((item) => item.id === id);
+                    const index = draft.products.findIndex((item) => item._id === id);
                     if (index !== -1) {
                         draft.products.splice(index, 1);
                     }
@@ -68,6 +70,7 @@ const productsApi = apiSlice.injectEndpoints({
                 } catch {
                     patchResult.undo();
                 }
+                
             },
         }),
     }),
