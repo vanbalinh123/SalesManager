@@ -10,9 +10,6 @@ const baseQuery = fetchBaseQuery({
             console.log(headers, 'header')
             // headers['authorization'] = `Bearer ${token}`;
         }
-
-        console.log(headers)
-        console.log(token, token)
         return headers;
     }
 });

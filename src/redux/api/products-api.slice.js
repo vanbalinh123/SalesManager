@@ -12,11 +12,26 @@ const productsApi = apiSlice.injectEndpoints({
             })
         }),
         addProduct: builder.mutation({
-            query: (data) => ({
-                url: '/products/',
-                method: 'POST',
-                body: data
-            }),
+            query: (data) => {
+               
+                for (const [key, value] of data) {
+                    console.log(`${key}: ${value}\n`);
+                  }
+               
+                return {
+                    url: '/products/',
+                    method: 'POST',
+                    prepareHeaders: (headers) => {
+                        headers.set("Content-Type", "multipart/form-data");
+                        return headers;
+                    },
+                    // headers: {
+                    //     "Content-Type": "multipart/form-data",
+                    // },
+                    body: data , 
+                }
+                         
+            },
             async onQueryStarted(product, { dispatch, queryFulfilled }) {
                 try {
                     const { data: created } = await queryFulfilled;

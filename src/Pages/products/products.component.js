@@ -66,6 +66,9 @@ const ProductsPage = () => {
     trademark: trademarkSearch,
     page: currentPage,
   });
+
+  console.log(products)
+
   const [deletedProduct] = useDeletedProductMutation();
 
   const handleLayoutAddProductClick = () => {
@@ -126,7 +129,6 @@ const ProductsPage = () => {
     }
   };
 
-  console.log(products)
 
   return (
     <div>
