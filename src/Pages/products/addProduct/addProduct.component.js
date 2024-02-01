@@ -27,6 +27,9 @@ import {
   SpanNameInputRight,
   InputAddRight,
   Button,
+  DivImg,
+  Box,
+  Img,
 } from "./addProduct.styles";
 
 const AddProduct = ({ setShowLayout, check, productUpdate }) => {
@@ -42,6 +45,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
   function handleChange(e) {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
+    // setValue("img", e.target.files[0]);
   }
 
   useEffect(() => {
@@ -55,6 +59,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
       setValue("cost", productUpdate.cost);
       setValue("price", productUpdate.price);
       setValue("img", productUpdate.img);
+      // setFile(productUpdate.img)
     }
   }, [check, productUpdate, setValue]);
 
@@ -65,35 +70,22 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
   const handleAddProduct = async (data) => {
     if (check === "add") {
       try {
-        // const productData = {
-        //   name: data.name,
-        //   code: data.code,
-        //   productGroups: data.productGroups,
-        //   trademark: data.trademark,
-        //   quantity: data.quantity,
-        //   describe: data.describe,
-        //   cost: data.cost,
-        //   price: data.price,
-        //   img: file,
-        // };
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("code", data.code);
-        formData.append("productGroups", data.productGroups);
-        formData.append("trademark", data.trademark);
-        formData.append("quantity", data.quantity);
-        formData.append("describe", data.describe);
-        formData.append("cost", data.cost);
-        formData.append("price", data.price);
-        formData.append("img", file);
-
-        // for (const [key, value] of formData) {
-        //   console.log(`${key}: ${value}\n`);
-        // }
-        const res = await addProduct(formData);
-        console.log(res)
-        // alert("Product added successfully!");
-        // setShowLayout(false);
+        const productData = {
+          name: data.name,
+          code: data.code,
+          productGroups: data.productGroups,
+          trademark: data.trademark,
+          quantity: data.quantity,
+          describe: data.describe,
+          cost: data.cost,
+          price: data.price,
+          img: file,
+        };
+        const res = await addProduct(productData, {
+          "Content-Type": "multipart/form-data",
+        });
+        alert("Product added successfully!");
+        setShowLayout(false);
       } catch (error) {
         if (error.data) {
           alert(error.data.message);
@@ -113,10 +105,14 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
           describe: data.describe,
           cost: data.cost,
           price: data.price,
-          img: data.img,
+          img: file,
         };
 
-        await update(productData).unwrap();
+        const res = await update(productData, {
+          "Content-Type": "multipart/form-data",
+        });
+
+        // await update(productData).unwrap();
         alert("Product updated successfully!");
         setShowLayout(false);
       } catch (error) {
@@ -131,7 +127,10 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
 
   return (
     <LayoutAddProduct>
-      <FormAdd onSubmit={handleSubmit(handleAddProduct)} encType="multipart/form-data">
+      <FormAdd
+        onSubmit={handleSubmit(handleAddProduct)}
+        encType="multipart/form-data"
+      >
         {(check === "add" && <TitleLayoutAdd>New Product</TitleLayoutAdd>) || (
           <TitleLayoutAdd>Update Product</TitleLayoutAdd>
         )}
@@ -187,57 +186,72 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                 ))}
               </SelectProductsGroup>
             </DivInput>
-            <DivDescribeInput>
-              <SpanNameInput>Desribe</SpanNameInput>
-              <InputDescribeAdd
-                {...register("describe", {
-                  required: "Desribe is required",
+           
+            <DivInputRight>
+              <SpanNameInputRight>Quantity</SpanNameInputRight>
+              <InputAddRight
+                {...register("quantity", {
+                  required: "Quantity is required",
                 })}
-                type="text"
+                type="number"
               />
-            </DivDescribeInput>
+            </DivInputRight>
           </LeftLayoutAdd>
           <RightLayoutAdd>
             <FourDivInput>
-              <DivInputRight>
+              {/* <DivInputRight>
                 <SpanNameInputRight>Image</SpanNameInputRight>
                 <InputAddRight
-                  //   {...register("img", {
-                  //     required: "Image is required",
-                  //   })}
+                  // {...register("img", {
+                  //   required: "Image is required",
+                  // })}
                   //   type="text"
                   type="file"
                   onChange={handleChange}
                 />
-              </DivInputRight>
-              <DivInputRight>
-                <SpanNameInputRight>Cost</SpanNameInputRight>
-                <InputAddRight
-                  {...register("cost", {
-                    required: "Cost is required",
+              </DivInputRight> */}
+               <DivInputRight>
+              <SpanNameInputRight>Cost</SpanNameInputRight>
+              <InputAddRight
+                {...register("cost", {
+                  required: "Cost is required",
+                })}
+                type="number"
+              />
+            </DivInputRight>
+            <DivInputRight>
+              <SpanNameInputRight>Price</SpanNameInputRight>
+              <InputAddRight
+                {...register("price", {
+                  required: "Price is required",
+                })}
+                type="number"
+              />
+            </DivInputRight>
+              <DivDescribeInput>
+                <SpanNameInput>Desribe</SpanNameInput>
+                <InputDescribeAdd
+                  {...register("describe", {
+                    required: "Desribe is required",
                   })}
-                  type="number"
+                  type="text"
                 />
-              </DivInputRight>
-              <DivInputRight>
-                <SpanNameInputRight>Price</SpanNameInputRight>
-                <InputAddRight
-                  {...register("price", {
-                    required: "Price is required",
-                  })}
-                  type="number"
-                />
-              </DivInputRight>
-              <DivInputRight>
-                <SpanNameInputRight>Quantity</SpanNameInputRight>
-                <InputAddRight
-                  {...register("quantity", {
-                    required: "Quantity is required",
-                  })}
-                  type="number"
-                />
-              </DivInputRight>
+              </DivDescribeInput>
             </FourDivInput>
+          </RightLayoutAdd>
+          <DivImg>
+            <Box>
+            <Img id="preview-img" src={file.name ? URL.createObjectURL(file) : `http://localhost:3100/img/${productUpdate.img}` }/>
+              {/* <Img src={"http://localhost:3100/img/" + productUpdate.img} /> */}
+            </Box>
+            <input
+              // {...register("img", {
+              //   required: "Image is required",
+              // })}
+              //   type="text"
+              type="file"
+              onChange={handleChange}
+            />
             <DivButton>
               {check === "add" ? (
                 <Button type="submit">Add</Button>
@@ -249,7 +263,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                 Close
               </Button>
             </DivButton>
-          </RightLayoutAdd>
+          </DivImg>
         </MainLayoutAdd>
       </FormAdd>
     </LayoutAddProduct>

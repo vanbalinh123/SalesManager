@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
 
 export const LayoutAddProduct = styled.div`
-    width: 60%;
-    height: 80%;
+    width: 80%;
+    height: 90%;
     background-color: #ffffff;
     z-index: 10;
     position: fixed;
@@ -43,14 +43,16 @@ export const LeftLayoutAdd = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 30px;
 `;
 
 export const DivInput = styled.div`
     width: 100%;
-    height: 100%;
-    flex: 1;
+    /* height: 100%; */
+    /* flex: 1; */
     display: flex;
     align-items: center;
+    height: 100px;
 `;
 
 export const SpanNameInput = styled.span`
@@ -58,8 +60,9 @@ export const SpanNameInput = styled.span`
 `;
 
 export const InputAdd = styled.input`
-    flex: 4;
+flex: 3;
     height: 40px;
+    width: 100%;
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
@@ -69,8 +72,9 @@ export const InputAdd = styled.input`
 `;
 
 export const SelectProductsGroup = styled.select`
-    flex: 4;
+flex: 3;
     height: 40px;
+    width: 100%;
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
@@ -85,15 +89,15 @@ export const Option = styled.option`
 
 export const DivDescribeInput = styled.div`
     width: 100%;
-    flex: 2;
     display: flex;
-    align-items: center;
-    height: 100%;
+    /* flex-direction: column; */
+    padding-top: 40px;
+    gap: 10px;
 `;
 
 export const InputDescribeAdd = styled.textarea`
-    flex: 4;
-    height: 100%;
+flex: 3;
+    min-height: 260px;
     border: none;
     border-radius: 7px;
     background-color: #F5F5F5;
@@ -113,12 +117,14 @@ export const FourDivInput = styled.div`
     flex: 2;
     display: flex; 
     flex-direction: column;
+    gap: 30px;
 `
 
 export const DivInputRight = styled.div`
-    flex: 1;
+    /* flex: 1; */
     display: flex;
     align-items: center;
+    height: 100px;
 `
 
 export const SpanNameInputRight = styled.span`
@@ -126,7 +132,8 @@ export const SpanNameInputRight = styled.span`
 `;
 
 export const InputAddRight = styled.input`
-    flex: 4;
+flex: 3;
+width: 100%;
     height: 40px;
     border: none;
     border-radius: 7px;
@@ -137,11 +144,14 @@ export const InputAddRight = styled.input`
 `;
 
 export const DivButton = styled.div`
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 `
 
 export const Button = styled.button`
@@ -159,6 +169,31 @@ export const Button = styled.button`
         opacity: 0.8;
         box-shadow: grey 0px 1px 1px;
     }
+`
+
+//img
+
+export const DivImg = styled.div`
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    position: relative;
+`
+
+export const Box = styled.div`
+    width: 400px;
+    height: 400px;
+    border-radius: 10px;
+    box-shadow: grey 0px 2px 6px;
+
+`
+
+
+export const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 `
 
 

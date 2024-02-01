@@ -14,21 +14,25 @@ const productsApi = apiSlice.injectEndpoints({
         addProduct: builder.mutation({
             query: (data) => {
                
-                for (const [key, value] of data) {
-                    console.log(`${key}: ${value}\n`);
-                  }
+                // for (const [key, value] of data) {
+                //     console.log(`${key}: ${value}\n`);
+                //   }
+                const formData = new FormData();
+                for (const key in data) {
+                  formData.append(key, data[key]);
+                }
                
                 return {
                     url: '/products/',
                     method: 'POST',
-                    prepareHeaders: (headers) => {
-                        headers.set("Content-Type", "multipart/form-data");
-                        return headers;
-                    },
+                    // prepareHeaders: (headers) => {
+                    //     headers.set("Content-Type", "multipart/form-data");
+                    //     return headers;
+                    // },
                     // headers: {
                     //     "Content-Type": "multipart/form-data",
                     // },
-                    body: data , 
+                    body: formData , 
                 }
                          
             },
@@ -45,11 +49,18 @@ const productsApi = apiSlice.injectEndpoints({
             }
         }),
         updateProduct: builder.mutation({
-            query: (data) => ({
-                url: `/products/${data.id}`,
-                method: 'PATCH',
-                body: data
-            }),
+            query: (data) => {
+                const formData = new FormData();
+                for (const key in data) {
+                  formData.append(key, data[key]);
+                }
+                return {
+                    url: `/products/${data.id}`,
+                    method: 'PATCH',
+                    body: formData
+                }
+               
+            },
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
 
                 try {

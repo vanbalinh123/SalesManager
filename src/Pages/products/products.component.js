@@ -67,13 +67,13 @@ const ProductsPage = () => {
     page: currentPage,
   });
 
-  console.log(products)
 
   const [deletedProduct] = useDeletedProductMutation();
 
   const handleLayoutAddProductClick = () => {
     setShowLayout(true);
     setCheck("add");
+    setProductUpdate({})
   };
 
   const handleLayoutUpdateProductClick = (item) => {
@@ -261,7 +261,8 @@ const ProductsPage = () => {
               {products?.products?.map((item) => (
                 <TrProducts key={item._id}>
                   <TdProducts>
-                    <ImgProduct alt={item.name} src={item.img} />
+                    <ImgProduct alt={item.name} src={'http://localhost:3100/img/'+ item.img} />
+                
                   </TdProducts>
                   <TdProducts>{item.code}</TdProducts>
                   <TdProducts>{item.name}</TdProducts>
