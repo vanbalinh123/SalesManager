@@ -266,8 +266,8 @@ const ProductsPage = () => {
                   </TdProducts>
                   <TdProducts>{item.code}</TdProducts>
                   <TdProducts>{item.name}</TdProducts>
-                  <TdProducts>{item.trademark?.name}</TdProducts>
-                  <TdProducts>{item.productGroup?.name}</TdProducts>
+                  <TdProducts>{item.trademark?.name || '!!!'}</TdProducts>
+                  <TdProducts>{item.productGroup?.name || '!!!'}</TdProducts>
                   <TdProducts>{item.price}</TdProducts>
                   <TdProducts>{item.cost}</TdProducts>
                   <TdProducts>{item.quantity}</TdProducts>

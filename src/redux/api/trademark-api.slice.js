@@ -33,7 +33,7 @@ const trademarkApi = apiSlice.injectEndpoints({
                 try {
                     const { data: created } = await queryFulfilled;
                     dispatch(apiSlice.util.updateQueryData('getTrademark', undefined, (draft) => {
-                        draft?.push(created);
+                        draft?.push(created.data.trademark);
                     }))
                 } catch (error) {
                     console.log(error)
@@ -47,17 +47,29 @@ const trademarkApi = apiSlice.injectEndpoints({
                 body: data
             }),
             async onQueryStarted(updateTrademark, { dispatch, queryFulfilled }) {
-                const action = apiSlice.util.updateQueryData('getTrademark', undefined, (draft) => {
-                  const index = draft.findIndex((item) => item.id === updateTrademark.id);
-                  if (index !== -1) {
-                    draft[index] = updateTrademark;
-                  }
-                });
-                const patchResult = dispatch(action);
+                // const action = apiSlice.util.updateQueryData('getTrademark', undefined, (draft) => {
+                //   const index = draft.findIndex((item) => item.id === updateTrademark.id);
+                //   if (index !== -1) {
+                //     draft[index] = updateTrademark;
+                //   }
+                // });
+                // const patchResult = dispatch(action);
+                // try {
+                //   await queryFulfilled;
+                // } catch {
+                //   patchResult.undo();
+                // }
                 try {
-                  await queryFulfilled;
-                } catch {
-                  patchResult.undo();
+                    const { data: updated } = await queryFulfilled;
+                    dispatch(apiSlice.util.updateQueryData('getTrademark', undefined, (draft) => {
+                        const index = draft?.findIndex((item) => item._id === updated.data.trademark._id);
+                        console.log(index)
+                        if (index !== -1) {
+                            draft[index] = updated.data.trademark;
+                          }
+                    }))
+                } catch (error) {
+                    console.log(error)
                 }
               }
         }),        
@@ -68,7 +80,9 @@ const trademarkApi = apiSlice.injectEndpoints({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 const action = apiSlice.util.updateQueryData('getTrademark', undefined, (draft) => {
-                    const index = draft.findIndex((item) => item.id === id);
+                    console.log(id)
+                    console.log(JSON.parse(JSON.stringify(draft)));
+                    const index = draft.findIndex((item) => item._id === id);
                     if (index !== -1) {
                         draft.splice(index, 1);
                     }
@@ -82,7 +96,7 @@ const trademarkApi = apiSlice.injectEndpoints({
             },
         }),
     }),
-    overrideExisting: false,
+    // overrideExisting: false,
 })
 
 export const { 

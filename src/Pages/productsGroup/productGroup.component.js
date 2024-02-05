@@ -61,7 +61,7 @@ const ProductsGroup = () => {
     const [deletedProductGroup] = useDeletedProductGroupMutation();
 
     const getTotalQuantityByProductGroup = (groupName) => {
-        const filteredProducts = products?.products.filter((item) => item.productGroup.name === groupName);
+        const filteredProducts = products?.products.filter((item) => item.productGroup?.name === groupName);
         const totalQuantity = filteredProducts?.reduce((total, item) => total + Number(item.quantity), 0);
         return totalQuantity;
     };

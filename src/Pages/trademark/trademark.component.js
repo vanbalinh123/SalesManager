@@ -60,7 +60,7 @@ const Trademarks = () => {
     const [deletedTrademark] = useDeletedTrademarkMutation();
     console.log(trademarks)
     const getTotalQuantityByProductGroup = (groupName) => {
-        const filteredProducts = products?.products.filter((item) => item.trademark.name === groupName);
+        const filteredProducts = products?.products.filter((item) => item.trademark?.name === groupName);
         const totalQuantity = filteredProducts?.reduce((total, item) => total + Number(item.quantity), 0);
         return totalQuantity;
     };

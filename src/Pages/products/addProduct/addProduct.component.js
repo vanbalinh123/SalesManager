@@ -52,8 +52,8 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
     if (check === "update" && productUpdate) {
       setValue("name", productUpdate.name);
       setValue("code", productUpdate.code);
-      setValue("productGroups", productUpdate.productGroup._id);
-      setValue("trademark", productUpdate.trademark._id);
+      setValue("productGroups", productUpdate.productGroup ?  productUpdate.productGroup._id : '');
+      setValue("trademark", productUpdate.trademark ? productUpdate.trademark._id : '');
       setValue("quantity", productUpdate.quantity);
       setValue("describe", productUpdate.describe);
       setValue("cost", productUpdate.cost);
@@ -84,8 +84,14 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
         const res = await addProduct(productData, {
           "Content-Type": "multipart/form-data",
         });
-        alert("Product added successfully!");
-        setShowLayout(false);
+
+        if(res.data) {
+          alert("Product added successfully!");
+          setShowLayout(false);
+        } else {
+          console.log(res)
+          alert(res.error.data.message);
+        }
       } catch (error) {
         if (error.data) {
           alert(error.data.message);
@@ -105,16 +111,25 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
           describe: data.describe,
           cost: data.cost,
           price: data.price,
-          img: file,
+          // img: file,
+          img: (String(file) !== '[object Object]') ? file : productUpdate.img
         };
+
+        console.log(productData)
+
+        console.log(String(file) === '[object Object]')
 
         const res = await update(productData, {
           "Content-Type": "multipart/form-data",
         });
 
-        // await update(productData).unwrap();
-        alert("Product updated successfully!");
-        setShowLayout(false);
+        if(res.data) {
+          alert("Product updated successfully!");
+          setShowLayout(false);
+        } else {
+          console.log(res)
+          alert(res.error.data.message);
+        }
       } catch (error) {
         if (error.data) {
           alert(error.data.message);
