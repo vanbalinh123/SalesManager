@@ -71,7 +71,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
         "trademark",
         productUpdate.trademark ? productUpdate.trademark._id : ""
       );
-      setValue("quantity", productUpdate.quantity);
+      // setValue("quantity", productUpdate.quantity);
       setValue("describe", productUpdate.describe);
       setValue("cost", productUpdate.cost);
       setValue("price", productUpdate.price);
@@ -92,7 +92,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
           code: data.code,
           productGroups: data.productGroups,
           trademark: data.trademark,
-          quantity: data.quantity,
+          // quantity: data.quantity,
           describe: data.describe,
           cost: data.cost,
           price: data.price,
@@ -124,7 +124,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
           code: data.code,
           productGroups: data.productGroups,
           trademark: data.trademark,
-          quantity: data.quantity,
+          // quantity: data.quantity,
           describe: data.describe,
           cost: data.cost,
           price: data.price,
@@ -224,7 +224,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
               {errors.trademark && <Error>{errors.trademark.message}</Error>}
             </DivInput>
 
-            <DivInputRight>
+            {/* <DivInputRight>
               <SpanNameInputRight>Quantity</SpanNameInputRight>
               <InputAddRight
                 {...register("quantity", {
@@ -233,7 +233,7 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
                 type="number"
               />
               {errors.quantity && <Error>{errors.quantity.message}</Error>}
-            </DivInputRight>
+            </DivInputRight> */}
           </LeftLayoutAdd>
           <RightLayoutAdd>
             <FourDivInput>

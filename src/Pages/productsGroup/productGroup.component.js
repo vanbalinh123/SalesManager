@@ -60,15 +60,11 @@ const ProductsGroup = () => {
     const [updateProductGroup] = useUpdateProductGroupMutation();
     const [deletedProductGroup] = useDeletedProductGroupMutation();
 
-    const getTotalQuantityByProductGroup = (groupName) => {
-        const filteredProducts = products?.products.filter((item) => item.productGroup?.name === groupName);
-        const totalQuantity = filteredProducts?.reduce((total, item) => total + Number(item.quantity), 0);
-        return totalQuantity;
-    };
-
     const handleSearch = () => {
         setName1(name)
     };
+
+    console.log(productGroups)
 
     const handleAddProductGroup = async (data) => {
         if (check === false) {
@@ -194,7 +190,7 @@ const ProductsGroup = () => {
                             >
                                 {item.name}
                                 <QuantityItem>
-                                    {getTotalQuantityByProductGroup(item.name)}
+                                    {item.quantity}
                                 </QuantityItem>
                                 <div
                                     onClick={() => handleItemClick(item)}

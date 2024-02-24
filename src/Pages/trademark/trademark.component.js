@@ -58,12 +58,6 @@ const Trademarks = () => {
     const [addTrademark] = useAddTrademarkMutation();
     const [updateTrademark] = useUpdateTrademarkMutation();
     const [deletedTrademark] = useDeletedTrademarkMutation();
-    console.log(trademarks)
-    const getTotalQuantityByProductGroup = (groupName) => {
-        const filteredProducts = products?.products.filter((item) => item.trademark?.name === groupName);
-        const totalQuantity = filteredProducts?.reduce((total, item) => total + Number(item.quantity), 0);
-        return totalQuantity;
-    };
 
     const handleSearch = () => {
         setName1(name)
@@ -193,7 +187,7 @@ const Trademarks = () => {
                             >
                                 {item.name}
                                 <QuantityItem>
-                                    {getTotalQuantityByProductGroup(item.name)}
+                                    {item.quantity}
                                 </QuantityItem>
                                 <div
                                     onClick={() => handleItemClick(item)}
