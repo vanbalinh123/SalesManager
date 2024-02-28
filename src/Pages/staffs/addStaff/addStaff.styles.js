@@ -40,21 +40,27 @@ export const MainLayout = styled.div`
 //left layout
 export const LeftLayout = styled.div`
     width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 `;
 
 export const DivImg = styled.div`
-    width: 200px;
-    height: 200px;
-    border-radius: 200px;
+    width: 250px;
+    /* height: 250px;
+    border-radius: 250px; */
     overflow: hidden;
     box-shadow: grey 0px 0px 10px 2px;
     margin-top: 20px;
+    border-radius: 10px;
+    /* margin: 0 auto; */
 `;
 
 export const Img = styled.img`
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
+    object-fit: contain;
 `;
 
 //right layout
@@ -69,6 +75,7 @@ export const DivInputs = styled.div`
     flex: 8;
     display: flex;
     flex-direction: column;
+    position: relative;
 `;
 
 export const DivInput = styled.div`
@@ -139,3 +146,47 @@ export const Button = styled.button`
         box-shadow: grey 0px 1px 1px;
     }
 `
+
+
+export const FileInput = styled.input`
+  display: none;
+`;
+
+export const CustomButton = styled.label`
+  /* padding: 10px 20px; */
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  margin-top: 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 7px;
+  background-color: #f5f5f5;
+  box-shadow: grey 0px 2px 6px;
+  transition: all 0.3s;
+  color: #696969;
+  margin-left: 70px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    box-shadow: grey 0px 1px 1px;
+  }
+
+
+  &::after {
+    content: "*";
+    color: red;
+    padding-left: 10px;
+  }
+`;
+
+export const Error = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: red;
+  font-style: italic;
+`;

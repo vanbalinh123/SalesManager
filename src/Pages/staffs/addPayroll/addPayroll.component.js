@@ -120,7 +120,7 @@ const PayRoll = ({ setCheckShowAddPayroll, staffUpdate}) => {
                     <SpanHeader>Total</SpanHeader>
                 </DivHeader>
                 <DivBody>
-                    <SpanBody>{staffUpdate.nameStaff}</SpanBody>
+                    <SpanBody>{staffUpdate.name}</SpanBody>
                     <SpanBody>{staffUpdate.workingTime}</SpanBody>
                     <SpanBody>{staffUpdate.salary}</SpanBody>
                     <SpanBody>

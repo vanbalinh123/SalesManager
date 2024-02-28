@@ -132,9 +132,6 @@ const AddProduct = ({ setShowLayout, check, productUpdate }) => {
           img: String(file) !== "[object Object]" ? file : productUpdate.img,
         };
 
-        console.log(productData);
-
-        console.log(String(file) === "[object Object]");
 
         const res = await update(productData, {
           "Content-Type": "multipart/form-data",
