@@ -101,6 +101,18 @@ export const InputAdd = styled.input`
     color: #696969;
 `;
 
+export const Select = styled.select`
+    position: absolute;
+    right: 0;
+    padding: 10px 15px;
+    width: 80%;
+    border: none;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    box-shadow: grey 0px 1px 2px;
+    color: #696969;
+`;
+
 export const DivSex = styled.div`
     position: absolute;
     right: 0;

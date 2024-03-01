@@ -25,7 +25,8 @@ import {
   InputSex,
   FileInput,
   CustomButton,
-  Error
+  Error,
+  Select
 } from "./addStaff.styles";
 
 const AddStaff = ({ check, setShowLayout, staffUpdate }) => {
@@ -231,7 +232,7 @@ const AddStaff = ({ check, setShowLayout, staffUpdate }) => {
                   </Div>
                 </DivSex>
               </DivInput>
-              <DivInput>
+              {/* <DivInput>
                 <SpanNameInput>Position</SpanNameInput>
                 <InputAdd
                   {...register("position", {
@@ -240,8 +241,8 @@ const AddStaff = ({ check, setShowLayout, staffUpdate }) => {
                   type="text"
                 />
                 {errors.position && <Error>{errors.position.message}</Error>} 
-              </DivInput>
-              <DivInput>
+              </DivInput> */}
+              {/* <DivInput>
                 <SpanNameInput>Working Time</SpanNameInput>
                 <InputAdd
                   {...register("workingTime", {
@@ -250,6 +251,30 @@ const AddStaff = ({ check, setShowLayout, staffUpdate }) => {
                   type="text"
                 />
                 {errors.workingTime && <Error>{errors.workingTime.message}</Error>}
+              </DivInput> */}
+              <DivInput>
+                <SpanNameInput>Position</SpanNameInput>
+                <Select 
+                  {...register("position", {
+                    required: "Position is required!!!",
+                  })}
+                >
+                  <option>Manager</option>
+                  <option>Salesperson</option>
+                  <option>Cashier</option>
+                  <option>Security</option>
+                </Select>
+              </DivInput>
+              <DivInput>
+                <SpanNameInput>Working Time</SpanNameInput>
+                <Select 
+                  {...register("workingTime", {
+                    required: "Working Time is required!!!",
+                  })}
+                >
+                  <option>Full Time</option>
+                  <option>Part Time</option>
+                </Select>
               </DivInput>
               <DivInput>
                 <SpanNameInput>Salary</SpanNameInput>
@@ -287,7 +312,7 @@ const AddStaff = ({ check, setShowLayout, staffUpdate }) => {
                 <Button>Update</Button>
               )}
 
-              <Button onClick={handleCloseLayout}>Exist</Button>
+              <Button onClick={handleCloseLayout}>Exit</Button>
             </DivBtns>
           </RightLayout>
         </MainLayout>
