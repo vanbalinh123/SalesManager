@@ -72,32 +72,48 @@ const WareHouse = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [check, setCheck] = useState('');
     const [checkReturn, setCheckReturn] = useState('');
-    const [itemDetail, setItemDetail] = useState({});
-    const [all, setAll] = useState(true)
-    const [day, setDay] = useState('');
-    const [month, setMonth] = useState('');
-    const [year, setYear] = useState('');
+    const [itemDetail, setItemDetail] = useState({})
+    // const [all, setAll] = useState(true)
+    // const [day, setDay] = useState('');
+    // const [month, setMonth] = useState('');
+    // const [year, setYear] = useState('');
+
+    const [dateBefore, setDateBefore] = useState('');
+    const [dateAfter, setDateAfter] = useState('');
+    const [dateBefore1, setDateBefore1] = useState('');
+    const [dateAfter1, setDateAfter1] = useState('');
+    const [dateBefore2, setDateBefore2] = useState('');
+    const [dateAfter2, setDateAfter2] = useState('');
 
     const { data: importedCoupon } = useGetImportCouponQuery({
         code: codeSearch1,
         page: currentPage,
-        day: day,
-        month: month,
-        year: year
+        dateBefore: dateBefore1,
+        dateAfter: dateAfter1
+        // day: day,
+        // month: month,
+        // year: year
 
     });
+    // const { data: importedCoupon } = useGetImportCouponQuery();
+
+    // const { data: importedCoupon } = useGetImportCouponQuery();
+    console.log(importedCoupon)
     const { data: returnedCoupon } = useGetReturnCouponQuery({
         code: codeSearch2,
         page: currentPage,
-        day: day,
-        month: month,
-        year: year
+        dateBefore: dateBefore2,
+        dateAfter: dateAfter2
     });
 
     const handleStatusImportClick = () => {
         setStatusSearch('Import');
         setCodeSearch('');
         setCodeSearch2('');
+        setDateBefore('');
+        setDateBefore2('');
+        setDateAfter('');
+        setDateAfter2('');
         setCurrentPage(0);
     }
 
@@ -105,20 +121,28 @@ const WareHouse = () => {
         setStatusSearch('Return');
         setCodeSearch('');
         setCodeSearch1('');
+        setDateBefore('');
+        setDateBefore1('');
+        setDateAfter('');
+        setDateAfter1('');
         setCurrentPage(0);
     }
 
     const handleSearch = () => {
         if (statusSearch === 'Import') {
             setCodeSearch1(codeSearch);
-            if (codeSearch === '') {
+            setDateBefore1(dateBefore);
+            setDateAfter1(dateAfter)
+            if (codeSearch === '' && dateBefore === '' && dateAfter === '') {
                 setCurrentPage(currentPage)
             } else {
                 setCurrentPage(0)
             }
         } else {
             setCodeSearch2(codeSearch);
-            if (codeSearch === '') {
+            setDateBefore2(dateBefore);
+            setDateAfter2(dateAfter)
+            if (codeSearch === '' && dateBefore === '' && dateAfter === '') {
                 setCurrentPage(currentPage)
             } else {
                 setCurrentPage(0)
@@ -144,37 +168,37 @@ const WareHouse = () => {
         setItemDetail(item)
     } 
 
-    const handleAllTimeClick = () => {
-        setDay('')
-        setMonth('')
-        setYear('')
-        setAll(true)
-        setCurrentPage(0)
-    }
+    // const handleAllTimeClick = () => {
+    //     setDay('')
+    //     setMonth('')
+    //     setYear('')
+    //     setAll(true)
+    //     setCurrentPage(0)
+    // }
 
-    const handleThisMonthClick = () => {
-        setMonth(getCurrentMonth())
-        setDay('')
-        setYear('')
-        setAll(false)
-        setCurrentPage(0);
-    }
+    // const handleThisMonthClick = () => {
+    //     setMonth(getCurrentMonth())
+    //     setDay('')
+    //     setYear('')
+    //     setAll(false)
+    //     setCurrentPage(0);
+    // }
 
-    const handleThisDayClick = () => {
-        setDay(getCurrentDate())
-        setMonth('')
-        setYear('')
-        setAll(false)
-        setCurrentPage(0);
-    }
+    // const handleThisDayClick = () => {
+    //     setDay(getCurrentDate())
+    //     setMonth('')
+    //     setYear('')
+    //     setAll(false)
+    //     setCurrentPage(0);
+    // }
 
-    const handleThisYearClick = () => {
-        setYear(String(getCurrentYear()))
-        setDay('')
-        setMonth('')
-        setAll(false)
-        setCurrentPage(0);
-    }
+    // const handleThisYearClick = () => {
+    //     setYear(String(getCurrentYear()))
+    //     setDay('')
+    //     setMonth('')
+    //     setAll(false)
+    //     setCurrentPage(0);
+    // }
 
     return (
         <div>
@@ -205,6 +229,22 @@ const WareHouse = () => {
                             placeholder="Code..."
                             value={codeSearch}
                             onChange={(e) => setCodeSearch(e.target.value)}
+                        />
+                    </DivSearch>
+                    <DivSearch>
+                        <InputSearch
+                            type="date"
+                            placeholder="..."
+                            value={dateBefore}
+                            onChange={(e) => setDateBefore(e.target.value)}
+                        />
+                    </DivSearch>
+                    <DivSearch>
+                        <InputSearch
+                            type="date"
+                            placeholder="..."
+                            value={dateAfter}
+                            onChange={(e) => setDateAfter(e.target.value)}
                         />
                     </DivSearch>
                     <ButtonSearch
@@ -248,7 +288,7 @@ const WareHouse = () => {
                             </ItemActive>
                         </UlActive>
                     </ChildOfSidebar>
-                    <ChildOfSidebar>
+                    {/* <ChildOfSidebar>
                         <Time>Time</Time>
                         <UlTime>
                             <ItemTime
@@ -276,7 +316,7 @@ const WareHouse = () => {
                                 This Year
                             </ItemTime>
                         </UlTime>
-                    </ChildOfSidebar>
+                    </ChildOfSidebar> */}
                 </SideBarPage>
                 <ContentPage>
                     <Table>
@@ -292,11 +332,11 @@ const WareHouse = () => {
                             {statusSearch === 'Import'
                                 && importedCoupon?.import.map(item => (
                                     <Tr
-                                        key={item.id}
+                                        key={item._id}
                                         onClick={() => handleItemImportClick(item)}
                                     >
-                                        <Td>{item.codeImport}</Td>
-                                        <Td>{item.date.year}-{item.date.month}-{item.date.day}</Td>
+                                        <Td>{item.code}</Td>
+                                        <Td>{item.year}-{item.month}-{item.day}</Td>
                                         <Td>{item.totalCost}</Td>
                                         <Td>{item.status}</Td>
                                     </Tr>
@@ -307,7 +347,7 @@ const WareHouse = () => {
                                         onClick={() => handleItemReturnClick(item)}
                                     >
                                         <Td>{item.codeReturn}</Td>
-                                        <Td>{item.date.year}-{item.date.month}-{item.date.day}</Td>
+                                        <Td>{item.year}-{item.month}-{item.day}</Td>
                                         <Td>{item.totalCost}</Td>
                                         <Td>{item.status}</Td>
                                     </Tr>

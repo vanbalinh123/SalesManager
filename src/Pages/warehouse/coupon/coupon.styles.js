@@ -218,6 +218,14 @@ export const SpanInfoChild = styled.span`
     
 `;
 
+export const SpanInfoCode = styled.span`
+    &::after {
+    content: "*";
+    color: red;
+    padding-left: 10px;
+  }
+`;
+
 export const DivNotes = styled.div`
     flex: 2;
     display: flex;
@@ -228,6 +236,11 @@ export const DivNotes = styled.div`
 
 export const SpanNotes = styled.span`
     padding: 10px 0px;
+    &::after {
+    content: "*";
+    color: red;
+    padding-left: 10px;
+  }
 `;
 
 export const InputNotes = styled.textarea`
@@ -236,6 +249,18 @@ export const InputNotes = styled.textarea`
     border: none;
     border: 2px solid #F5F5F5;
     border-radius: 5px;
+`;
+
+
+export const InputCode = styled.input`
+    /* height: 100%; */
+    
+    padding: 10px;
+    border: none;
+    border: 2px solid #F5F5F5;
+    border-radius: 5px;
+
+    
 `;
 
 export const DivNote = styled.div`

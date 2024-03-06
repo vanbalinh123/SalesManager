@@ -7,22 +7,29 @@ const warehouseApi = apiSlice.injectEndpoints({
             serializeQueryArgs: () => {
                 return undefined;
             },
-            query: ({ code, page, day, month, year }) => ({
-                url: '/importCoupon',
-                params: { code, page, day, month, year }
+            query: ({ code, page, dateBefore, dateAfter}) => ({
+                url: '/import/',
+                params: { code, page, dateBefore, dateAfter }
             })
+            
         }),
+        // getImportCoupon: builder.query({
+        //     query: () => '/import/'
+        // }),
         addImportCoupon: builder.mutation({
             query: (data) => ({
-                url: '/importCoupon/add',
+                url: '/import/',
                 method: 'POST',
                 body: data
             }),
             async onQueryStarted(data, { queryFulfilled, dispatch }) {
                 try {
                     const { data: created } = await queryFulfilled;
+                
+                    console.log(created);
                     dispatch(apiSlice.util.updateQueryData('getImportCoupon', undefined, (draft) => {
-                        draft?.import.push(created);
+                        console.log(JSON.parse(JSON.stringify(draft)));
+                        draft?.import.push(created.data.imported);
                     }))
                 } catch (error) {
                     console.log(error)
