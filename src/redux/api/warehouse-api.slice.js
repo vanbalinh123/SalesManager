@@ -40,14 +40,14 @@ const warehouseApi = apiSlice.injectEndpoints({
             serializeQueryArgs: () => {
                 return undefined;
             },
-            query: ({ code, page, day, month, year }) => ({
-                url: '/returnCoupon',
-                params: { code, page, day, month, year }
+            query: ({ code, page, dateBefore, dateAfter}) => ({
+                url: '/return/',
+                params: { code, page, dateBefore, dateAfter}
             })
         }),
         addReturnCoupon: builder.mutation({
             query: (data) => ({
-                url: '/returnCoupon/add',
+                url: '/return/',
                 method: 'POST',
                 body: data
             }),
@@ -55,7 +55,7 @@ const warehouseApi = apiSlice.injectEndpoints({
                 try {
                     const { data: created } = await queryFulfilled;
                     dispatch(apiSlice.util.updateQueryData('getReturnCoupon', undefined, (draft) => {
-                        draft?.return.push(created);
+                        draft?.return.push(created.data.returned);
                     }))
                 } catch (error) {
                     console.log(error)

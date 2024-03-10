@@ -163,6 +163,7 @@ const WareHouse = () => {
     }
 
     const handleItemReturnClick = (item) => {
+        console.log('ccs', item)
         setShowLayoutReturn(true)
         setCheckReturn('detail')
         setItemDetail(item)
@@ -199,6 +200,8 @@ const WareHouse = () => {
     //     setAll(false)
     //     setCurrentPage(0);
     // }
+
+    console.log('hehehe', returnedCoupon)
 
     return (
         <div>
@@ -343,10 +346,10 @@ const WareHouse = () => {
                                 )) ||
                                 returnedCoupon?.return.map(item => (
                                     <Tr 
-                                        key={item.id}
+                                        key={item._id}
                                         onClick={() => handleItemReturnClick(item)}
                                     >
-                                        <Td>{item.codeReturn}</Td>
+                                        <Td>{item.code}</Td>
                                         <Td>{item.year}-{item.month}-{item.day}</Td>
                                         <Td>{item.totalCost}</Td>
                                         <Td>{item.status}</Td>
