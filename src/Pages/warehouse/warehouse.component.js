@@ -43,24 +43,6 @@ import {
     Td,
 } from "./warehouse.styles";
 
-const getCurrentDate = () => {
-    const currentDate = new Date();
-    const day = String(currentDate.getDate()).padStart(2, '0');
-    return day;
-}
-
-const getCurrentMonth = () => {
-    const currentDate = new Date();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    return month;
-}
-
-const getCurrentYear = () => {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-
-    return year;
-}
 
 const WareHouse = () => {
     const [showLayout, setShowLayout] = useState(false);
@@ -201,7 +183,7 @@ const WareHouse = () => {
     //     setCurrentPage(0);
     // }
 
-    console.log('hehehe', returnedCoupon)
+    console.log('hehehe', itemDetail)
 
     return (
         <div>

@@ -6,6 +6,7 @@ import { useAddReturnCouponMutation } from "../../../redux/api/warehouse-api.sli
 import { useUpdateProductMutation } from "../../../redux/api/products-api.slice";
 import { useGetProductsQuery } from "../../../redux/api/products-api.slice";
 
+
 import {
   LayoutAdd,
   RightLayoutAdd,
@@ -64,6 +65,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
   const { data: products } = useGetProductsQuery();
   const [code, setCode] = useState("");
 
+
   const handleQuantityChange = (item, newQuantity) => {
     console.log('cc', item)
     if (
@@ -96,42 +98,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
     }
   };
 
-// useEffect(() => {
-//     if (productsChange.length > 0 && products) {
-//       const updatedProducts = productsChange.map((item) => {
-//         const product = products.products.find((p) => p.code === item.code);
-//         if (product) {
-//           return {
-//             ...item,
-//             productGroup: product.productGroup,
-//             trademark: product.trademark,
-//           };
-//         }
-//         return item;
-//       }
-//       );
-//       setProductsChange(updatedProducts);
-//     }
-//   }, [products, productsChange]);
 
-//   const handleQuantityChange = (item, newQuantity) => {
-//     if (newQuantity === '' || Number(newQuantity) === 0 || newQuantity === null) {
-//       const updatedProducts = productsChange.filter((product) => product.code !== item.code);
-//       setProductsChange(updatedProducts);
-//     } else {
-//       const existingProductIndex = productsChange.findIndex((product) => product.code === item.code);
-//       if (existingProductIndex !== -1) {
-//         const updatedProducts = [...productsChange];
-//         updatedProducts[existingProductIndex] = {
-//           ...updatedProducts[existingProductIndex],
-//           quantity: newQuantity,
-//         };
-//         setProductsChange(updatedProducts);
-//       } else {
-//         setProductsChange([...productsChange, { ...item, quantity: newQuantity }]);
-//       }
-//     }
-//   };
 
   const calTotalCostReturn = () => {
     let totalCost = 0;
@@ -160,28 +127,6 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
       alert("No product have been returned yet");
       return;
     }
-
-    console.log(itemDetail)
-    console.log(productsChange)
-
-    // const emptyProduct = productsChange.find(
-    //   (item) =>
-    //     Number(item.quantity) === 0 ||
-    //     item.quantity === "" ||
-    //     Number(item.quantity) < 0 ||
-    //     itemDetail?.productsImported.find(
-    //       (i) => Number(i.quantity) < Number(item.quantity)
-    //     ) !== undefined
-    // );
-
-    // console.log(emptyProduct)
-
-    // if (emptyProduct) {
-    //   alert(
-    //     "Quantity cannot be empty, less than 0, or greater than available stock"
-    //   );
-    //   return;
-    // }
 
     const hasInvalidQuantity = productsChange.some((item) => {
         if (item.quantity === 0 || item.quantity === "" || Number(item.quantity) < 0) {
@@ -223,6 +168,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
     try {
       const couponReturn = {
         // nameUserReturn: userLogin?.username,
+        codeImported: itemDetail.code,
         status: "Return",
         note: notes,
         code: code,
@@ -235,29 +181,20 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
 
       await addReturnCoupon(couponReturn).unwrap();
 
-    //   productsChange?.forEach((item1) => {
-    //     const productToUpdate = products?.products?.find(
-    //       (item2) => item2.code === item1.code
-    //     );
-    //     if (productToUpdate) {
-    //       updateProduct({
-    //         ...productToUpdate,
-    //         quantity: Number(productToUpdate.quantity) - Number(item1.quantity),
-    //       }).unwrap();
-    //     }
-    //   });
-
       alert("Returned successfully!");
       setShowLayoutReturn(false);
       //setStatusSearch('Return')
     } catch (error) {
+      console.log(error)
       if (error.data) {
-        alert(error.data.message);
+        alert(error.data.data.message);
       } else {
         alert("Error!");
       }
     }
   };
+
+  console.log('item Detail', itemDetail)
 
 
   return (
@@ -266,7 +203,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
         {(checkReturn == "detail" && (
           <NameLayOut>Detail Return</NameLayOut>
         )) || <NameLayOut>Return Goods</NameLayOut>}
-        <DivCodeImport>Import Code: {itemDetail?.code}</DivCodeImport>
+        {/* <DivCodeImport>Import Code: {itemDetail?.code}</DivCodeImport> */}
         <InforToAddLayout>
           <Table>
             <THeader>
@@ -287,6 +224,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
                     <Td>{item.cost}</Td>
                     <Td>{item.total}</Td>
                     <Td>{item.quantity}</Td>
+                    
                   </Tr>
                 ))) ||
                 itemDetail?.productsImported.map((item) => (

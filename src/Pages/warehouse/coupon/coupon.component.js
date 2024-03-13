@@ -328,12 +328,13 @@ const Coupon = ({
           <Table>
             <THeader>
               <Tr>
-                {check === "add" && <Th style={{ width: "70px" }}></Th>}
+                {/* {check === "add" && <Th style={{ width: "70px" }}></Th>} */}
                 <Th>Code</Th>
                 <Th>Name</Th>
                 <Th>Cost</Th>
                 <Th>Total</Th>
                 <Th>Quantity</Th>
+                <Th>Current Quantity</Th>
               </Tr>
             </THeader>
             <TBody>
@@ -373,6 +374,7 @@ const Coupon = ({
                         }
                       />
                     </TdQuantity>
+                    {/* <Td>{item.currentQuantity}</Td> */}
                   </Tr>
                 ))) ||
                 itemDetail?.productsImported.map((item) => (
@@ -400,6 +402,7 @@ const Coupon = ({
                     <Td>{item.cost}</Td>
                     <Td>{item.total}</Td>
                     <Td>{item.quantity}</Td>
+                    <Td>{item.currentQuantity}</Td>
                   </Tr>
                 ))}
             </TBody>
