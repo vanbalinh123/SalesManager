@@ -334,7 +334,7 @@ const Coupon = ({
                 <Th>Cost</Th>
                 <Th>Total</Th>
                 <Th>Quantity</Th>
-                <Th>Current Quantity</Th>
+                {check === 'add' || <Th>Current Quantity</Th>}
               </Tr>
             </THeader>
             <TBody>
@@ -364,7 +364,7 @@ const Coupon = ({
                     <Td>{item.code}</Td>
                     <Td>{item.name}</Td>
                     <Td>{item.cost}</Td>
-                    <Td>{item.cost * item.quantity}</Td>
+                    {/* <Td>{item.cost * item.quantity}</Td> */}
                     <TdQuantity>
                       <InputQuantity
                         min={1}

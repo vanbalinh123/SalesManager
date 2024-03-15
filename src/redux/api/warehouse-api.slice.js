@@ -59,23 +59,48 @@ const warehouseApi = apiSlice.injectEndpoints({
       async onQueryStarted(data, { queryFulfilled, dispatch }) {
         try {
           const { data: created } = await queryFulfilled;
+          
           dispatch(
             apiSlice.util.updateQueryData(
               "getReturnCoupon",
               undefined,
               (draft) => {
-                draft?.return.push(created.data.returned);
+                draft?.return.push(created?.data.returned)
               }
             )
           );
-          await dispatch(
-            warehouseApi.endpoints.getImportCoupon.initiate()
+    
+          dispatch(
+            apiSlice.util.updateQueryData(
+              "getImportCoupon",
+              undefined,
+              (draft) => {
+                // console.log(JSON.parse(JSON.stringify(draft)));
+                // console.log(created)
+    
+                for(let i = 0; i < draft?.import?.length; i++) {
+                  if(draft?.import[i].code === created?.data.imported.code) {
+                    let arrayA = draft?.import[i].productsImported;
+                    let arrayB = created?.data.imported.productsImported;
+                    for(let a = 0; a < arrayA.length; a++) {
+                      for(let b = 0; b < arrayB.length; b++) {
+                        if(arrayA[a].code === arrayB[b].code) {
+                          arrayA[a].currentQuantity = arrayB[b].currentQuantity
+                        }
+                      }
+                    }
+                    console.log(JSON.parse(JSON.stringify(draft?.import[i])));
+                  }
+                };
+              }
+            )
           );
         } catch (error) {
           console.log(error);
         }
       },
     }),
+    
   }),
 });
 

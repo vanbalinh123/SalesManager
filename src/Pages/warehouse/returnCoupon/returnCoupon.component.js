@@ -122,7 +122,8 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
     return totalCost;
   };
 
-  const handleAddNewReturn = async () => {
+  const handleAddNewReturn = async (e) => {
+    e.preventDefault();
     if (productsChange.length === 0) {
       alert("No product have been returned yet");
       return;
@@ -194,8 +195,6 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
     }
   };
 
-  console.log('item Detail', itemDetail)
-
 
   return (
     <LayoutAdd>
@@ -212,6 +211,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
               <Th>Cost</Th>
               <Th>Total</Th>
               <Th>Quantity</Th>
+              {checkReturn === "detail" || <Th>Current Quantity</Th>}
               {checkReturn === "detail" || <Th>Tien tra lai</Th>}
               {checkReturn === "detail" || <Th>Return</Th>}
             </THeader>
@@ -224,7 +224,6 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
                     <Td>{item.cost}</Td>
                     <Td>{item.total}</Td>
                     <Td>{item.quantity}</Td>
-                    
                   </Tr>
                 ))) ||
                 itemDetail?.productsImported.map((item) => (
@@ -234,6 +233,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
                     <Td>{item.cost}</Td>
                     <Td>{item.total}</Td>
                     <Td>{item.quantity}</Td>
+                    <Td>{item.currentQuantity}</Td>
                     <Td>{calTotalCostEachProduct(item.code)}</Td>
                     <TdQuantity>
                       <InputQuantity
@@ -355,7 +355,7 @@ const ReturnCoupon = ({ setShowLayoutReturn, checkReturn, itemDetail }) => {
           </DivButton>
           {checkReturn === "detail" || (
             <DivButton>
-              <Button onClick={() => handleAddNewReturn()}>Ok</Button>
+              <Button onClick={(e) => handleAddNewReturn(e)}>Ok</Button>
             </DivButton>
           )}
         </DivButtons>
